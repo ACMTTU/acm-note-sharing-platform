@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace NotesService.Controllers
+namespace ACMTTU.NoteSharing.Platform.NoteService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

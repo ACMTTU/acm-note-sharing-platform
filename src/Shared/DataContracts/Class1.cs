@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shared
+namespace ACMTTU.NoteSharing.Shared.DataContracts
 {
     public class Class1
     {

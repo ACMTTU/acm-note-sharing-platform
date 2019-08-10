@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AuthService
+namespace ACMTTU.NoteSharing.Platform.AuthService
 {
     public class Startup
     {
