@@ -1,0 +1,1 @@
+open https://developer.android.com/studio/
