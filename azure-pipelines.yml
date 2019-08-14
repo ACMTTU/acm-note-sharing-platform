@@ -17,6 +17,9 @@ steps:
   inputs:
     helmVersionToInstall: 'latest'
 
+- script: docker login -u $DOCKER_USER -p $DOCKER_PASS acmregistry2019.azurecr.io
+  displayName: 'Login'
+
 - script: ./src/AuthApplication/Scripts/docker-build-push.sh
   displayName: 'Build and Push Auth Application'
 
