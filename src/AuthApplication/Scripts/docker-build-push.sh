@@ -1,4 +1,4 @@
-docker login acmregistry2019.azurecr.io -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD acmregistry2019.azurecr.io
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
