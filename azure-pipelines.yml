@@ -52,4 +52,4 @@ steps:
     azureResourceGroup: '$(azureResourceGroup)'
     kubernetesCluster: '$(kubernetesCluster)'
     command: upgrade
-    arguments: -i --namespace dev platform . 
+    arguments: platform ./src/charts/. -i --namespace dev 
