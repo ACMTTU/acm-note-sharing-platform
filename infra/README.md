@@ -9,6 +9,8 @@ These must be installed manually
 * Brew (MacOS) (https://brew.sh)
 
 # Instructions
+
+You must run commands in a Bash-enabled, elevated terminal
 >
 > ./install_prerequisites.sh
 >

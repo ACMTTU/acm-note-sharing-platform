@@ -20,17 +20,17 @@ steps:
 - script: docker login -u $(DOCKER_USER) -p $(DOCKER_PASS) acmregistry2019.azurecr.io
   displayName: 'Login'
 
-- script: ./src/AuthApplication/Scripts/docker-build-push.sh
-  displayName: 'Build and Push Auth Application'
+# - script: ./src/AuthApplication/Scripts/docker-build-push.sh
+#   displayName: 'Build and Push Auth Application'
 
-- script: ./src/CatalogApplication/Scripts/docker-build-push.sh
-  displayName: 'Build and Push Catalog Application'
+# - script: ./src/CatalogApplication/Scripts/docker-build-push.sh
+#   displayName: 'Build and Push Catalog Application'
 
-- script: ./src/ClassApplication/Scripts/docker-build-push.sh
-  displayName: 'Build and Push Class Application'
+# - script: ./src/ClassApplication/Scripts/docker-build-push.sh
+#   displayName: 'Build and Push Class Application'
 
-- script: ./src/NotesApplication/Scripts/docker-build-push.sh
-  displayName: 'Build and Push Notes Application'
+# - script: ./src/NotesApplication/Scripts/docker-build-push.sh
+#   displayName: 'Build and Push Notes Application'
 
 - task: HelmDeploy@0
   inputs:
@@ -53,6 +53,6 @@ steps:
     namespace: 'dev'
     command: 'upgrade'
     chartType: 'FilePath'
-    chartPath: './src/charts/.'
+    chartPath: '$(Build.ArtifactStagingDirectory)/src/charts/.'
     releaseName: 'platform'
     waitForExecution: false
