@@ -33,6 +33,7 @@ steps:
 #   displayName: 'Build and Push Notes Application'
 
 - task: HelmDeploy@0
+  displayName: Helm Init
   inputs:
     connectionType: 'Azure Resource Manager'
     azureSubscription: '$(azureSubscription)'
@@ -44,15 +45,11 @@ steps:
     arguments: '--wait'
 
 - task: HelmDeploy@0
+  displayName: Helm Deploy
   inputs:
     connectionType: 'Azure Resource Manager'
     azureSubscription: '$(azureSubscription)'
     azureResourceGroup: '$(azureResourceGroup)'
     kubernetesCluster: '$(kubernetesCluster)'
-    useClusterAdmin: true
-    namespace: 'dev'
-    command: 'upgrade'
-    chartType: 'FilePath'
-    chartPath: '$(Build.ArtifactStagingDirectory)/src/charts/.'
-    releaseName: 'platform'
-    waitForExecution: false
+    command: upgrade
+    arguments: -i --namespace dev ./src/charts/.
