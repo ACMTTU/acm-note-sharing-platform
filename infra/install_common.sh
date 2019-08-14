@@ -2,8 +2,6 @@ echo "Sign up for an Azure Subscription"
 
 open https://azure.microsoft.com/en-us/free/
 
-echo "Please install VS Code if you have not already"
-
 # Mac OS
 if [ "$(uname)" == "Darwin" ]; then
     brew cask install visual-studio-code
@@ -22,8 +20,6 @@ if [ "$(uname)" == "Darwin" ]; then
     choco install vscode
 fi
 
-read -n 1 -s -r -p "Press any key to continue..."
-
 # Mac OS
 if [ "$(uname)" == "Darwin" ]; then
     brew update && brew install azure-cli
@@ -39,3 +35,6 @@ if [ "$(uname)" == "Darwin" ]; then
     open https://aka.ms/installazurecliwindows
     open https://nodejs.org/dist/v10.16.0/node-v10.16.0-x64.msi
 fi
+
+# Installing Kubernetes Stuff
+az aks install-cli

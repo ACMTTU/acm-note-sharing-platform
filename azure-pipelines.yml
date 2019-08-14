@@ -1,8 +1,3 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 trigger:
 - master
 
@@ -10,8 +5,51 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  buildConfiguration: 'Release'
+  kubernetesCluster: 'acm-aks'
+  azureResourceGroup: 'acm'
+  azureSubscription: 'Pay-As-You-Go(6b3b2d60-1ccd-486e-b6be-0fc7107fc463)'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+- task: DockerInstaller@0
+  inputs:
+    dockerVersion: '18.06.1-ce'
+- task: HelmInstaller@1
+  inputs:
+    helmVersionToInstall: 'latest'
+
+- script: ./src/AuthApplication/Scripts/docker-build-push.sh
+  displayName: 'Build and Push Auth Application'
+
+- script: ./src/CatalogApplication/Scripts/docker-build-push.sh
+  displayName: 'Build and Push Catalog Application'
+
+- script: ./src/ClassApplication/Scripts/docker-build-push.sh
+  displayName: 'Build and Push Class Application'
+
+- script: ./src/NotesApplication/Scripts/docker-build-push.sh
+  displayName: 'Build and Push Notes Application'
+
+- task: HelmDeploy@0
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscription: '$(azureSubscription)'
+    azureResourceGroup: '$(azureResourceGroup)'
+    kubernetesCluster: '$(kubernetesCluster)'
+    useClusterAdmin: true
+    namespace: 'dev'
+    command: 'init'
+    arguments: '--wait'
+
+- task: HelmDeploy@0
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscription: '$(azureSubscription)'
+    azureResourceGroup: '$(azureResourceGroup)'
+    kubernetesCluster: '$(kubernetesCluster)'
+    useClusterAdmin: true
+    namespace: 'dev'
+    command: 'upgrade'
+    chartType: 'FilePath'
+    chartPath: './src/charts/.'
+    releaseName: 'platform'
+    waitForExecution: false
