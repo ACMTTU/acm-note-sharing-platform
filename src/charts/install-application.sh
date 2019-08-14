@@ -1,2 +1,2 @@
 helm init --wait
-helm upgrade -i --namespace dev .
+helm upgrade platform . -i --namespace dev
