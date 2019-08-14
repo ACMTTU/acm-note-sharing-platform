@@ -1,0 +1,1 @@
+helm upgrade -i --namespace dev .
