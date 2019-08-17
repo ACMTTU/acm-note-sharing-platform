@@ -20,25 +20,19 @@ steps:
     helmVersionToInstall: 'latest'
 
 - script: docker login -u $(DOCKER_USER) -p $(DOCKER_PASS) acmnotesregistry.azurecr.io
-  displayName: 'Docker Login'
+  displayName: 'Login'
 
-- script: az login --service-principal -u $(PRINCIPAL_USER) -p $(PRINCIPAL_PASS) -t $(PRINCIPAL_TENANT)
-  displayName: 'Azure Login'
-
-- script: az acr build -t acmnotesregistry.azurecr.io/authapplication:stable -r acmnotesregistry ./src/AuthApplication
+- script: ./src/AuthApplication/Scripts/docker-build-push.sh
   displayName: 'Build and Push Auth Application'
 
-- script: az acr build -t acmnotesregistry.azurecr.io/catalogapplication:stable -r acmnotesregistry ./src/CatalogApplication
+- script: ./src/CatalogApplication/Scripts/docker-build-push.sh
   displayName: 'Build and Push Catalog Application'
 
-- script: az acr build -t acmnotesregistry.azurecr.io/classapplication:stable -r acmnotesregistry ./src/ClassApplication
+- script: ./src/ClassApplication/Scripts/docker-build-push.sh
   displayName: 'Build and Push Class Application'
 
-- script: az acr build -t acmnotesregistry.azurecr.io/notesapplication:stable -r acmnotesregistry ./src/NotesApplication
+- script: ./src/NotesApplication/Scripts/docker-build-push.sh
   displayName: 'Build and Push Notes Application'
-
-- script: az aks get-credentials --admin -g acm-notes -n acm-notes-aks --overwrite-existing
-  displayName: 'Get Credentials for Kubernetes Cluster'
 
 - task: HelmDeploy@0
   displayName: Helm Init
@@ -50,7 +44,7 @@ steps:
     useClusterAdmin: true
     namespace: 'dev'
     command: 'init'
-    arguments: '--service-account tiller --history-max 200 --wait'
+    arguments: '--client-only --service-account tiller --history-max 200 --wait'
 
 - task: HelmDeploy@0
   displayName: Helm Deploy
