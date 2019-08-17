@@ -9,7 +9,7 @@ pool:
 variables:
   kubernetesCluster: 'acm-notes-aks'
   azureResourceGroup: 'acm-notes'
-  azureSubscription: '469c4ad0-7f50-42b2-b632-099b2d0b2b8b'
+  azureSubscription: 'Pay-As-You-Go(2)(6b3b2d60-1ccd-486e-b6be-0fc7107fc463)'
 
 steps:
 - task: DockerInstaller@0
