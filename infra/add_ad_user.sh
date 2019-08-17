@@ -14,7 +14,7 @@ formattedFirstName=$(echo $formattedFirstName | tr '[:upper:]' '[:lower:]')
 formattedLastName=${lastName:0:4}
 formattedLastName=$(echo $formattedLastName | tr '[:upper:]' '[:lower:]')
 
-userPrincipleName=${formattedFirstName}${formattedLastName}@ynigoreyesgmailcom.onmicrosoft.com
+userPrincipleName=${formattedFirstName}${formattedLastName}@acmttu.org
 displayName="$firstName $lastName"
 displayNameLower=$(echo $displayName | tr '[:upper:]' '[:lower:]')
 password=$(openssl rand -base64 8)
