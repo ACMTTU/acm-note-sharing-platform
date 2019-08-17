@@ -37,7 +37,7 @@ steps:
   displayName: Helm Init
   inputs:
     connectionType: 'Azure Resource Manager'
-    azureSubscription: '$(azureSubscription)'
+    azureSubscription: '$(AZURE_SUBSCRIPTION)'
     azureResourceGroup: '$(azureResourceGroup)'
     kubernetesCluster: '$(kubernetesCluster)'
     useClusterAdmin: true
