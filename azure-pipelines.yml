@@ -1,7 +1,4 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+# https://dev.azure.com
 
 trigger:
 - master
@@ -10,8 +7,52 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  buildConfiguration: 'Release'
+  kubernetesCluster: 'acm-notes-aks'
+  azureResourceGroup: 'acm-notes'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+- task: DockerInstaller@0
+  inputs:
+    dockerVersion: '18.06.1-ce'
+- task: HelmInstaller@1
+  inputs:
+    helmVersionToInstall: 'latest'
+
+- script: docker login -u $(DOCKER_USER) -p $(DOCKER_PASS) acmnotesregistry.azurecr.io
+  displayName: 'Login'
+
+- script: ./src/AuthApplication/Scripts/docker-build-push.sh
+  displayName: 'Build and Push Auth Application'
+
+- script: ./src/CatalogApplication/Scripts/docker-build-push.sh
+  displayName: 'Build and Push Catalog Application'
+
+- script: ./src/ClassApplication/Scripts/docker-build-push.sh
+  displayName: 'Build and Push Class Application'
+
+- script: ./src/NotesApplication/Scripts/docker-build-push.sh
+  displayName: 'Build and Push Notes Application'
+
+- task: HelmDeploy@0
+  displayName: Helm Init
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscription: '$(AZURE_SUBSCRIPTION)'
+    azureResourceGroup: '$(azureResourceGroup)'
+    kubernetesCluster: '$(kubernetesCluster)'
+    useClusterAdmin: true
+    namespace: 'dev'
+    command: 'init'
+    arguments: '--service-account tiller --history-max 200 --wait'
+
+- task: HelmDeploy@0
+  displayName: Helm Deploy
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscription: '$(AZURE_SUBSCRIPTION)'
+    azureResourceGroup: '$(azureResourceGroup)'
+    kubernetesCluster: '$(kubernetesCluster)'
+    chartName: './src/charts/.'
+    releaseName: 'platform'
+    command: upgrade
+    arguments: -i --namespace dev 
