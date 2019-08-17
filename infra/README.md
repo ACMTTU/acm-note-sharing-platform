@@ -33,3 +33,11 @@ Since they are in charge of infrastructure, they require extra tooling
 * Helm
 * Docker
 * Kubernetes CLI
+
+# How to deploy the application
+1. Authenticate with Azure AD
+2. Create a service account for AKS and Tiller from Helm to use
+3. Create a Task on Azure Pipelines and authenticate using the Azure Subscription
+4. Choose the `acm-notes` resource group
+5. Exit the task build and edit the `AZURE_SUBSCRIPTION` variable in Pipelines to match the authenticated subscription
+5. Run Pipeline to build and deploy
