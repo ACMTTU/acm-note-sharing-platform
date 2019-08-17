@@ -5,8 +5,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  kubernetesCluster: 'acm-aks'
-  azureResourceGroup: 'acm'
+  kubernetesCluster: 'acm-notes-aks'
+  azureResourceGroup: 'acm-notes'
   azureSubscription: 'Pay-As-You-Go(6b3b2d60-1ccd-486e-b6be-0fc7107fc463)'
 
 steps:
