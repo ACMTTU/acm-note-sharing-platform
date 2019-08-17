@@ -11,7 +11,6 @@ variables:
   azureResourceGroup: 'acm-notes'
   azureSubscription: 'Pay-As-You-Go(2)(6b3b2d60-1ccd-486e-b6be-0fc7107fc463)'
 
-
 steps:
 - task: DockerInstaller@0
   inputs:
@@ -54,5 +53,7 @@ steps:
     azureSubscription: '$(azureSubscription)'
     azureResourceGroup: '$(azureResourceGroup)'
     kubernetesCluster: '$(kubernetesCluster)'
+    chartName: './src/charts/.'
+    releaseName: 'platform'
     command: upgrade
-    arguments: platform ./src/charts/. -i --namespace dev 
+    arguments: -i --namespace dev 
