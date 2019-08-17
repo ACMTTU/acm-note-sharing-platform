@@ -9,7 +9,6 @@ pool:
 variables:
   kubernetesCluster: 'acm-notes-aks'
   azureResourceGroup: 'acm-notes'
-  azureSubscription: 'Pay-As-You-Go(2)(6b3b2d60-1ccd-486e-b6be-0fc7107fc463)'
 
 steps:
 - task: DockerInstaller@0
@@ -22,17 +21,17 @@ steps:
 - script: docker login -u $(DOCKER_USER) -p $(DOCKER_PASS) acmnotesregistry.azurecr.io
   displayName: 'Login'
 
-# - script: ./src/AuthApplication/Scripts/docker-build-push.sh
-#   displayName: 'Build and Push Auth Application'
+- script: ./src/AuthApplication/Scripts/docker-build-push.sh
+  displayName: 'Build and Push Auth Application'
 
-# - script: ./src/CatalogApplication/Scripts/docker-build-push.sh
-#   displayName: 'Build and Push Catalog Application'
+- script: ./src/CatalogApplication/Scripts/docker-build-push.sh
+  displayName: 'Build and Push Catalog Application'
 
-# - script: ./src/ClassApplication/Scripts/docker-build-push.sh
-#   displayName: 'Build and Push Class Application'
+- script: ./src/ClassApplication/Scripts/docker-build-push.sh
+  displayName: 'Build and Push Class Application'
 
-# - script: ./src/NotesApplication/Scripts/docker-build-push.sh
-#   displayName: 'Build and Push Notes Application'
+- script: ./src/NotesApplication/Scripts/docker-build-push.sh
+  displayName: 'Build and Push Notes Application'
 
 - task: HelmDeploy@0
   displayName: Helm Init
@@ -50,7 +49,7 @@ steps:
   displayName: Helm Deploy
   inputs:
     connectionType: 'Azure Resource Manager'
-    azureSubscription: '$(azureSubscription)'
+    azureSubscription: '$(AZURE_SUBSCRIPTION)'
     azureResourceGroup: '$(azureResourceGroup)'
     kubernetesCluster: '$(kubernetesCluster)'
     chartName: './src/charts/.'
