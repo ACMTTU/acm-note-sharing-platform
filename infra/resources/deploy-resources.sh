@@ -12,7 +12,8 @@ az group deployment create -g $resourceGroupName --template-file $DIR/azuredeplo
 # Turn on Dev Spaces
 az aks use-dev-spaces -g $resourceGroupName -n acm-notes-aks -s dev -y
 
-kubectl create -f rbac-config.yaml
+kubectl create serviceaccount tiller --namespace kube-system
+kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
 helm init --service-account tiller --history-max 200
 
 # Allow AKS to talk to ACR by creating a role assignment
