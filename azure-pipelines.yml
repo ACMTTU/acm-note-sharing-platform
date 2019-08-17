@@ -9,7 +9,7 @@ pool:
 variables:
   kubernetesCluster: 'acm-notes-aks'
   azureResourceGroup: 'acm-notes'
-  azureSubscription: 'Pay-As-You-Go(6b3b2d60-1ccd-486e-b6be-0fc7107fc463)'
+  azureSubscription: '469c4ad0-7f50-42b2-b632-099b2d0b2b8b'
 
 steps:
 - task: DockerInstaller@0
@@ -44,7 +44,7 @@ steps:
     useClusterAdmin: true
     namespace: 'dev'
     command: 'init'
-    arguments: '--client-only --service-account tiller --history-max 200 --wait'
+    arguments: '--service-account tiller --history-max 200 --wait'
 
 - task: HelmDeploy@0
   displayName: Helm Deploy
