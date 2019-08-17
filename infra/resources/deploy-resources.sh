@@ -1,4 +1,5 @@
 az login
+az aks install-cli
 
 echo 'Resource Group Name: '
 read resourceGroupName
@@ -10,6 +11,9 @@ az group deployment create -g $resourceGroupName --template-file $DIR/azuredeplo
 
 # Turn on Dev Spaces
 az aks use-dev-spaces -g $resourceGroupName -n acm-notes-aks -s dev -y
+
+kubectl create -f rbac-config.yaml
+helm init --service-account tiller --history-max 200
 
 # Allow AKS to talk to ACR by creating a role assignment
 CLIENT_ID=$(az aks show --resource-group $resourceGroupName --name acm-notes-aks --query "servicePrincipalProfile.clientId" --output tsv)

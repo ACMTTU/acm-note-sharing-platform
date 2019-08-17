@@ -1,0 +1,15 @@
+dependencies:
+- name: authapplication
+  repository: file://../AuthApplication/charts/authapplication
+  version: 0.1.0
+- name: classapplication
+  repository: file://../ClassApplication/charts/classapplication
+  version: 0.1.0
+- name: catalogapplication
+  repository: file://../CatalogApplication/charts/catalogapplication
+  version: 0.1.0
+- name: notesapplication
+  repository: file://../NotesApplication/charts/notesapplication
+  version: 0.1.0
+digest: sha256:89d2ec33aab6a7b26f849cca9ceb65399e395520467db9aad84c6b1e00c46b06
+generated: "2019-08-17T01:36:19.518353-05:00"
