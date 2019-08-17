@@ -44,7 +44,7 @@ steps:
     useClusterAdmin: true
     namespace: 'dev'
     command: 'init'
-    arguments: '--wait'
+    arguments: '--service-account tiller --history-max 200 --wait'
 
 - task: HelmDeploy@0
   displayName: Helm Deploy
