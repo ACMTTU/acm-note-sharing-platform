@@ -22,16 +22,16 @@ steps:
 - script: docker login -u $(DOCKER_USER) -p $(DOCKER_PASS) acmnotesregistry.azurecr.io
   displayName: 'Login'
 
-- script: az acr build -t acmnotesregistry.azurecr.io/authapplication:stable ./src/AuthApplication
+- script: az acr build -t acmnotesregistry.azurecr.io/authapplication:stable -r acmnotesregistry ./src/AuthApplication
   displayName: 'Build and Push Auth Application'
 
-- script: az acr build -t acmnotesregistry.azurecr.io/catalogapplication:stable ./src/CatalogApplication
+- script: az acr build -t acmnotesregistry.azurecr.io/catalogapplication:stable -r acmnotesregistry ./src/CatalogApplication
   displayName: 'Build and Push Catalog Application'
 
-- script: az acr build -t acmnotesregistry.azurecr.io/classapplication:stable ./src/ClassApplication
+- script: az acr build -t acmnotesregistry.azurecr.io/classapplication:stable -r acmnotesregistry ./src/ClassApplication
   displayName: 'Build and Push Class Application'
 
-- script: az acr build -t acmnotesregistry.azurecr.io/notesapplication:stable ./src/NotesApplication
+- script: az acr build -t acmnotesregistry.azurecr.io/notesapplication:stable -r acmnotesregistry ./src/NotesApplication
   displayName: 'Build and Push Notes Application'
 
 - script: az aks get-credentials --admin -g acm-notes -n acm-notes-aks --overwrite-existing
