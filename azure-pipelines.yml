@@ -20,7 +20,10 @@ steps:
     helmVersionToInstall: 'latest'
 
 - script: docker login -u $(DOCKER_USER) -p $(DOCKER_PASS) acmnotesregistry.azurecr.io
-  displayName: 'Login'
+  displayName: 'Docker Login'
+
+- script: az login --service-principal -u $(PRINCIPAL_USER) -p $(PRINCIPAL_PASS) -t $(PRINCIPAL_TENANT)
+  displayName: 'Azure Login'
 
 - script: az acr build -t acmnotesregistry.azurecr.io/authapplication:stable -r acmnotesregistry ./src/AuthApplication
   displayName: 'Build and Push Auth Application'
