@@ -27,7 +27,7 @@ ingress:
     kubernetes.io/ingress.class: traefik-azds
   path: /api/class
   hosts:
-    - dev.classapplication.pvg9j7ck8f.wus2.azds.io
+    - dev.classapplication.gcnf7pn7np.wus2.azds.io
   tls: []
 secrets: {}
   # Optionally specify a set of secret objects whose values
