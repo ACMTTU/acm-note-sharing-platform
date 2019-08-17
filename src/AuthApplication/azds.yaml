@@ -11,7 +11,7 @@ install:
   set:
     replicaCount: 1
     image:
-      repository: acmregistry2019.azurecr.io/authapplication
+      repository: acmnotesregistry.azurecr.io/authapplication
       tag: $(tag)
       pullPolicy: Never
     ingress:

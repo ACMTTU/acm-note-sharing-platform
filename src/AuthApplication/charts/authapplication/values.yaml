@@ -4,7 +4,7 @@
 fullnameOverride: authapplication
 replicaCount: 1
 image:
-  repository: acmregistry2019.azurecr.io/authapplication
+  repository: acmnotesregistry.azurecr.io/authapplication
   tag: stable
   pullPolicy: IfNotPresent
 imagePullSecrets: []
