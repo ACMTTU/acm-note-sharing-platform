@@ -4,7 +4,6 @@
 ./install_extensions.sh
 
 ./install_prerequisites_ios.sh
-./install_prerequisites_web.sh
 ./install_prerequisites_android.sh
 
 
