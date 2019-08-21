@@ -27,7 +27,7 @@ ingress:
     kubernetes.io/ingress.class: traefik-azds
   path: /api/notes
   hosts:
-    - dev.notesapplication.gcnf7pn7np.wus2.azds.io
+    - dev.notesapplication.<FIND_AND_REPLACE_WITH_HOST_SUFFIX>
   tls: []
 secrets: {}
   # Optionally specify a set of secret objects whose values
