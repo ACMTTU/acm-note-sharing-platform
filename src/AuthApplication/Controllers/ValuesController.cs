@@ -15,7 +15,7 @@ namespace ACMTTU.NoteSharing.Platform.AuthApplication.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> GetValues()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "value3", "value4" };
         }
     }
 }
