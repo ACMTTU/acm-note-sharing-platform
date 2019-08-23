@@ -24,6 +24,9 @@
             "defaultValue": "acmnotesblobstore",
             "type": "string"
         },
+        "create_redis_instance": {
+            "type": "bool"
+        },
         "redis_cache_name": {
             "defaultValue": "acm-notes-cache",
             "type": "string"
@@ -81,6 +84,7 @@
         },
         {
             "type": "Microsoft.Cache/Redis",
+            "condition": "[bool(parameters('create_redis_instance'))]",
             "apiVersion": "2017-10-01",
             "name": "[parameters('redis_cache_name')]",
             "location": "West US 2",
