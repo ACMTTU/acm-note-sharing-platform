@@ -1,6 +1,3 @@
-echo "Make sure you have Visual Studio Code installed before continuing. Openning browser..."
-read -n 1 -s -r -p "Press any key to continue"
-
 code --install-extension azuredevspaces.azds --force
 code --install-extension ms-vscode.csharp --force
 code --install-extension jchannon.csharpextensions --force
