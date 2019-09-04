@@ -27,7 +27,6 @@ jobs:
 
   - job: PushAndDeployImage
     dependsOn:
-      - IntegrationTest
       - UnitTest
     displayName: Push And Deploy Image
     pool:
