@@ -50,7 +50,7 @@ jobs:
         displayName: Helm Init
         inputs:
           connectionType: "Azure Resource Manager"
-          azureSubscription: "$(AZURE_SUBSCRIPTION)"
+          azureSubscriptionEndpoint: "$(AZURE_SUBSCRIPTION)"
           azureResourceGroup: "$(azureResourceGroup)"
           kubernetesCluster: "$(kubernetesCluster)"
           useClusterAdmin: true
@@ -62,7 +62,7 @@ jobs:
         displayName: Helm Deploy to Staging/Dev Space
         inputs:
           connectionType: "Azure Resource Manager"
-          azureSubscription: "$(AZURE_SUBSCRIPTION)"
+          azureSubscriptionEndpoint: "$(AZURE_SUBSCRIPTION)"
           azureResourceGroup: "$(azureResourceGroup)"
           kubernetesCluster: "$(kubernetesCluster)"
           chartName: "./src/AuthApplication/charts/authapplication"
