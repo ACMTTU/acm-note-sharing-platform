@@ -6,6 +6,7 @@ trigger:
   branches:
     include:
       - master
+      - pipelines
   paths:
     include:
       - src/AuthApplication/*
