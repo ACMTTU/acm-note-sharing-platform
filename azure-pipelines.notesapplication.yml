@@ -63,7 +63,7 @@ jobs:
           azureSubscriptionEndpoint: "$(AZURE_SUBSCRIPTION)"
           azureResourceGroup: "$(azureResourceGroup)"
           kubernetesCluster: "$(kubernetesCluster)"
-          chartName: "./src/NotesApplication/charts/NotesApplication"
+          chartName: "./src/NotesApplication/charts/notesapplication"
           releaseName: "platform"
           command: upgrade
           arguments: -i --force --namespace dev
