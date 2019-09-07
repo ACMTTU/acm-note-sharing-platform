@@ -5,11 +5,11 @@
 trigger:
   branches:
     include:
-      - master
-      - pipelines
+    - master
+    - pipelines
   paths:
     include:
-      - src/AuthApplication/*
+    - src/AuthApplication/*
 
 resources:
   - repo: self
@@ -69,4 +69,4 @@ jobs:
           chartName: "./src/AuthApplication/charts/authapplication"
           releaseName: "platform"
           command: upgrade
-          arguments: -i --namespace dev
+          arguments: -i --force --namespace dev
