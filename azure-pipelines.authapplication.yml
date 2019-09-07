@@ -6,7 +6,6 @@ trigger:
   branches:
     include:
     - master
-    - pipelines
   paths:
     include:
     - src/AuthApplication/*
@@ -29,6 +28,7 @@ jobs:
   - job: PushAndDeployImage
     dependsOn:
       - UnitTest
+    condition: and(succeeded('UnitTest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     displayName: Push And Deploy Image
     pool:
       vmImage: "ubuntu-latest"
