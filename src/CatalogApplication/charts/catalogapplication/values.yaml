@@ -27,7 +27,7 @@ ingress:
     kubernetes.io/ingress.class: traefik-azds
   path: /api/catalog
   hosts:
-    - dev.catalogapplication.<FIND_AND_REPLACE_WITH_HOST_SUFFIX>
+    - dev.catalogapplication.7ssmwvmdd8.wus2.azds.io
   tls: []
     # - secretName: chart-example-tls
     #   hosts:
