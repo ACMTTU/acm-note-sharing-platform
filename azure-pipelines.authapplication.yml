@@ -3,9 +3,6 @@
 # Build, Test and Deploys the AuthApplication to Production
 
 trigger:
-  branches:
-    include:
-    - master
   paths:
     include:
     - src/AuthApplication/*
