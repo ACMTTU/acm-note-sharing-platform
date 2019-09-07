@@ -3,71 +3,67 @@
 # Build, Test and Deploys the ClassApplication to Production
 
 trigger:
-  branches:
-    include:
-    - master
   paths:
     include:
     - src/ClassApplication/*
 
 resources:
-- repo: self
+  - repo: self
 
 variables:
-  kubernetesCluster: 'acm-notes-aks'
-  azureResourceGroup: 'acm-notes'
+  kubernetesCluster: "acm-notes-aks"
+  azureResourceGroup: "acm-notes"
 
 jobs:
-- job: UnitTest
-  dependsOn: BuildImage
-  displayName: Build Image
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-    - script: echo 'Unit Test for ClassApplication'
+  - job: UnitTest
+    displayName: Build Image
+    pool:
+      vmImage: "ubuntu-latest"
+    steps:
+      - script: echo 'Unit Test for ClassApplication'
 
-- job: PushAndDeployImage
-  dependsOn:
-  - IntegrationTest
-  - UnitTest
-  displayName: Push And Deploy Image
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - task: DockerInstaller@0
-    inputs:
-      dockerVersion: '18.06.1-ce'
+  - job: PushAndDeployImage
+    dependsOn:
+      - UnitTest
+    condition: and(succeeded('UnitTest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    displayName: Push And Deploy Image
+    pool:
+      vmImage: "ubuntu-latest"
+    steps:
+      - task: DockerInstaller@0
+        inputs:
+          dockerVersion: "18.06.1-ce"
 
-  - task: HelmInstaller@1
-    inputs:
-      helmVersionToInstall: 'latest'
+      - task: HelmInstaller@1
+        inputs:
+          helmVersionToInstall: "latest"
 
-  - script: docker login -u $(DOCKER_USER) -p $(DOCKER_PASS) acmnotesregistry.azurecr.io
-    displayName: 'Login'
+      - script: docker login -u $(DOCKER_USER) -p $(DOCKER_PASS) acmnotesregistry.azurecr.io
+        displayName: "Login"
 
-  - script: ./src/ClassApplication/Scripts/docker-build-push.sh
-    displayName: 'Build and Push Class Application'
+      - script: ./src/ClassApplication/Scripts/docker-build-push.sh
+        displayName: "Build and Push Class Application"
 
-  - task: HelmDeploy@0
-    displayName: Helm Init
-    inputs:
-      connectionType: 'Azure Resource Manager'
-      azureSubscription: '$(AZURE_SUBSCRIPTION)'
-      azureResourceGroup: '$(azureResourceGroup)'
-      kubernetesCluster: '$(kubernetesCluster)'
-      useClusterAdmin: true
-      namespace: 'dev'
-      command: 'init'
-      arguments: '--service-account tiller --history-max 200 --wait'
+      - task: HelmDeploy@0
+        displayName: Helm Init
+        inputs:
+          connectionType: "Azure Resource Manager"
+          azureSubscriptionEndpoint: "$(AZURE_SUBSCRIPTION)"
+          azureResourceGroup: "$(azureResourceGroup)"
+          kubernetesCluster: "$(kubernetesCluster)"
+          useClusterAdmin: true
+          namespace: "dev"
+          command: "init"
+          arguments: "--service-account tiller --history-max 200 --wait"
 
-  - task: HelmDeploy@0
-    displayName: Helm Deploy to Staging/Dev Space
-    inputs:
-      connectionType: 'Azure Resource Manager'
-      azureSubscription: '$(AZURE_SUBSCRIPTION)'
-      azureResourceGroup: '$(azureResourceGroup)'
-      kubernetesCluster: '$(kubernetesCluster)'
-      chartName: './src/ClassApplication/charts/classapplication'
-      releaseName: 'platform'
-      command: upgrade
-      arguments: -i --namespace dev
+      - task: HelmDeploy@0
+        displayName: Helm Deploy to Staging/Dev Space
+        inputs:
+          connectionType: "Azure Resource Manager"
+          azureSubscriptionEndpoint: "$(AZURE_SUBSCRIPTION)"
+          azureResourceGroup: "$(azureResourceGroup)"
+          kubernetesCluster: "$(kubernetesCluster)"
+          chartName: "./src/ClassApplication/charts/ClassApplication"
+          releaseName: "platform"
+          command: upgrade
+          arguments: -i --force --namespace dev
