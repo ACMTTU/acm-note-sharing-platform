@@ -26,6 +26,7 @@ if [ "$(uname)" == "Darwin" ]; then
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
     # Linux
     elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    sudo apt install curl -y #ubuntu doesn't ship with curl
     curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
     # Windows
