@@ -1,3 +1,5 @@
+az extension add --name azure-devops
+
 echo 'Resource Group Name: '
 read resourceGroupName
 
@@ -28,6 +30,7 @@ az ad user create --user-principal-name $userPrincipleName --display-name "${dis
 echo 'Adding account to development resource group...'
 
 az role assignment create --role "Contributor" --assignee $userPrincipleName --resource-group $resourceGroupName > /dev/null 2>&1
+az devops user add --email-id $userPrincipleName --license-type express --org https://dev.azure.com/acm-notes-sharing-platform/ > /dev/null 2>&1
 
 echo
 echo 'Username: '
@@ -37,3 +40,5 @@ echo 'Password: (will be prompted to change when first logged in)'
 echo $password
 echo
 echo 'Done!'
+echo
+echo 'Your principle engineer will add you to the Azure Dev Ops organization soon!'
