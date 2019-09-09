@@ -64,6 +64,6 @@ jobs:
           azureResourceGroup: "$(azureResourceGroup)"
           kubernetesCluster: "$(kubernetesCluster)"
           chartName: "./src/ClassApplication/charts/classapplication"
-          releaseName: "platform"
+          releaseName: "classapplication"
           command: upgrade
           arguments: -i --force --namespace dev

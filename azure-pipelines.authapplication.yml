@@ -64,6 +64,6 @@ jobs:
           azureResourceGroup: "$(azureResourceGroup)"
           kubernetesCluster: "$(kubernetesCluster)"
           chartName: "./src/AuthApplication/charts/authapplication"
-          releaseName: "platform"
+          releaseName: "authapplication"
           command: upgrade
           arguments: -i --force --namespace dev
