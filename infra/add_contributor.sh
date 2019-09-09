@@ -40,3 +40,5 @@ echo 'Password: (will be prompted to change when first logged in)'
 echo $password
 echo
 echo 'Done!'
+echo
+echo 'Your principle engineer will add you to the Azure Dev Ops organization soon!'
