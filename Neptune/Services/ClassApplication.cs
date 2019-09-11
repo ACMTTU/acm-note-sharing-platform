@@ -3,7 +3,7 @@
     interface ClassApplication : IService { }
     class ClassApplicationService : IMessageService<ClassApplication>
     {
-        public R SendMSG<M, R>(M msg)
+        public R SendMessage<M, R>(M msg)
             where M : IMessage<ClassApplication>
             where R : IResponse<M>
         {
