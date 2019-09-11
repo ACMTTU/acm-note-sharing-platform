@@ -15,7 +15,7 @@ namespace Neptune.Services
     class CatalogHealth : IGetRequest<CatalogApplication>
     {
     }
-    class CatalogHealthResponse : IResponse<CatalogHealth>
+    class CatalogHealthResponse : IResponse<CatalogApplication,CatalogHealth>
     {
         public object contents()
         {
