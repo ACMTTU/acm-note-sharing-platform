@@ -9,7 +9,7 @@ namespace Neptune.Services
     }
     class CatalogApplicationService : IMessageService<CatalogApplication>
     {
-        public R SendMSG<M, R>(M msg)
+        public R SendMessage<M, R>(M msg)
             where M : IMessage<CatalogApplication>
             where R : IResponse<M>
         {
