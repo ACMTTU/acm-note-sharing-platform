@@ -1,14 +1,11 @@
-﻿namespace Neptune.Services
+﻿using System.Net.Http;
+
+namespace Neptune.Services
 {
     interface ClassApplication : IService { }
-    class ClassApplicationService : IMessageService<ClassApplication>
+    class ClassApplicationService : MessageService<ClassApplication>
     {
-        public R SendMessage<M, R>(M msg)
-            where M : IMessage<ClassApplication>
-            where R : IResponse<M>
-        {
-            throw new System.NotImplementedException();
-        }
+        public ClassApplicationService(HttpClient client) : base(client){ }
     }
 
 }

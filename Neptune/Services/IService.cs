@@ -1,11 +1,31 @@
-﻿namespace Neptune
+﻿using System;
+using System.Net.Http;
+
+namespace Neptune
 {
     public interface IService { }
-    public interface IMessageService<IS>
+    public class MessageService<IS>
         where IS:IService
     {
-        R SendMessage<M, R>(M msg)
-            where M:IMessage<IS>
-            where R:IResponse<M>;
+        private HttpClient client;
+
+        public MessageService(HttpClient client)
+        {
+            this.client = client;
+        }
+
+        R GetRequest<M, R>(M msg)
+            where M : IGetRequest<IS>
+            where R : IResponse<M>
+        {
+            throw new NotImplementedException();
+        }
+
+        R PostRequest<M, R>(M msg)
+            where M : IPostRequest<IS>
+            where R : IResponse<M>
+        {
+            throw new NotImplementedException();
+        }
     }
 }
