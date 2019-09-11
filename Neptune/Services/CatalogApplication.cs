@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 
 namespace Neptune.Services
@@ -7,15 +8,18 @@ namespace Neptune.Services
     interface CatalogApplication : IService
     {
     }
-    class CatalogApplicationService : IMessageService<CatalogApplication>
+    class CatalogApplicationService : MessageService<CatalogApplication>
     {
-        public R SendMessage<M, R>(M msg)
-            where M : IMessage<CatalogApplication>
-            where R : IResponse<M>
+        public CatalogApplicationService(HttpClient client) : base(client) { }
+    }
+    class CatalogHealth : IGetRequest<CatalogApplication>
+    {
+    }
+    class CatalogHealthResponse : IResponse<CatalogHealth>
+    {
+        public object contents()
         {
             throw new NotImplementedException();
         }
     }
-    class CatalogHealth : IMessage<CatalogApplication> { }
-    class CatalogHealthResponse : IResponse<CatalogHealth> { }
 }
