@@ -14,16 +14,16 @@ namespace Neptune
             this.client = client;
         }
 
-        R GetRequest<M, R>(M msg)
+        public R GetRequest<M, R>(M msg)
             where M : IGetRequest<IS>
-            where R : IResponse<M>
+            where R : IResponse<IS, M>
         {
             throw new NotImplementedException();
         }
 
-        R PostRequest<M, R>(M msg)
+        public R PostRequest<M, R>(M msg)
             where M : IPostRequest<IS>
-            where R : IResponse<M>
+            where R : IResponse<IS, M>
         {
             throw new NotImplementedException();
         }

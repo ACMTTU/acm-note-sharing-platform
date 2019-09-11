@@ -13,7 +13,9 @@ namespace Neptune
     public interface IPostRequest<IS> : IRequest<IS>
     where IS : IService
     { }
-    public interface IResponse<IMessage>
+    public interface IResponse<IS, M>
+        where M : IRequest<IS>
+        where IS: IService
     {
         Object contents();
     }
