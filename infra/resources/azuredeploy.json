@@ -21,7 +21,7 @@
             "type": "string"
         },
         "storage_account_name": {
-            "defaultValue": "acmnotesblobstore",
+            "defaultValue": "acmnotesblob",
             "type": "string"
         },
         "create_redis_instance": {
@@ -98,9 +98,103 @@
             }
         },
         {
+            "type": "Microsoft.Cache/Redis",
+            "condition": "[bool(parameters('create_redis_instance'))]",
+            "apiVersion": "2017-10-01",
+            "name": "[concat('staging-', parameters('redis_cache_name'))]",
+            "location": "West US 2",
+            "properties": {
+                "sku": {
+                    "name": "Basic",
+                    "family": "C",
+                    "capacity": 0
+                },
+                "enableNonSslPort": false
+            }
+        },
+        {
+            "type": "Microsoft.Cache/Redis",
+            "condition": "[bool(parameters('create_redis_instance'))]",
+            "apiVersion": "2017-10-01",
+            "name": "[concat('dev-', parameters('redis_cache_name'))]",
+            "location": "West US 2",
+            "properties": {
+                "sku": {
+                    "name": "Basic",
+                    "family": "C",
+                    "capacity": 0
+                },
+                "enableNonSslPort": false
+            }
+        },
+        {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-04-01",
             "name": "[parameters('storage_account_name')]",
+            "location": "westus2",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-04-01",
+            "name": "[concat('staging', parameters('storage_account_name'))]",
+            "location": "westus2",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-04-01",
+            "name": "[concat('dev', parameters('storage_account_name'))]",
             "location": "westus2",
             "sku": {
                 "name": "Standard_LRS",
@@ -146,6 +240,38 @@
             }
         },
         {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2019-04-01",
+            "name": "[concat('staging', parameters('storage_account_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', concat('staging',parameters('storage_account_name')))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "enabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2019-04-01",
+            "name": "[concat('dev',parameters('storage_account_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', concat('dev',parameters('storage_account_name')))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "enabled": false
+                }
+            }
+        },
+        {
             "type": "Microsoft.ContainerRegistry/registries",
             "apiVersion": "2017-10-01",
             "name": "[parameters('registry_name')]",
@@ -176,9 +302,75 @@
             }
         },
         {
+            "type": "Microsoft.EventHub/namespaces",
+            "apiVersion": "2018-01-01-preview",
+            "name": "[concat('staging-', parameters('eventhub_namespace_name'))]",
+            "location": "West US 2",
+            "sku": {
+                "name": "Basic",
+                "tier": "Basic",
+                "capacity": 1
+            },
+            "properties": {
+                "zoneRedundant": false,
+                "isAutoInflateEnabled": false,
+                "maximumThroughputUnits": 0,
+                "kafkaEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces",
+            "apiVersion": "2018-01-01-preview",
+            "name": "[concat('dev-', parameters('eventhub_namespace_name'))]",
+            "location": "West US 2",
+            "sku": {
+                "name": "Basic",
+                "tier": "Basic",
+                "capacity": 1
+            },
+            "properties": {
+                "zoneRedundant": false,
+                "isAutoInflateEnabled": false,
+                "maximumThroughputUnits": 0,
+                "kafkaEnabled": false
+            }
+        },
+        {
             "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
             "apiVersion": "2017-04-01",
             "name": "[concat(parameters('eventhub_namespace_name'), '/RootManageSharedAccessKey')]",
+            "location": "West US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventhub_namespace_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen",
+                    "Manage",
+                    "Send"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+            "apiVersion": "2017-04-01",
+            "name": "[concat('staging-', parameters('eventhub_namespace_name'), '/RootManageSharedAccessKey')]",
+            "location": "West US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventhub_namespace_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen",
+                    "Manage",
+                    "Send"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+            "apiVersion": "2017-04-01",
+            "name": "[concat('dev-',parameters('eventhub_namespace_name'), '/RootManageSharedAccessKey')]",
             "location": "West US 2",
             "dependsOn": [
                 "[resourceId('Microsoft.EventHub/namespaces', parameters('eventhub_namespace_name'))]"
@@ -220,6 +412,42 @@
                     }
                 ],
                 "capabilities": []
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/apis/databases",
+            "name": "[concat(parameters('docdb_name'), '/sql/', 'staging')]",
+            "apiVersion": "2016-03-31",
+            "dependsOn": [ "[resourceId('Microsoft.DocumentDB/databaseAccounts/', parameters('docdb_name'))]" ],
+            "properties":{
+                "resource":{
+                    "id": "staging"
+                },
+                "options": { "throughput": 400 }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/apis/databases",
+            "name": "[concat(parameters('docdb_name'), '/sql/', 'production')]",
+            "apiVersion": "2016-03-31",
+            "dependsOn": [ "[resourceId('Microsoft.DocumentDB/databaseAccounts/', parameters('docdb_name'))]" ],
+            "properties":{
+                "resource":{
+                    "id": "production"
+                },
+                "options": { "throughput": 400 }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/apis/databases",
+            "name": "[concat(parameters('docdb_name'), '/sql/', 'development')]",
+            "apiVersion": "2016-03-31",
+            "dependsOn": [ "[resourceId('Microsoft.DocumentDB/databaseAccounts/', parameters('docdb_name'))]" ],
+            "properties":{
+                "resource":{
+                    "id": "development"
+                },
+                "options": { "throughput": 400 }
             }
         }
     ]
