@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "Debug Auth Application",
+            "name": ".NET Core Launch (AZDS)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "azds: prelaunch",
