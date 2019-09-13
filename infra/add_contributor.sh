@@ -30,7 +30,6 @@ az ad user create --user-principal-name $userPrincipleName --display-name "${dis
 echo 'Adding account to development resource group...'
 
 az role assignment create --role "Contributor" --assignee $userPrincipleName --resource-group $resourceGroupName > /dev/null 2>&1
-az devops user add --email-id $userPrincipleName --license-type express --org https://dev.azure.com/acm-notes-sharing-platform/ > /dev/null 2>&1
 
 echo
 echo 'Username: '
