@@ -26,6 +26,10 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          volumeMounts:
+          - name: test
+            mountPath: /kvmnt
+            readOnly: true
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -74,3 +78,18 @@ spec:
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
+      volumes:
+      - name: test
+        flexVolume:
+          driver: "azure/kv"
+          secretRef:
+            name: acmkvcreds
+          options:
+            usepodidentity: "false"
+            keyvaultname: "acm-notes-kv"
+            keyvaultobjectnames: mySecret
+            keyvaultobjecttypes: secret
+            keyvaultobjectversions: ""
+            resourcegroup: "acm-notes"
+            subscriptionid: "9c16434b-4aa3-4e38-9bda-d68d192f9b2c"
+            tenantid: "b1fc7d22-90e3-4945-b4cf-737eedb2905e"
