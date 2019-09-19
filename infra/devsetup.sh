@@ -21,10 +21,6 @@ then
     read name
     
     az.cmd aks use-dev-spaces -g acm-notes -n acm-notes-aks -y -s dev/$name
-    
-    # Migrate Secrets from the default namespace to the namespace you created
-    secrets=$(echo "$(kubectl get secrets acmkvcreds --namespace=default -oyaml)" | sed "s/default/$name/g")
-    echo $secrets | kubectl apply --namespace miggyreyes -f -
 else
     az login
     
@@ -33,8 +29,4 @@ else
     read name
     
     az aks use-dev-spaces -g acm-notes -n acm-notes-aks -y -s dev/$name
-    
-    # Migrate Secrets from the default namespace to the namespace you created
-    secrets=$(echo "$(kubectl get secrets acmkvcreds --namespace=default -oyaml)" | sed "s/default/$name/g")
-    echo $secrets | kubectl apply --namespace miggyreyes -f -
 fi
