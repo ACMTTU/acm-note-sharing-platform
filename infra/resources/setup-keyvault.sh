@@ -21,6 +21,7 @@ az aks get-credentials --resource-group acm-notes --name acm-notes-aks
 kubectl create secret generic acmkvcreds \
 --from-literal clientid=$appId \
 --from-literal clientsecret=$clientSecret \
+--namespace secret \
 --type=azure/kv
 
 # Allow the Service Principal we made to talk to Key Vault
