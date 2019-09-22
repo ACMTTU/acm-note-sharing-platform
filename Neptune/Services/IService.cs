@@ -7,14 +7,14 @@ namespace Neptune
     public class MessageService<TService>
         where TService : IService
     {
-        private HttpClient client;
+        private readonly HttpClient client;
         public MessageService(HttpClient client)
         {
             this.client = client;
         }
         public TResponse GetRequest<TMessage, TResponse>(TMessage msg)
             where TMessage : IGetRequest<TService>
-            where TResponse: IResponse<TService, TMessage>
+            where TResponse : IResponse<TService, TMessage>
         {
             throw new NotImplementedException();
         }
