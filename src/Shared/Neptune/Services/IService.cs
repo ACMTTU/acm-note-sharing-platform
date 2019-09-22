@@ -10,9 +10,9 @@ namespace Neptune
         where TService : IService
     {
         private readonly HttpClient client;
-        public MessageService(HttpClient client)
+        public MessageService(IHttpClientFactory clientFactory)
         {
-            this.client = client;
+            this.client = clientFactory.CreateClient();
         }
         public async Task<TResponse> GetRequest<TMessage, TResponse>(TMessage msg)
             where TMessage : GetRequest<TService>
