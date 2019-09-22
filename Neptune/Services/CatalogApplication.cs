@@ -10,14 +10,4 @@ namespace Neptune.Services
     {
         public CatalogApplicationService(HttpClient client) : base(client) { }
     }
-    class CatalogHealth : IGetRequest<CatalogApplication>
-    {
-    }
-    class CatalogHealthResponse : IResponse<CatalogApplication, CatalogHealth>
-    {
-        public object contents()
-        {
-            throw new NotImplementedException();
-        }
-    }
 }
