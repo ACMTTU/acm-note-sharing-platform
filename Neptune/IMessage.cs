@@ -2,20 +2,19 @@
 
 namespace Neptune
 {
-
-    public interface IRequest<IS>
-        where IS : IService
+    public interface IRequest<TService>
+        where TService : IService
     { }
 
-    public interface IGetRequest<IS> : IRequest<IS>
-        where IS : IService
+    public interface IGetRequest<TService> : IRequest<TService>
+        where TService : IService
     { }
-    public interface IPostRequest<IS> : IRequest<IS>
-    where IS : IService
+    public interface IPostRequest<TService> : IRequest<TService>
+    where TService : IService
     { }
-    public interface IResponse<IS, M>
-        where M : IRequest<IS>
-        where IS: IService
+    public interface IResponse<TService, TMessage>
+        where TMessage : IRequest<TService>
+        where TService : IService
     {
         Object contents();
     }
