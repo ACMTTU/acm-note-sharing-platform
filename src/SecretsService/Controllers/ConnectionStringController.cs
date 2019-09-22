@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ACMTTU.NoteSharing.Shared.DataContracts;
 using ACMTTU.NoteSharing.SecretsService.Providers;
-using ACMTTU.NoteSharing.SecretsService.Models;
+using ACMTTU.NoteSharing.Shared.DataContracts;
+using ACMTTU.NoteSharing.Shared.SDK.Clients;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ACMTTU.NoteSharing.SecretsService.Controllers
 {
@@ -23,8 +23,8 @@ namespace ACMTTU.NoteSharing.SecretsService.Controllers
         public ActionResult<EnvironmentVariablePayload> GetConnectionString(string option)
         {
             // Grab the environment variable
-            EnvironmentVariableOptions choice;
-            if (!Enum.TryParse<EnvironmentVariableOptions>(option, out choice))
+            ClientOptions choice;
+            if (!Enum.TryParse<ClientOptions>(option, out choice))
             {
                 throw new Exception($"Unsupported Environment Variable: {option}. Please use the DataContracts library");
             }
