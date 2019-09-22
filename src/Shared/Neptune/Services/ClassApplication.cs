@@ -6,6 +6,6 @@ namespace Neptune.Services
     interface ClassApplication : IService { }
     class ClassApplicationService : MessageService<ClassApplication>
     {
-        public ClassApplicationService(HttpClient client) : base(client) { }
+        public ClassApplicationService(IHttpClientFactory client) : base(client) { }
     }
 }
