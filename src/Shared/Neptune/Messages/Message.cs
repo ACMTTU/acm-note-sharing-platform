@@ -27,7 +27,5 @@ namespace Neptune
     public abstract class Response<TService, TMessage>
         where TMessage : Request<TService>
         where TService : IService
-    {
-        public abstract Object contents();
-    }
+    { }
 }
