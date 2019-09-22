@@ -9,8 +9,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+//http://anthonygiretti.com/2018/09/06/how-to-unit-test-a-class-that-consumes-an-httpclient-with-ihttpclientfactory-in-asp-net-core/
+
 namespace Neptune.Tests
 {
+    //Almost verbatim from link above
     public class FakeHttpMessageHandler : DelegatingHandler
     {
         private HttpResponseMessage _fakeResponse;
