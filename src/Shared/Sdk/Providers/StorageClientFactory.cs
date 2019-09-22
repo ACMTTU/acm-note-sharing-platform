@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace ACMTTU.NoteSharing.Shared.SDK.Clients
 {
-    public class StorageClientFactory<T> : ClientFactory<CloudBlobClient>
+    public class StorageClientFactory : ClientFactory<CloudBlobClient>
     {
         public async override Task<CloudBlobClient> GetClientAsync()
         {
@@ -21,8 +21,8 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
                 request.RequestUri = new Uri($"http://secretsservice.secrets.svc.cluster.local/api/connection/{Enum.GetName(typeof(ClientOptions), ClientOptions.BlobStorage)}");
                 request.Method = HttpMethod.Get;
                 HttpResponseMessage response = await client.SendAsync(request);
-
-                EnvironmentVariablePayload payload = JsonConvert.DeserializeObject<EnvironmentVariablePayload>(response.Content.ToString());
+                string content = await response.Content.ReadAsStringAsync();
+                EnvironmentVariablePayload payload = JsonConvert.DeserializeObject<EnvironmentVariablePayload>(content);
 
                 // Determine which connection string to use
                 storageConnectionString = this.DetermineCorrectConnectionString(payload);

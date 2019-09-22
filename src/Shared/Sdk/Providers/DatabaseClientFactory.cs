@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace ACMTTU.NoteSharing.Shared.SDK.Clients
 {
-    public class DatabaseClientFactory<T> : ClientFactory<CosmosClient>
+    public class DatabaseClientFactory : ClientFactory<CosmosClient>
     {
         public async override Task<CosmosClient> GetClientAsync()
         {
@@ -20,8 +20,9 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
                 request.RequestUri = new Uri($"http://secretsservice.secrets.svc.cluster.local/api/connection/{Enum.GetName(typeof(ClientOptions), ClientOptions.Database)}");
                 request.Method = HttpMethod.Get;
                 HttpResponseMessage response = await client.SendAsync(request);
+                string content = await response.Content.ReadAsStringAsync();
 
-                EnvironmentVariablePayload payload = JsonConvert.DeserializeObject<EnvironmentVariablePayload>(response.Content.ToString());
+                EnvironmentVariablePayload payload = JsonConvert.DeserializeObject<EnvironmentVariablePayload>(content);
 
                 // Determine which connection string to use
                 databaseConnectionString = this.DetermineCorrectConnectionString(payload);
