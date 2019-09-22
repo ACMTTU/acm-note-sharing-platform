@@ -9,11 +9,5 @@ namespace Neptune.Messages.Catalog
     {
         public override Uri Uri => throw new NotImplementedException();
     }
-    class CatalogHealthResponse : Response<ICatalogApplication, CatalogHealth>
-    {
-        public override object contents()
-        {
-            throw new NotImplementedException();
-        }
-    }
+    class CatalogHealthResponse : Response<ICatalogApplication, CatalogHealth> { }
 }
