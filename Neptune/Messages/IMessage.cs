@@ -2,25 +2,27 @@
 
 namespace Neptune
 {
-    public interface IRequest<TService>
-        where TService : IService
-    { }
-    public interface IGetRequest<TService> : IRequest<TService>
-        where TService : IService
-    { }
-    public interface IPostRequest<TService> : IRequest<TService>
-    where TService : IService
-    { }
-    public interface IPutRequest<TService> : IRequest<TService>
-    where TService : IService
-    { }
-    public interface IDeleteRequest<TService> : IRequest<TService>
-    where TService : IService
-    { }
-    public interface IResponse<TService, TMessage>
-        where TMessage : IRequest<TService>
+    public abstract class Request<TService>
         where TService : IService
     {
-        Object contents();
+        public abstract Uri Uri { get; }
+    }
+    public abstract class GetRequest<TService> : Request<TService>
+        where TService : IService
+    { }
+    public abstract class PostRequest<TService> : Request<TService>
+    where TService : IService
+    { }
+    public abstract class PutRequest<TService> : Request<TService>
+    where TService : IService
+    { }
+    public abstract class DeleteRequest<TService> : Request<TService>
+    where TService : IService
+    { }
+    public abstract class Response<TService, TMessage>
+        where TMessage : Request<TService>
+        where TService : IService
+    {
+        public abstract Object contents();
     }
 }
