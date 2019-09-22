@@ -8,6 +8,6 @@ namespace Neptune.Services
     }
     class CatalogApplicationService : MessageService<ICatalogApplication>
     {
-        public CatalogApplicationService(HttpClient client) : base(client) { }
+        public CatalogApplicationService(IHttpClientFactory client) : base(client) { }
     }
 }
