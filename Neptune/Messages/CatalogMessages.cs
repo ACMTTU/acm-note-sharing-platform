@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Neptune.Messages.Catalog
 {
-    class CatalogHealth : IGetRequest<CatalogApplication>
+    class CatalogHealth : IGetRequest<ICatalogApplication>
     {
     }
-    class CatalogHealthResponse : IResponse<CatalogApplication, CatalogHealth>
+    class CatalogHealthResponse : IResponse<ICatalogApplication, CatalogHealth>
     {
         public object contents()
         {

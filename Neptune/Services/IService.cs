@@ -4,7 +4,7 @@ using System.Net.Http;
 namespace Neptune
 {
     public interface IService { }
-    public class MessageService<TService>
+    public abstract class MessageService<TService>
         where TService : IService
     {
         private readonly HttpClient client;
@@ -13,26 +13,26 @@ namespace Neptune
             this.client = client;
         }
         public TResponse GetRequest<TMessage, TResponse>(TMessage msg)
-            where TMessage : IGetRequest<TService>
-            where TResponse : IResponse<TService, TMessage>
+            where TMessage : GetRequest<TService>
+            where TResponse : Response<TService, TMessage>
         {
             throw new NotImplementedException();
         }
         public TResponse PostRequest<TMessage, TResponse>(TMessage msg)
-            where TMessage : IPostRequest<TService>
-            where TResponse : IResponse<TService, TMessage>
+            where TMessage : PostRequest<TService>
+            where TResponse : Response<TService, TMessage>
         {
             throw new NotImplementedException();
         }
         public TResponse PutRequest<TMessage, TResponse>(TMessage msg)
-            where TMessage : IPutRequest<TService>
-            where TResponse : IResponse<TService, TMessage>
+            where TMessage : PutRequest<TService>
+            where TResponse : Response<TService, TMessage>
         {
             throw new NotImplementedException();
         }
         public TResponse DeleteRequest<TMessage, TResponse>(TMessage msg)
-            where TMessage : IDeleteRequest<TService>
-            where TResponse : IResponse<TService, TMessage>
+            where TMessage : DeleteRequest<TService>
+            where TResponse : Response<TService, TMessage>
         {
             throw new NotImplementedException();
         }

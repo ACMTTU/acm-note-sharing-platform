@@ -3,10 +3,10 @@ using System.Net.Http;
 
 namespace Neptune.Services
 {
-    interface CatalogApplication : IService
+    interface ICatalogApplication : IService
     {
     }
-    class CatalogApplicationService : MessageService<CatalogApplication>
+    class CatalogApplicationService : MessageService<ICatalogApplication>
     {
         public CatalogApplicationService(HttpClient client) : base(client) { }
     }
