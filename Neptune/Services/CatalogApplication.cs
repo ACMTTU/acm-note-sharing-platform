@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 
 namespace Neptune.Services
 {
@@ -15,7 +13,7 @@ namespace Neptune.Services
     class CatalogHealth : IGetRequest<CatalogApplication>
     {
     }
-    class CatalogHealthResponse : IResponse<CatalogApplication,CatalogHealth>
+    class CatalogHealthResponse : IResponse<CatalogApplication, CatalogHealth>
     {
         public object contents()
         {
