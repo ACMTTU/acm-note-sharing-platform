@@ -27,5 +27,19 @@ namespace Neptune
         {
             throw new NotImplementedException();
         }
+
+        public TResponse PutRequest<TMessage, TResponse>(TMessage msg)
+            where TMessage : IPutRequest<TService>
+            where TResponse : IResponse<TService, TMessage>
+        {
+            throw new NotImplementedException();
+        }
+
+        public TResponse DeleteRequest<TMessage, TResponse>(TMessage msg)
+            where TMessage : IDeleteRequest<TService>
+            where TResponse : IResponse<TService, TMessage>
+        {
+            throw new NotImplementedException();
+        }
     }
 }
