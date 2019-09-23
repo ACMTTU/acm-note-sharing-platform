@@ -22,7 +22,7 @@ jobs:
     steps:
       - task: DotNetCoreInstaller@0
         inputs:
-          version: "2.2"
+          version: "2.1.13"
       - script: dotnet build ./src/AuthApplication/AuthApplication.csproj
 
   - job: PushAndDeployImage
