@@ -5,7 +5,7 @@
 trigger:
   paths:
     include:
-    - src/ClaimsService/*
+      - src/ClaimsService/*
 
 resources:
   - repo: self
@@ -20,7 +20,10 @@ jobs:
     pool:
       vmImage: "ubuntu-latest"
     steps:
-      - script: echo 'Unit Test for ClaimsService'
+      - task: DotNetCoreInstaller@0
+        inputs:
+          version: "2.2"
+      - script: dotnet build ./src/ClaimsService/ClaimsService.csproj
 
   - job: PushAndDeployImage
     dependsOn:

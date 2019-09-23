@@ -5,7 +5,7 @@
 trigger:
   paths:
     include:
-    - src/CatalogApplication/*
+      - src/CatalogApplication/*
 
 resources:
   - repo: self
@@ -20,7 +20,10 @@ jobs:
     pool:
       vmImage: "ubuntu-latest"
     steps:
-      - script: echo 'Unit Test for CatalogApplication'
+      - task: DotNetCoreInstaller@0
+        inputs:
+          version: "2.2"
+      - script: dotnet build ./src/CatalogApplication/CatalogApplication.csproj
 
   - job: PushAndDeployImage
     dependsOn:
