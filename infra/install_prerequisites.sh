@@ -25,20 +25,16 @@ fi
 # Mac OS
 if [ "$(uname)" == "Darwin" ]; then
     # Installs .NET runtime and SDK
-    open https://download.visualstudio.microsoft.com/download/pr/5c281f95-91c4-499d-baa2-31fec919047a/38c6964d72438ac30032bce516b655d9/dotnet-sdk-3.0.100-osx-x64.pkg
-    open https://download.visualstudio.microsoft.com/download/pr/1b09851c-1c1a-4aeb-a94a-7065db8741c0/b22a0b5501191fe1a263913d8ed11b2e/dotnet-runtime-3.0.0-osx-x64.pkg
+    open https://download.visualstudio.microsoft.com/download/pr/3998e58a-46dd-4f9c-a0e2-d17309de20fb/d694ddf3d8f99e8dee928e0b46f15084/dotnet-sdk-2.1.802-osx-x64.pkg
     
     # Linux
     elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Please install on your flavor
-    open https://dotnet.microsoft.com/download/linux-package-manager/rhel7/runtime-3.0.0
+    open https://dotnet.microsoft.com/download/linux-package-manager/rhel7/sdk-2.1.802
     
     # Windows
     elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-    # Installs ASPNET Core, .NET runtime and SDK
-    open https://download.visualstudio.microsoft.com/download/pr/53f250a1-318f-4350-8bda-3c6e49f40e76/e8cbbd98b08edd6222125268166cfc43/dotnet-sdk-3.0.100-win-x64.exe
-    open https://download.visualstudio.microsoft.com/download/pr/173b8a01-e65b-4880-af6e-12e45a865c69/f2529ad22ce8eeb0f28fd48dead5459a/aspnetcore-runtime-3.0.0-win-x64.exe
-    open https://download.visualstudio.microsoft.com/download/pr/1b09851c-1c1a-4aeb-a94a-7065db8741c0/b22a0b5501191fe1a263913d8ed11b2e/dotnet-runtime-3.0.0-osx-x64.pkg
+    open https://download.visualstudio.microsoft.com/download/pr/0297dbc2-424f-426a-a415-b39927dffe9a/2417ef7aae3c24da94ad7e54137b38b6/dotnet-sdk-2.1.802-win-x64.exe
 fi
 
 # Installs Azure CLI, Node Version Manager
