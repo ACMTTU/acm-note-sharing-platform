@@ -22,7 +22,7 @@
             "quoteArgs": false
         },
         "cwd": "/src",
-        "program": "/src/bin/Debug/netcoreapp2.2/SecretsService.dll",
+        "program": "/src/bin/Debug/netcoreapp2.1/SecretsService.dll",
         "sourceFileMap": {
             "/src": "${workspaceFolder}/."
         }

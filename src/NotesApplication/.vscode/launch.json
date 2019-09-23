@@ -18,7 +18,7 @@
                 "quoteArgs": false
             },
             "cwd": "/src",
-            "program": "/src/bin/Debug/netcoreapp2.2/NotesApplication.dll",
+            "program": "/src/bin/Debug/netcoreapp2.1/NotesApplication.dll",
             "sourceFileMap": {
                 "/src": "${workspaceFolder}/."
             }

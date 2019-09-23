@@ -22,7 +22,7 @@ jobs:
     steps:
       - task: DotNetCoreInstaller@0
         inputs:
-          version: "3.0.100"
+          version: "2.1.802"
       - script: dotnet build ./src/ClaimsService/ClaimsService.csproj
 
   - job: PushAndDeployImage
