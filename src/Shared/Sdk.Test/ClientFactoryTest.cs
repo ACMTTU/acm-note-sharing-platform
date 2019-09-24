@@ -19,6 +19,16 @@ namespace ACMTTU.NoteSharing.Shared.Test.Sdk
         [Fact]
         public async void ShouldProvideUsersWithTheCorrectEnvironmentVariableWhenRunningInANamespace()
         {
+            List<String> namespaceVariations = new List<String>();
+            namespaceVariations.Add("NAMESPACE");
+            namespaceVariations.Add("Namespace");
+            namespaceVariations.Add("namespace");
+
+            List<String> environments = new List<String>();
+            environments.Add("developement");
+            environments.Add("staging");
+            environments.Add("production");
+
             IHttpClientFactory httpClientFactoryMock = Substitute.For<IHttpClientFactory>();
 
             EnvironmentVariablePayload payload = new EnvironmentVariablePayload()
@@ -41,15 +51,6 @@ namespace ACMTTU.NoteSharing.Shared.Test.Sdk
             ClientFactory clientFactory = new ClientFactory(httpClientFactoryMock);
 
             // Check if we get back the right variable with development env
-            List<String> namespaceVariations = new List<String>();
-            namespaceVariations.Add("NAMESPACE");
-            namespaceVariations.Add("Namespace");
-            namespaceVariations.Add("namespace");
-
-            List<String> environments = new List<String>();
-            environments.Add("developement");
-            environments.Add("staging");
-            environments.Add("production");
 
             string dbConnectionString;
 
