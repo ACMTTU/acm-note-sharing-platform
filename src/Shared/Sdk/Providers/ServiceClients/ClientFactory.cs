@@ -17,14 +17,19 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
         // Name of the Kubernetes namespace the Secrets Service is running on
         private const string secretServiceNamespace = "secrets";
 
+        private readonly IHttpClientFactory factory;
+
+        public ClientFactory(IHttpClientFactory factory)
+        {
+            this.factory = factory;
+        }
+
         /// <summary>
         /// Gets the Database Client for that namespace
         /// </summary>
         /// <returns></returns>
-        public async Task<CosmosClient> GetDatabaseClientAsync()
+        public CosmosClient GetDatabaseClient(string connectionString)
         {
-            string connectionString = await this.GetConnectionStringForClient(ClientOptions.Database);
-
             return new CosmosClient(connectionString);
         }
 
@@ -32,10 +37,8 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
         /// Gets the Storage Client for that namespace
         /// </summary>
         /// <returns></returns>
-        public async Task<CloudBlobClient> GetStorageClientAsync()
+        public CloudBlobClient GetStorageClient(string connectionString)
         {
-            string connectionString = await this.GetConnectionStringForClient(ClientOptions.BlobStorage);
-
             // Get the storage account
             CloudStorageAccount storageAccount;
             if (!CloudStorageAccount.TryParse(connectionString, out storageAccount))
@@ -46,29 +49,28 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
             // Create the client for the storage account
             return storageAccount.CreateCloudBlobClient();
         }
+
         /// <summary>
         /// Calls the Secrets Service to grab the specified connection strings
         /// </summary>
         /// <param name="option">Your choice of whether you want the Database or the Storage Client</param>
         /// <returns></returns>
-        private async Task<string> GetConnectionStringForClient(ClientOptions option)
+        public async Task<string> GetConnectionStringForClient(ClientOptions option)
         {
             string connectionString;
 
-            using(HttpClient client = new HttpClient())
-            {
-                // Make the API call to the Secrets Service
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri($"http://{secretServiceName}.{secretServiceNamespace}.svc.cluster.local/api/connection/{Enum.GetName(typeof(ClientOptions), option)}");
-                request.Method = HttpMethod.Get;
-                HttpResponseMessage response = await client.SendAsync(request);
-                string content = await response.Content.ReadAsStringAsync();
+            HttpClient client = this.factory.CreateClient();
+            // Make the API call to the Secrets Service
+            HttpRequestMessage request = new HttpRequestMessage();
+            request.RequestUri = new Uri($"http://{secretServiceName}.{secretServiceNamespace}.svc.cluster.local/api/connection/{Enum.GetName(typeof(ClientOptions), option)}");
+            request.Method = HttpMethod.Get;
+            HttpResponseMessage response = await client.SendAsync(request);
+            string content = await response.Content.ReadAsStringAsync();
 
-                EnvironmentVariablePayload payload = JsonConvert.DeserializeObject<EnvironmentVariablePayload>(content);
+            EnvironmentVariablePayload payload = JsonConvert.DeserializeObject<EnvironmentVariablePayload>(content);
 
-                // Determine which connection string to use
-                connectionString = this.DetermineCorrectConnectionString(payload);
-            }
+            // Determine which connection string to use
+            connectionString = this.DetermineCorrectConnectionString(payload);
 
             return connectionString;
         }

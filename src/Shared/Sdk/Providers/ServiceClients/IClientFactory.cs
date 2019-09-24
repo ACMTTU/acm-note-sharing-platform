@@ -8,7 +8,7 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
 {
     public interface IClientFactory
     {
-        Task<CloudBlobClient> GetStorageClientAsync();
-        Task<CosmosClient> GetDatabaseClientAsync();
+        CloudBlobClient GetStorageClient(string connectionString);
+        CosmosClient GetDatabaseClient(string connectionString);
     }
 }
