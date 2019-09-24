@@ -1,5 +1,4 @@
-echo "Version: "
-read version
+Version=$(sed -ne '/Version/{s/.*<Version>\(.*\)<\/Version>.*/\1/p;q;}' <<< cat Sdk.csproj)
 
 echo "API Key: "
 read apiKey
