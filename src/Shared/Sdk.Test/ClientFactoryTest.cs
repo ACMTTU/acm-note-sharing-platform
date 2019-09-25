@@ -7,7 +7,6 @@ using System.Text;
 using ACMTTU.NoteSharing.Shared.DataContracts;
 using ACMTTU.NoteSharing.Shared.SDK.Clients;
 using ACMTTU.NoteSharing.Shared.TestingUtils;
-using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json;
 using NSubstitute;
 using Xunit;
@@ -48,7 +47,8 @@ namespace ACMTTU.NoteSharing.Shared.Test.Sdk
 
             httpClientFactoryMock.CreateClient().Returns(fakeHttpClient);
 
-            ClientFactory clientFactory = new ClientFactory(httpClientFactoryMock);
+            // No need to test the Storage Factory since they are built the same
+            DatabaseClientFactory databaseClientFactory = new DatabaseClientFactory(httpClientFactoryMock);
 
             // Check if we get back the right variable with development env
 
@@ -59,7 +59,7 @@ namespace ACMTTU.NoteSharing.Shared.Test.Sdk
                 foreach (String environment in environments)
                 {
                     Environment.SetEnvironmentVariable(namespaces, environment);
-                    dbConnectionString = await clientFactory.GetConnectionStringForClient(ClientOptions.Database);
+                    dbConnectionString = await databaseClientFactory.GetConnectionStringForClient();
 
                     switch (environment)
                     {

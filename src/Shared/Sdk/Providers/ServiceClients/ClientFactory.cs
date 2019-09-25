@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace ACMTTU.NoteSharing.Shared.SDK.Clients
 {
-    public class ClientFactory : IClientFactory
+    public abstract class ClientFactory
     {
         // Name of the Kubernetes Service associated with the Secrets Service
         private const string secretServiceName = "secretsservice";
@@ -17,52 +17,28 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
         // Name of the Kubernetes namespace the Secrets Service is running on
         private const string secretServiceNamespace = "secrets";
 
+        protected Uri secretServiceUrl;
+
         private readonly IHttpClientFactory factory;
 
         public ClientFactory(IHttpClientFactory factory)
         {
             this.factory = factory;
-        }
-
-        /// <summary>
-        /// Gets the Database Client for that namespace
-        /// </summary>
-        /// <returns></returns>
-        public CosmosClient GetDatabaseClient(string connectionString)
-        {
-            return new CosmosClient(connectionString);
-        }
-
-        /// <summary>
-        /// Gets the Storage Client for that namespace
-        /// </summary>
-        /// <returns></returns>
-        public CloudBlobClient GetStorageClient(string connectionString)
-        {
-            // Get the storage account
-            CloudStorageAccount storageAccount;
-            if (!CloudStorageAccount.TryParse(connectionString, out storageAccount))
-            {
-                throw new Exception($"Could not parse connection string: {connectionString}");
-            }
-
-            // Create the client for the storage account
-            return storageAccount.CreateCloudBlobClient();
+            this.secretServiceUrl = new Uri($"http://{secretServiceName}.{secretServiceNamespace}.svc.cluster.local/");
         }
 
         /// <summary>
         /// Calls the Secrets Service to grab the specified connection strings
         /// </summary>
-        /// <param name="option">Your choice of whether you want the Database or the Storage Client</param>
         /// <returns></returns>
-        public async Task<string> GetConnectionStringForClient(ClientOptions option)
+        public async Task<string> GetConnectionStringForClient()
         {
             string connectionString;
 
             HttpClient client = this.factory.CreateClient();
             // Make the API call to the Secrets Service
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri($"http://{secretServiceName}.{secretServiceNamespace}.svc.cluster.local/api/connection/{Enum.GetName(typeof(ClientOptions), option)}");
+            request.RequestUri = this.secretServiceUrl;
             request.Method = HttpMethod.Get;
             HttpResponseMessage response = await client.SendAsync(request);
             string content = await response.Content.ReadAsStringAsync();
