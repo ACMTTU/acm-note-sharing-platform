@@ -9,14 +9,13 @@ using Newtonsoft.Json;
 
 namespace ACMTTU.NoteSharing.Shared.SDK.Clients
 {
-    public class StorageClientFactory : ClientFactory
+    public class StorageClientFactory : ClientFactory<CloudBlobClient>
     {
         public StorageClientFactory(IHttpClientFactory factory) : base(factory)
         {
             this.secretServiceUri = new Uri(this.secretServiceUri.AbsoluteUri + "Database");
         }
-
-        public async Task<CloudBlobClient> GetClient(string connectionString)
+        public override async Task<CloudBlobClient> GetClient(string connectionString)
         {
             string storageConnectionString = await this.GetConnectionStringForClient();
             CloudStorageAccount storageAccount;

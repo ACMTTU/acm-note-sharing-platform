@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace ACMTTU.NoteSharing.Shared.SDK.Clients
 {
-    public abstract class ClientFactory
+    public abstract class ClientFactory <T>
     {
         // Name of the Kubernetes Service associated with the Secrets Service
         private const string secretServiceName = "secretsservice";
@@ -26,6 +26,7 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
             this.factory = factory;
             this.secretServiceUri = new Uri($"http://{secretServiceName}.{secretServiceNamespace}.svc.cluster.local/");
         }
+        public abstract Task<T> GetClient(string connectionString);
 
         /// <summary>
         /// Calls the Secrets Service to grab the specified connection strings
