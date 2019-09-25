@@ -17,14 +17,14 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
         // Name of the Kubernetes namespace the Secrets Service is running on
         private const string secretServiceNamespace = "secrets";
 
-        protected Uri secretServiceUrl;
+        protected Uri secretServiceUri;
 
         private readonly IHttpClientFactory factory;
 
         public ClientFactory(IHttpClientFactory factory)
         {
             this.factory = factory;
-            this.secretServiceUrl = new Uri($"http://{secretServiceName}.{secretServiceNamespace}.svc.cluster.local/");
+            this.secretServiceUri = new Uri($"http://{secretServiceName}.{secretServiceNamespace}.svc.cluster.local/");
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
             HttpClient client = this.factory.CreateClient();
             // Make the API call to the Secrets Service
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = this.secretServiceUrl;
+            request.RequestUri = this.secretServiceUri;
             request.Method = HttpMethod.Get;
             HttpResponseMessage response = await client.SendAsync(request);
             string content = await response.Content.ReadAsStringAsync();

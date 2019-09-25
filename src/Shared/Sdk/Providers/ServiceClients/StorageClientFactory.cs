@@ -13,7 +13,7 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
     {
         public StorageClientFactory(IHttpClientFactory factory) : base(factory)
         {
-            this.secretServiceUrl = new Uri(this.secretServiceUrl.AbsoluteUri + "Database");
+            this.secretServiceUri = new Uri(this.secretServiceUri.AbsoluteUri + "Database");
         }
 
         public async Task<CloudBlobClient> GetClient(string connectionString)

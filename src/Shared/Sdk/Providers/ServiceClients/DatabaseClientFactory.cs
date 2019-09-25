@@ -9,7 +9,7 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
     {
         public DatabaseClientFactory(IHttpClientFactory factory) : base(factory)
         {
-            this.secretServiceUrl = new Uri(this.secretServiceUrl.AbsoluteUri + "Database");
+            this.secretServiceUri = new Uri(this.secretServiceUri.AbsoluteUri + "Database");
         }
 
         public async Task<CosmosClient> GetClient(string connectionString)
