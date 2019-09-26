@@ -48,7 +48,7 @@
                 "agentPoolProfiles": [
                     {
                         "name": "agentpool",
-                        "count": 1,
+                        "count": 3,
                         "vmSize": "Standard_B2s",
                         "osDiskSizeGB": 100,
                         "maxPods": 110,
@@ -449,6 +449,25 @@
                 },
                 "options": { "throughput": 400 }
             }
+        },
+        {
+            "apiVersion": "2016-10-01",
+            "name": "acm-notes-kv",
+            "location": "westus2",
+            "type": "Microsoft.KeyVault/vaults",
+            "properties": {
+                "enabledForDeployment": "[bool('true')]",
+                "enabledForTemplateDeployment": "[bool('true')]",
+                "enabledForDiskEncryption": "[bool('true')]",
+                "accessPolicies": [],
+                "tenantId": "b1fc7d22-90e3-4945-b4cf-737eedb2905e",
+                "sku": {
+                    "name": "Standard",
+                    "family": "A"
+                },
+                "networkAcls": {}
+            },
+            "tags": {}
         }
     ]
 }

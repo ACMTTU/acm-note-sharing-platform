@@ -18,7 +18,7 @@
                 "quoteArgs": false
             },
             "cwd": "/src",
-            "program": "/src/bin/Debug/netcoreapp2.2/ClaimsService.dll",
+            "program": "/src/bin/Debug/netcoreapp2.1/ClaimsService.dll",
             "sourceFileMap": {
                 "/src": "${workspaceFolder}/."
             }
