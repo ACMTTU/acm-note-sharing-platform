@@ -58,6 +58,7 @@ jobs:
       - task: DotNetCoreInstaller@0
         inputs:
           version: "2.1.802"
-      - script: Version=$(sed -ne '/Version/{s/.*<Version>\(.*\)<\/Version>.*/\1/p;q;}' <<< cat ./src/Shared/Neptune/Neptune.csproj)
-      - script: dotnet pack ./src/Shared/Neptune/Neptune.csproj
-      - script: dotnet nuget push ./src/Shared/Neptune/bin/Debug/ACMTTU.NoteSharing.Shared.Neptune.$Version.nupkg -k $(API_KEY) -s https://api.nuget.org/v3/index.json
+      - script: |
+          Version=$(sed -ne '/Version/{s/.*<Version>\(.*\)<\/Version>.*/\1/p;q;}' <<< cat ./src/Shared/Neptune/Neptune.csproj)
+          dotnet pack ./src/Shared/Neptune/Neptune.csproj
+          dotnet nuget push ./src/Shared/Neptune/bin/Debug/ACMTTU.NoteSharing.Shared.Neptune.$Version.nupkg -k $(API_KEY) -s https://api.nuget.org/v3/index.json
