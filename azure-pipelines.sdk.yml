@@ -11,8 +11,8 @@ resources:
   - repo: self
 
 jobs:
-  - job: UnitTest
-    displayName: Build Image
+  - job: UnitTestSdk
+    displayName: Unit Test for SDK
     pool:
       vmImage: "ubuntu-latest"
     steps:
@@ -21,11 +21,21 @@ jobs:
           version: "2.1.802"
       - script: dotnet test src/Shared/Sdk.Test
 
-  - job: PublishNugetPackage
+  - job: UnitTestNeptune
+    displayName: Unit Test for Neptune
+    pool:
+      vmImage: "ubuntu-latest"
+    steps:
+      - task: DotNetCoreInstaller@0
+        inputs:
+          version: "2.1.802"
+      - script: dotnet test src/Shared/Neptune.Tests
+
+  - job: PublishSdk
     dependsOn:
-      - UnitTest
-    condition: and(succeeded('UnitTest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    displayName: Publish Nuget Package
+      - UnitTestSdk
+    condition: and(succeeded('UnitTestSdk'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    displayName: Publish Sdk
     pool:
       vmImage: "ubuntu-latest"
     steps:
@@ -35,3 +45,18 @@ jobs:
       - script: Version=$(sed -ne '/Version/{s/.*<Version>\(.*\)<\/Version>.*/\1/p;q;}' <<< cat ./src/Shared/Sdk/Sdk.csproj)
       - script: dotnet pack ./src/Shared/Sdk/Sdk.csproj
       - script: dotnet nuget push ./src/Shared/Sdk/bin/Debug/ACMTTU.NoteSharing.Shared.SDK.$VERSION.nupkg -k $(API_KEY) -s https://api.nuget.org/v3/index.json
+
+  - job: PublishNeptune
+    dependsOn:
+      - UnitTestNeptune
+    condition: and(succeeded('UnitTestNeptune'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    displayName: Publish Neptune
+    pool:
+      vmImage: "ubuntu-latest"
+    steps:
+      - task: DotNetCoreInstaller@0
+        inputs:
+          version: "2.1.802"
+      - script: Version=$(sed -ne '/Version/{s/.*<Version>\(.*\)<\/Version>.*/\1/p;q;}' <<< cat ./src/Shared/Neptune/Neptune.csproj)
+      - script: dotnet pack ./src/Shared/Neptune/Neptune.csproj
+      - script: dotnet nuget push ./src/Shared/Neptune/bin/Debug/ACMTTU.NoteSharing.Shared.Neptune.$VERSION.nupkg -k $(API_KEY) -s https://api.nuget.org/v3/index.json
