@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyName>ACMTTU.NoteSharing.Shared.DataContracts</AssemblyName>
-    <Version>0.0.3</Version>
+    <Version>0.0.4</Version>
     <Authors>Miggy Reyes</Authors>
     <Company>ACM TTU</Company>
     <TargetFramework>netstandard2.0</TargetFramework>

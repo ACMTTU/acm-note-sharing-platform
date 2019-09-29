@@ -31,10 +31,11 @@ jobs:
           version: "2.1.802"
       - script: dotnet test src/Shared/Neptune.Tests
 
-  - job: PublishSdk
+  - job: PublishDataContracts
     dependsOn:
       - UnitTestSdk
-    condition: and(succeeded('UnitTestSdk'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition: succeeded('UnitTestSdk')
+    continueOnError: true
     displayName: Publish Sdk
     pool:
       vmImage: "ubuntu-latest"
@@ -42,9 +43,26 @@ jobs:
       - task: DotNetCoreInstaller@0
         inputs:
           version: "2.1.802"
-      - script: Version=$(sed -ne '/Version/{s/.*<Version>\(.*\)<\/Version>.*/\1/p;q;}' <<< cat ./src/Shared/Sdk/Sdk.csproj)
-      - script: dotnet pack ./src/Shared/Sdk/Sdk.csproj
-      - script: dotnet nuget push ./src/Shared/Sdk/bin/Debug/ACMTTU.NoteSharing.Shared.SDK.$Version.nupkg -k $(API_KEY) -s https://api.nuget.org/v3/index.json
+      - script: |
+          Version=$(sed -ne '/Version/{s/.*<Version>\(.*\)<\/Version>.*/\1/p;q;}' <<< cat ./src/Shared/DataContracts/DataContracts.csproj)
+          dotnet pack ./src/Shared/DataContracts/DataContracts.csproj
+          dotnet nuget push ./src/Shared/DataContracts/bin/Debug/ACMTTU.NoteSharing.Shared.DataContracts.$Version.nupkg -k $(API_KEY) -s https://api.nuget.org/v3/index.json
+
+  - job: PublishSdk
+    dependsOn:
+      - UnitTestSdk
+    condition: succeeded('UnitTestSdk')
+    displayName: Publish Sdk
+    pool:
+      vmImage: "ubuntu-latest"
+    steps:
+      - task: DotNetCoreInstaller@0
+        inputs:
+          version: "2.1.802"
+      - script: |
+          Version=$(sed -ne '/Version/{s/.*<Version>\(.*\)<\/Version>.*/\1/p;q;}' <<< cat ./src/Shared/Sdk/Sdk.csproj)
+          dotnet pack ./src/Shared/Sdk/Sdk.csproj
+          dotnet nuget push ./src/Shared/Sdk/bin/Debug/ACMTTU.NoteSharing.Shared.SDK.$Version.nupkg -k $(API_KEY) -s https://api.nuget.org/v3/index.json
 
   - job: PublishNeptune
     dependsOn:
