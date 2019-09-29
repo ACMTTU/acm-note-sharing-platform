@@ -44,7 +44,7 @@ namespace Neptune.Tests
     class ServiceTests
     {
         [Test]
-        public void WhenAReqIsProvided_ServiceShouldReturnCorrectResp()
+        public void WhenAPOSTReqIsProvided_ServiceShouldReturnCorrectResp()
         {
             var fakeResponse = new FakeGetResponse("I am fake");
             var fakeMessageHandler = new FakeHttpMessageHandler(new HttpResponseMessage()
