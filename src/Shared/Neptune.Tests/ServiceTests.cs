@@ -1,5 +1,6 @@
 ﻿using ACMTTU.NoteSharing.Shared.Neptune.Messages;
 using ACMTTU.NoteSharing.Shared.Neptune.Services;
+using ACMTTU.NoteSharing.Shared.TestingUtils;
 using Newtonsoft.Json;
 using NSubstitute;
 using NUnit.Framework;
@@ -15,18 +16,6 @@ using System.Threading.Tasks;
 namespace Neptune.Tests
 {
     //Almost verbatim from link above
-    public class FakeHttpMessageHandler : DelegatingHandler
-    {
-        private HttpResponseMessage _fakeResponse;
-        public FakeHttpMessageHandler(HttpResponseMessage responseMessage)
-        {
-            _fakeResponse = responseMessage;
-        }
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            return await Task.FromResult(_fakeResponse);
-        }
-    }
     public interface IFakeService : IService { }
     public class FakeApp : MessageService<IFakeService>
     {

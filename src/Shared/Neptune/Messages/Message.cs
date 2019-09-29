@@ -7,7 +7,7 @@ namespace ACMTTU.NoteSharing.Shared.Neptune.Messages
     public abstract class Request<TService>
         where TService : IService
     {
-        public abstract Uri Uri { get; }
+        public abstract Uri Uri { get; set; }
     }
     public abstract class GetRequest<TService> : Request<TService>
         where TService : IService

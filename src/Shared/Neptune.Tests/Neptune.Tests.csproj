@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Neptune\Neptune.csproj" />
+    <ProjectReference Include="..\TestingUtils\TestingUtils.csproj" />
   </ItemGroup>
 
 </Project>
