@@ -23,7 +23,7 @@ namespace Neptune.Tests
     }
     public class FakeGetRequest : GetRequest<IFakeService>
     {
-        public override Uri Uri => new Uri("http://do.notclick.me");
+        public override Uri Uri { get => new Uri("http://do.notclick.me"); set => throw new NotImplementedException(); }
     }
     public class FakeGetResponse : Response<IFakeService, FakeGetRequest>
     {
