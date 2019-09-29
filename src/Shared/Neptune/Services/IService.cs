@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ACMTTU.NoteSharing.Shared.Neptune.Messages;
 using Newtonsoft.Json;
 
-namespace Neptune
+namespace ACMTTU.NoteSharing.Shared.Neptune.Services
 {
     public interface IService { }
     public abstract class MessageService<TService>

@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using ACMTTU.NoteSharing.Shared.Neptune.Messages;
+using ACMTTU.NoteSharing.Shared.Neptune.Services;
+using Newtonsoft.Json;
 using NSubstitute;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;

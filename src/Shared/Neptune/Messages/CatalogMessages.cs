@@ -1,9 +1,7 @@
-﻿using Neptune.Services;
+﻿using ACMTTU.NoteSharing.Shared.Neptune.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Neptune.Messages.Catalog
+namespace ACMTTU.NoteSharing.Shared.Neptune.Messages
 {
     class CatalogHealth : GetRequest<ICatalogApplication>
     {

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 
-namespace Neptune.Http
+namespace ACMTTU.NoteSharing.Shared.Neptune.HTTP
 {
     class HeaderPropagator
     {

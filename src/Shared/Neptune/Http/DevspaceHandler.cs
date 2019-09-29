@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Neptune.Http
+namespace ACMTTU.NoteSharing.Shared.Neptune.HTTP
 {
     class DevspaceHandler : DelegatingHandler
     {

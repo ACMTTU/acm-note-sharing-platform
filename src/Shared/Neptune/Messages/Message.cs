@@ -1,7 +1,8 @@
-﻿using System;
+﻿using ACMTTU.NoteSharing.Shared.Neptune.Services;
+using System;
 using System.Net.Http;
 
-namespace Neptune
+namespace ACMTTU.NoteSharing.Shared.Neptune.Messages
 {
     public abstract class Request<TService>
         where TService : IService
