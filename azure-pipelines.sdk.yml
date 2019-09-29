@@ -44,7 +44,7 @@ jobs:
           version: "2.1.802"
       - script: Version=$(sed -ne '/Version/{s/.*<Version>\(.*\)<\/Version>.*/\1/p;q;}' <<< cat ./src/Shared/Sdk/Sdk.csproj)
       - script: dotnet pack ./src/Shared/Sdk/Sdk.csproj
-      - script: dotnet nuget push ./src/Shared/Sdk/bin/Debug/ACMTTU.NoteSharing.Shared.SDK.$VERSION.nupkg -k $(API_KEY) -s https://api.nuget.org/v3/index.json
+      - script: dotnet nuget push ./src/Shared/Sdk/bin/Debug/ACMTTU.NoteSharing.Shared.SDK.$Version.nupkg -k $(API_KEY) -s https://api.nuget.org/v3/index.json
 
   - job: PublishNeptune
     dependsOn:
@@ -59,4 +59,4 @@ jobs:
           version: "2.1.802"
       - script: Version=$(sed -ne '/Version/{s/.*<Version>\(.*\)<\/Version>.*/\1/p;q;}' <<< cat ./src/Shared/Neptune/Neptune.csproj)
       - script: dotnet pack ./src/Shared/Neptune/Neptune.csproj
-      - script: dotnet nuget push ./src/Shared/Neptune/bin/Debug/ACMTTU.NoteSharing.Shared.Neptune.$VERSION.nupkg -k $(API_KEY) -s https://api.nuget.org/v3/index.json
+      - script: dotnet nuget push ./src/Shared/Neptune/bin/Debug/ACMTTU.NoteSharing.Shared.Neptune.$Version.nupkg -k $(API_KEY) -s https://api.nuget.org/v3/index.json
