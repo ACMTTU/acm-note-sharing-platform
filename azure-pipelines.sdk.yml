@@ -36,7 +36,7 @@ jobs:
       - UnitTestSdk
     condition: succeeded('UnitTestSdk')
     continueOnError: true
-    displayName: Publish Sdk
+    displayName: Publish Data Contracts
     pool:
       vmImage: "ubuntu-latest"
     steps:
