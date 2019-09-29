@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>ACMTTU.NoteSharing.Shared.Neptune</AssemblyName>
+    <Version>0.0.1</Version>
+    <Authors>Zachary Lefevre</Authors>
+    <Company>ACM TTU</Company>
   </PropertyGroup>
 
   <ItemGroup>
