@@ -34,7 +34,7 @@ jobs:
   - job: PublishDataContracts
     dependsOn:
       - UnitTestSdk
-    condition: succeeded('UnitTestSdk')
+    condition: and(succeeded('UnitTestSdk'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     continueOnError: true
     displayName: Publish Data Contracts
     pool:
@@ -51,7 +51,7 @@ jobs:
   - job: PublishSdk
     dependsOn:
       - UnitTestSdk
-    condition: succeeded('UnitTestSdk')
+    condition: and(succeeded('UnitTestSdk'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     displayName: Publish Sdk
     pool:
       vmImage: "ubuntu-latest"
@@ -67,8 +67,7 @@ jobs:
   - job: PublishNeptune
     dependsOn:
       - UnitTestNeptune
-    # condition: and(succeeded('UnitTestNeptune'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    condition: succeeded('UnitTestNeptune')
+    condition: and(succeeded('UnitTestNeptune'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     displayName: Publish Neptune
     pool:
       vmImage: "ubuntu-latest"
