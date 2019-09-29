@@ -15,16 +15,17 @@ namespace ACMTTU.NoteSharing.Shared.Neptune.Services
         {
         }
     }
-    class GetCountMessage : GetRequest<Inventory>
+    class NewItemRequest : PostRequest<Inventory>
     {
-        private Uri uri;
-        public GetCountMessage(string itemName)
+        public string itemName;
+        private Uri uri = new Uri("http://do.notclick.me/inventory");
+        public NewItemRequest(string itemName)
         {
-            this.uri = new Uri($"http://do.notclick.me/inventory/{itemName}/count");
+            this.itemName = itemName;
         }
         public override Uri Uri { get => uri; set => this.uri = value; }
     }
-    class GetCountResponse : Response<Inventory, GetCountMessage>
+    class NewItemResponse : Response<Inventory, NewItemRequest>
     {
         public int count;
         public string itemName;
@@ -34,8 +35,8 @@ namespace ACMTTU.NoteSharing.Shared.Neptune.Services
     {
         public async Task<int> count(InventoryService service)
         {
-            var message = new GetCountMessage("screwdriver");
-            var response = await service.GetRequest<GetCountMessage, GetCountResponse>(message);
+            var message = new NewItemRequest("screwdriver");
+            var response = await service.PostRequest<NewItemRequest, NewItemResponse>(message);
             return response.count;
         }
     }
