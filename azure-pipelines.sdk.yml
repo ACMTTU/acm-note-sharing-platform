@@ -29,7 +29,7 @@ jobs:
       - task: DotNetCoreInstaller@0
         inputs:
           version: "2.1.802"
-      - script: dotnet test src/Shared/Neptune.Test
+      - script: dotnet test src/Shared/Neptune.Tests
 
   - job: PublishSdk
     dependsOn:
