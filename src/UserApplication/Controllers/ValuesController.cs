@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ACMTTU.NoteSharing.Platform.AuthApplication.Controllers
+namespace ACMTTU.NoteSharing.Platform.UserApplication.Controllers
 {
     [Route("api/auth")]
     [ApiController]

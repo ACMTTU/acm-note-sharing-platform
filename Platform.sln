@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{55215484-765D-4164-A42E-401AEE4241CB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthApplication", "src\AuthApplication\AuthApplication.csproj", "{F78F56AF-47CC-4E29-9464-55E54E8FFB8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserApplication", "src\UserApplication\UserApplication.csproj", "{F78F56AF-47CC-4E29-9464-55E54E8FFB8C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogApplication", "src\CatalogApplication\CatalogApplication.csproj", "{2258A108-DE08-4457-B478-111F8C69BCF5}"
 EndProject
