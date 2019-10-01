@@ -1,11 +1,11 @@
 # https://dev.azure.com
 #
-# Build, Test and Deploys the AuthApplication to Production
+# Build, Test and Deploys the UserApplication to Production
 
 trigger:
   paths:
     include:
-      - src/AuthApplication/*
+      - src/UserApplication/*
 
 resources:
   - repo: self
@@ -23,7 +23,7 @@ jobs:
       - task: DotNetCoreInstaller@0
         inputs:
           version: "2.1.802"
-      - script: dotnet build ./src/AuthApplication/AuthApplication.csproj
+      - script: dotnet build ./src/UserApplication/UserApplication.csproj
 
   - job: PushAndDeployImage
     dependsOn:
@@ -44,7 +44,7 @@ jobs:
       - script: docker login -u $(DOCKER_USER) -p $(DOCKER_PASS) acmnotesregistry.azurecr.io
         displayName: "Login"
 
-      - script: ./src/AuthApplication/Scripts/docker-build-push.sh
+      - script: ./src/UserApplication/Scripts/docker-build-push.sh
         displayName: "Build and Push Auth Application"
 
       - task: HelmDeploy@0
@@ -66,7 +66,7 @@ jobs:
           azureSubscriptionEndpoint: "$(AZURE_SUBSCRIPTION)"
           azureResourceGroup: "$(azureResourceGroup)"
           kubernetesCluster: "$(kubernetesCluster)"
-          chartName: "./src/AuthApplication/charts/authapplication"
-          releaseName: "authapplication"
+          chartName: "./src/UserApplication/charts/userapplication"
+          releaseName: "userapplication"
           command: upgrade
           arguments: -i --force --namespace dev

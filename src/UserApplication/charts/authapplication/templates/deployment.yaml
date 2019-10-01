@@ -1,10 +1,10 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "authapplication.fullname" . }}
+  name: {{ template "userapplication.fullname" . }}
   labels:
-    app: {{ template "authapplication.name" . }}
-    chart: {{ template "authapplication.chart" . }}
+    app: {{ template "userapplication.name" . }}
+    chart: {{ template "userapplication.chart" . }}
     draft: {{ .Values.draft | default "draft-app" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -12,12 +12,12 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "authapplication.name" . }}
+      app: {{ template "userapplication.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "authapplication.name" . }}
+        app: {{ template "userapplication.name" . }}
         draft: {{ .Values.draft | default "draft-app" }}
         release: {{ .Release.Name }}
       annotations:
@@ -48,7 +48,7 @@ spec:
             - name: {{ $ref }}_{{ $key }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "authapplication.fullname" $root }}-{{ $ref | lower }}
+                  name: {{ template "userapplication.fullname" $root }}-{{ $ref | lower }}
                   key: {{ $key }}
             {{- end }}
             {{- end }}

@@ -1,6 +1,6 @@
 # https://dev.azure.com
 #
-# Build, Test and Deploys the AuthApplication to Production
+# Build, Test and Deploys the UserApplication to Production
 
 trigger:
   paths:
