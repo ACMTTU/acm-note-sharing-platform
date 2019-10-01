@@ -5,7 +5,7 @@
 trigger:
   paths:
     include:
-    - src/ClaimsService/*
+      - src/ClaimsService/*
 
 resources:
   - repo: self
@@ -20,7 +20,10 @@ jobs:
     pool:
       vmImage: "ubuntu-latest"
     steps:
-      - script: echo 'Unit Test for ClaimsService'
+      - task: DotNetCoreInstaller@0
+        inputs:
+          version: "2.1.802"
+      - script: dotnet build ./src/ClaimsService/ClaimsService.csproj
 
   - job: PushAndDeployImage
     dependsOn:
@@ -63,7 +66,7 @@ jobs:
           azureSubscriptionEndpoint: "$(AZURE_SUBSCRIPTION)"
           azureResourceGroup: "$(azureResourceGroup)"
           kubernetesCluster: "$(kubernetesCluster)"
-          chartName: "./src/ClaimsService/charts/ClaimsService"
+          chartName: "./src/ClaimsService/charts/claimsservice"
           releaseName: "claimsservice"
           command: upgrade
           arguments: -i --force --namespace dev

@@ -8,3 +8,4 @@ code --install-extension ms-kubernetes-tools.vscode-kubernetes-tools --force
 code --install-extension jmrog.vscode-nuget-package-manager --force
 code --install-extension wayou.vscode-todo-highlight --force
 code --install-extension fernandoescolar.vscode-solution-explorer --force
+code --install-extension k--kato.docomment --force

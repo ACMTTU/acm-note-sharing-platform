@@ -4,7 +4,7 @@
 fullnameOverride: claimsservice
 replicaCount: 1
 image:
-  repository: claimsservice
+  repository: acmnotesregistry.azurecr.io/claimsservice
   tag: stable
   pullPolicy: IfNotPresent
 imagePullSecrets: []
