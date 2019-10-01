@@ -45,7 +45,7 @@ jobs:
         displayName: "Login"
 
       - script: ./src/UserApplication/Scripts/docker-build-push.sh
-        displayName: "Build and Push Auth Application"
+        displayName: "Build and Push User Application"
 
       - task: HelmDeploy@0
         displayName: Helm Init
