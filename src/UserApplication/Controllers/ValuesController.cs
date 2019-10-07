@@ -3,15 +3,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ACMTTU.NoteSharing.Platform.UserApplication.Controllers
 {
-    [Route("api/auth")]
+    [Route("api/user")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class UserController : ControllerBase
     {
-        // GET api
+        /// <summary>
+        /// This is how you document code
+        /// 
+        /// Visit the microservice's endpoint and append /swagger
+        /// to see your docs in action
+        /// </summary>
+        /// <param name="id">Some sort of Id</param>
+        /// <returns>An array containing a value determined by the parameter</returns>
         [HttpGet]
-        public ActionResult<IEnumerable<string>> GetValues()
+        public ActionResult<IEnumerable<string>> GetValues(string id)
         {
-            return new string[] { "value3", "value4" };
+            return new string[] { $"value{id}" };
         }
     }
 }
