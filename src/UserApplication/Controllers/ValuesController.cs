@@ -15,7 +15,7 @@ namespace ACMTTU.NoteSharing.Platform.UserApplication.Controllers
         /// </summary>
         /// <param name="id">Some sort of Id</param>
         /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpGet]
+        [HttpGet("{id}")]
         public ActionResult<IEnumerable<string>> GetValues(string id)
         {
             return new string[] { $"value{id}" };
