@@ -35,8 +35,8 @@ Boolean value representing whether or not tag was automatically added
 ## category
 String for category of said tag
 
-```json
 # Rating Attributes
+```json
 Rating(
     note_id:      int      # The notes individual id
     rating:       float    # Rating for the note
