@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "Debug Class Application",
+            "name": ".NET Core Launch (AZDS)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "azds: prelaunch",

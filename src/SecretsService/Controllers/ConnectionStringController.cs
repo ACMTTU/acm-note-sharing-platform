@@ -14,6 +14,12 @@ namespace ACMTTU.NoteSharing.SecretsService.Controllers
             this.environmentReader = environmentReader;
         }
 
+        /// <summary>
+        /// Grabs a connection string from Azure Key Vault to use in database or
+        /// Storage Clients
+        /// </summary>
+        /// <param name="option">Must be "Database" or "BlobStorage" without the quotes</param>
+        /// <returns>The connection string</returns>
         [HttpGet("{option}")]
         public ActionResult<EnvironmentVariablePayload> GetConnectionString(string option)
         {

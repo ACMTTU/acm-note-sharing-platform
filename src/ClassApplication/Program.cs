@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace ACMTTU.NoteSharing.Platform.ClassService
+namespace ACMTTU.NoteSharing.Platform.ClassApplication
 {
     public class Program
     {
@@ -19,6 +19,6 @@ namespace ACMTTU.NoteSharing.Platform.ClassService
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+            .UseStartup<Startup>();
     }
 }
