@@ -10,7 +10,7 @@ using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
 
 
-namespace ACMTTU.NoteSharing.Platform.Sdk.Controllers
+namespace ACMTTU.NoteSharing.Shared.SDK.Controllers
 {
     public abstract class PlatformBaseController : ControllerBase
     {
