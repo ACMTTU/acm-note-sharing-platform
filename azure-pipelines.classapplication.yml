@@ -16,14 +16,14 @@ variables:
 
 jobs:
   - job: UnitTest
-    displayName: Build Image
+    displayName: Test Image
     pool:
       vmImage: "ubuntu-latest"
     steps:
       - task: DotNetCoreInstaller@0
         inputs:
           version: "2.1.802"
-      - script: dotnet build ./src/ClassApplication/ClassApplication.csproj
+      - script: dotnet test ./src/ClassApplication/ClassApplication.csproj
 
   - job: PushAndDeployImage
     dependsOn:
