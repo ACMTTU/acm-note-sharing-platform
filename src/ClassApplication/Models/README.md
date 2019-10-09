@@ -1,4 +1,6 @@
 # Use Case Model For Classroom
+![alt text](https://i.imgur.com/jXG3BdY.png "Use Case Diagram for Classroom")
+
 
 # Classrooms Attributes
 ```json
