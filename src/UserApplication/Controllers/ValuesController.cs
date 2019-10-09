@@ -1,12 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ACMTTU.NoteSharing.Shared.SDK.Controllers;
+using Microsoft.Azure.Cosmos;
 
 namespace ACMTTU.NoteSharing.Platform.UserApplication.Controllers
 {
-    [Route("api/user")]
+    [Route("api/users")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : PlatformBaseController
     {
+        public UserController(IHttpClientFactory factory) : base(factory) { }
+
         /// <summary>
         /// This is how you document code
         /// 
@@ -16,9 +22,14 @@ namespace ACMTTU.NoteSharing.Platform.UserApplication.Controllers
         /// <param name="id">Some sort of Id</param>
         /// <returns>An array containing a value determined by the parameter</returns>
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<string>> GetValues(string id)
+        public async Task<ActionResult<string>> GetValues(string id)
         {
-            return new string[] { $"value{id}" };
+            using (CosmosClient dbClient = await this.GetDatatbaseClient())
+            {
+                await dbClient.CreateDatabaseIfNotExistsAsync("UserApplication");
+            }
+
+            return $"Id value from URL: {id}";
         }
     }
 }
