@@ -1,5 +1,6 @@
 # Use Case Model For Classroom
 ![alt text](https://i.imgur.com/jXG3BdY.png "Use Case Diagram for Classroom")
+![alt text](https://files.slack.com/files-pri/T0D7KK29F-FP6GUBUE9/image.png "Class diagram for Classroom")
 
 
 # Classrooms Attributes
