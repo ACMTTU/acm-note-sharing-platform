@@ -2,8 +2,11 @@ namespace CatalogApplication.Models
 {
     public class Rating
     {
-        public int noteId { get; set; }
+        // The note ID associoated with this rating
+        public string noteId { get; set; }
+        // The running average rating for the note
         public double rating { get; set; }
+        // The number of ratings total for the note
         public int numRatings { get; set; }
     }
 }
