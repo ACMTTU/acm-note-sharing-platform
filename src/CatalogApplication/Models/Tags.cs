@@ -9,7 +9,7 @@ namespace CatalogApplication.Models
         // Color associated with the tag, defaults to the hash of name as RGB
         public int color { get; set; }
         // The note ID associated with this tag
-        public int noteId { get; set; }
+        public string noteId { get; set; }
         // Whether the tag should be hidden from the user
         public bool hidden { get; set; }
         // Whether the tag was automatically added by the catalog system
