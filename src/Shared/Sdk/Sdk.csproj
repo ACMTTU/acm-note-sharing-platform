@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>ACMTTU.NoteSharing.Shared.SDK</AssemblyName>
-    <Version>0.3.2</Version>
+    <Version>0.4.2</Version>
     <Authors>Miggy Reyes</Authors>
     <Company>ACM TTU</Company>
   </PropertyGroup>
@@ -13,10 +13,7 @@
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.2.0" />
     <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.0.1" />
     <PackageReference Include="Newtonsoft.JSON" Version="12.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DataContracts\DataContracts.csproj" />
+    <PackageReference Include="ACMTTU.NoteSharing.Shared.DataContracts" Version="0.*" />
   </ItemGroup>
 
 </Project>

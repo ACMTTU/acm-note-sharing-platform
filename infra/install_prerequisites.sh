@@ -34,7 +34,7 @@ if [ "$(uname)" == "Darwin" ]; then
     
     # Windows
     elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-    open https://download.visualstudio.microsoft.com/download/pr/0297dbc2-424f-426a-a415-b39927dffe9a/2417ef7aae3c24da94ad7e54137b38b6/dotnet-sdk-2.1.802-win-x64.exe
+    start https://download.visualstudio.microsoft.com/download/pr/0297dbc2-424f-426a-a415-b39927dffe9a/2417ef7aae3c24da94ad7e54137b38b6/dotnet-sdk-2.1.802-win-x64.exe
 fi
 
 # Installs Azure CLI, Node Version Manager

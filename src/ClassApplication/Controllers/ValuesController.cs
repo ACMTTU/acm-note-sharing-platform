@@ -1,45 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ACMTTU.NoteSharing.Shared.SDK.Controllers;
+using Microsoft.Azure.Cosmos;
 
-namespace ACMTTU.NoteSharing.Platform.ClassService.Controllers
+namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/class")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class ClassController : PlatformBaseController
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        public ClassController(IHttpClientFactory factory) : base(factory) { }
 
-        // GET api/values/5
+        /// <summary>
+        /// This is how you document code
+        /// 
+        /// Visit the microservice's endpoint and append /swagger
+        /// to see your docs in action
+        /// </summary>
+        /// <param name="id">Some sort of Id</param>
+        /// <returns>An array containing a value determined by the parameter</returns>
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public async Task<ActionResult<string>> GetValues(string id)
         {
-            return "value";
-        }
+            using (CosmosClient dbClient = await this.GetDatatbaseClient())
+            {
+                await dbClient.CreateDatabaseIfNotExistsAsync("ClassApplication");
+            }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return $"Id value from URL: {id}";
         }
     }
 }

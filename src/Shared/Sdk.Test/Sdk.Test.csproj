@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sdk\Sdk.csproj" />
-    <ProjectReference Include="..\DataContracts\DataContracts.csproj" />
     <ProjectReference Include="..\TestingUtils\TestingUtils.csproj" />
   </ItemGroup>
 

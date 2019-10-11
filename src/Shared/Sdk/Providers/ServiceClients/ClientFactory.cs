@@ -24,7 +24,7 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
         public ClientFactory(IHttpClientFactory factory)
         {
             this.factory = factory;
-            this.secretServiceUri = new Uri($"http://{secretServiceName}.{secretServiceNamespace}.svc.cluster.local/");
+            this.secretServiceUri = new Uri($"http://{secretServiceName}.{secretServiceNamespace}.svc.cluster.local/api/connection/");
         }
         public abstract Task<T> GetClient(string connectionString);
 
