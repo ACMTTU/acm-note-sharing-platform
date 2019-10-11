@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-  <PackageReference Include="ACMTTU.NoteSharing.Shared.DataContracts" Version="0.0.3" />
-    <PackageReference Include="ACMTTU.NoteSharing.Shared.SDK" Version="0.0.4" />
+    <PackageReference Include="ACMTTU.NoteSharing.Shared.SDK" Version="0.4.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
   </ItemGroup>
 
