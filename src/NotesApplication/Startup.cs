@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
-namespace ACMTTU.NoteSharing.Platform.NoteService
+namespace ACMTTU.NoteSharing.Platform.NotesApplication
 {
     public class Startup
     {
