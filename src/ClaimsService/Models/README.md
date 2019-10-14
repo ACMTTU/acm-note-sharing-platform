@@ -1,5 +1,6 @@
 # Model for Claims
 
+<<<<<<< HEAD
 | Classroom | Type |
  ----------- | ---- 
   Classroom Id | string
@@ -111,3 +112,4 @@ Permission to edit the note
 
 **delete**
 Permission to delete the note
+
