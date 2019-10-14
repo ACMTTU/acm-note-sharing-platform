@@ -17,7 +17,7 @@ Notes
 
 NoSql Schema: 
 
-{
+
     "Classroom" : [
         {
             "Owners" : [
@@ -101,4 +101,3 @@ NoSql Schema:
         }
     ]
 
-}
