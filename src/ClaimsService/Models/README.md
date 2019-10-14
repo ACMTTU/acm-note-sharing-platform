@@ -23,9 +23,9 @@
 
 
 
-##Example NoSql for Classroom
+## Example NoSql for Classroom
 
-'''
+
 "Classroom" : [
     {
         "Owners" : [
@@ -46,7 +46,7 @@
             }
         ]
     }
-'''
+
 
 **classroomId**
 The classroom id associated with this specific classroom
@@ -76,9 +76,9 @@ Permission to add another Admin
 Check whether the user has been blocked or is still in Active status
 
 
-##Example NoSql for Notes
+## Example NoSql for Notes
 
-'''
+
 "Notes" : [
     {
         "Owners" : [
@@ -95,7 +95,7 @@ Check whether the user has been blocked or is still in Active status
             }
         ]
     }
-'''
+
 
 **noteId**
 The note id associated with this specific note
