@@ -2,6 +2,8 @@ namespace ClaimsService.Models
 {
     public class Notes
     {
+        // Claim id
+        public string id { get; set; }
         // The note id associated with this specific note
         public string noteId { get; set; }
 

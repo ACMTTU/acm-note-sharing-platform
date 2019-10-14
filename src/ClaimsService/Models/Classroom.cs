@@ -2,6 +2,8 @@ namespace ClaimsService.Models
 {
     public class Classroom
     {
+        // Claim id
+        public string id { get; set; }
         // The classroom id associated with this specific classroom
         public string classroomId { get; set; }
 
