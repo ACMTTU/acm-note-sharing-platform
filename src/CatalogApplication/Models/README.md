@@ -52,3 +52,40 @@ The notes rating
 
 ## numRatings
 Number of ratings for the note
+
+
+# Rating Attributes
+```json
+Rating(
+    noteId :      int      # The notes individual id
+    rating:       float    # Rating for the note
+    1StarVotes:   int      # Number of 1 star ratings
+    2StarVotes:   int      # Number of 2 star ratings
+    3StarVotes:   int      # Number of 3 star ratings
+    4StarVotes:   int      # Number of 4 star ratings
+    5StarVotes:   int      # Number of 5 star ratings
+)
+```
+
+##  noteId 
+The notes id
+
+## rating
+The notes rating
+
+## 1StarVotes
+Number of 1 star ratings for the note
+
+## 2StarVotes
+Number of 2 star ratings for the note
+
+## 3StarVotes
+Number of 3 star ratings for the note
+
+## 4StarVotes
+Number of 4 star ratings for the note
+
+## 5StarVotes
+Number of 5 star ratings for the note
+
+
