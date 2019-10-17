@@ -99,5 +99,21 @@ namespace NotesApplication
         {
             throw new System.NotImplementedException();
         }
+
+        /// <summary>
+        /// <para>
+        /// Updates this Note object to be consistent with the note, in the database, that it represents. If the note in the database has been deleted since the creation of this object, this method will return false.
+        /// If this object could not be updated for any other reason, this method throws an exception accordingly.
+        /// Otherwise, this method will return true, signifying that this object is now in sync with the note that it represents in the database.
+        /// </para>
+        /// <para>
+        /// Generally, this object should be discarded if a call to this method returns false.
+        /// </para>
+        /// </summary>
+        /// <returns>true, if this method successfully updated this Note object, to the best of this method's ability, or false, if the physical note in the database has been deleted.</returns>
+        public bool update()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
