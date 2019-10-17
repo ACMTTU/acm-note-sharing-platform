@@ -11,7 +11,7 @@ namespace NotesApplication
         /// <summary>
         /// Unique ID of the note
         /// </summary>
-        internal string ID { get; } //We should not allow updating of IDs because it could mess with the database
+        internal string id { get; } //We should not allow updating of IDs because it could mess with the database
 
         /// <summary>
         /// The name of the note. (Similar to a title)
@@ -41,7 +41,7 @@ namespace NotesApplication
         /// <param name="notes">The files attached to the new note</param>
         public Note(string name, string[] notes)
         {
-            ID = "-- NEEDS TO BE GENERATED --"; // ID should be generated not given
+            id = "-- NEEDS TO BE GENERATED --"; // ID should be generated not given
             Name = name;
             Notes = notes;
             CreatedAt = DateTime.UtcNow;
