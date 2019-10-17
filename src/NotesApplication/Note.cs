@@ -1,3 +1,4 @@
+using System;
 namespace NotesApplication
 {
     ///<summary>
@@ -7,40 +8,53 @@ namespace NotesApplication
     ///</summary>
     public class Note
     {
-        public string ID
-        {
-            get; set;
-        }
+        /// <summary>
+        /// Unique ID of the note
+        /// </summary>
+        internal string ID { get; } //We should not allow updating of IDs because it could mess with the database
 
-        public string Name
-        {
-            get; set;
-        }
+        /// <summary>
+        /// The name of the note. (Similar to a title)
+        /// </summary>
+        public string Name { get; set; }
 
-        public string[] Notes
-        {
-            get; set;
-        }
+        /// <summary>
+        /// The files attached to the note
+        /// </summary>
+        public string[] Notes { get; set; } //Wasn't this suppose to be a HashMap?
 
-        public string creationTime
-        {
-            get; set;
-        }
+        /// <summary>
+        /// The UTC datetime that the note was created
+        /// </summary>
+        public DateTime CreatedAt { get; }
 
-        private Schema(string id, string name, string[] notes)
+        /// <summary>
+        /// The last time the note was modified specified by a UTC datetime
+        /// </summary>
+        /// <value></value>
+        public DateTime LastModified { get; set; }
+
+        /// <summary>
+        /// Creates a new Note
+        /// </summary>
+        /// <param name="name">The name of the new note</param>
+        /// <param name="notes">The files attached to the new note</param>
+        public Note(string name, string[] notes)
         {
-            ID = id;
+            ID = "-- NEEDS TO BE GENERATED --"; // ID should be generated not given
             Name = name;
             Notes = notes;
+            CreatedAt = DateTime.UtcNow;
+            LastModified = DateTime.UtcNow;
         }
 
         ///<summary>
         ///Returns a Note object that represents the note in the database with the specified ID. 
-        //The returned Note object can be used to manipulate the note in the database via its methods.
+        ///The returned Note object can be used to manipulate the note in the database via its methods.
         ///</summary>
         ///<param name="id">The id of the note in the database.</param>
-        ///<return>A new Note object that represents </return>
-        public static Note GetNoteFromDatabase(string id)
+        ///<return>A new Note object that represents</return>
+        public static Note FromDatabase(string id)
         {
             throw new System.NotImplementedException();
         }
@@ -49,7 +63,7 @@ namespace NotesApplication
         ///Returns true if a note exists in the database with the given ID.
         ///</summary>
         ///<param name="id">The id of the note in the database.</param>
-        public static bool DoesNoteExist(string id)
+        public static bool Exists(string id)
         {
             throw new System.NotImplementedException();
         }
@@ -58,10 +72,9 @@ namespace NotesApplication
         ///Creates a new note in the database with the specified ID, then returns a new Note object representing the newly created database note.
         ///</summary>
         ///<param name="id">The id of the note in the database.</param>
-        public static Note CreateNoteInDatabase(string id)
+        public static Note ToDatabase(string id) //We need to figure out exactly *how* we are going to do this. This method may not be needed.
         {
             throw new System.NotImplementedException();
         }
-
     }
 }
