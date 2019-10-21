@@ -6,9 +6,9 @@ schema:
 
     Database: "NotesAplication"
         - Collection: "Notes"
-            - Database{
+            - Database {
                 documentKey: <string>
-                locationOfBlob: HashTable <key: int, value: location>
+                locationOfBlob: Array <string>
                 createdAt: <string>
                 noteName: <string>
                 editedAt: <string>
