@@ -21,7 +21,7 @@ namespace NotesApplication
         public string Name { get; set; }
 
         /// <summary>
-        /// The files attached to the note
+        /// The files attached to the note. This property is an array of the IDs of all the files that belong to this note. Each ID is a unique identifier for a document in the Azure Blob store.
         /// </summary>
         public string[] Notes { get; set; } //Wasn't this suppose to be a HashMap?
 
