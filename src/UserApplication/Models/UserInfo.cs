@@ -5,15 +5,15 @@ namespace UserApplication.Models
     public class UserInfo
     {
         //Specifies the specific userprofile
-        public string Id { get; set; }
+        public string id { get; set; }
         //Name that people will reference the user by
-        public string Username { get; set; }
+        public string username { get; set; }
         //Used to verify that the user is a [TTU?] student
-        public string Email { get; set; }
+        public string email { get; set; }
         //What year the user is in (Freshman, Sophmore, Junior, Senior, Graduate, PHD)
-        public string Classification { get; set; }
+        public string classification { get; set; }
         //What degree the user is pursuing (Ex: Computer Science)
-        public string Major { get; set; }
+        public string major { get; set; }
 ​
         //toString that returns the fields in a .json format
         public override string ToString()
