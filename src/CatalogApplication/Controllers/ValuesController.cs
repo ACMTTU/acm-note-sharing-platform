@@ -21,13 +21,9 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// </summary>
         /// <param name="id">Some sort of Id</param>
         /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpGet("{id}")]
+        [HttpGet("tags/{id}")]
         public async Task<ActionResult<string>> GetValues(string id)
         {
-            using (CosmosClient dbClient = await this.GetDatatbaseClient())
-            {
-                await dbClient.CreateDatabaseIfNotExistsAsync("CatalogApplication");
-            }
 
             return $"Id value from URL: {id}";
         }

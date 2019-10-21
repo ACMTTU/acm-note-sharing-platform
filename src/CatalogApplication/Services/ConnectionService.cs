@@ -10,6 +10,9 @@ namespace CatalogApplication.Services
     {
         protected CosmosClient dbClient;
         protected CloudBlobClient storageClient;
+        protected Database database;
+        protected Container tagContainer;
+        protected Container ratingContainer;
 
         public ConnectionService(IHttpClientFactory clientFactory)
         {
@@ -30,6 +33,9 @@ namespace CatalogApplication.Services
 
         public async Task CreateAllTheStuff()
         {
+            this.database = await this.dbClient.CreateDatabaseIfNotExistsAsync("CatalogDatabase");
+            this.tagContainer = await this.database.CreateContainerIfNotExistsAsync("Tags", "/id");
+            this.ratingContainer = await this.database.CreateContainerIfNotExistsAsync("Ratings", "/noteId");
             // This is where you probably want to create your database and your other containers or whatever
         }
     }
