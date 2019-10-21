@@ -111,7 +111,7 @@ namespace NotesApplication
         /// </para>
         /// </summary>
         /// <returns>true, if this method successfully updated this Note object, to the best of this method's ability, or false, if the physical note in the database has been deleted.</returns>
-        public bool update()
+        public bool Update()
         {
             throw new System.NotImplementedException();
         }
