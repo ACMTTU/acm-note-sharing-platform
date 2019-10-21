@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ACMTTU.NoteSharing.Shared.SDK.Controllers;
 using Microsoft.Azure.Cosmos;
+using CatalogApplication.Services;
 
 namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
 {
@@ -11,7 +12,12 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
     [ApiController]
     public class CatalogController : PlatformBaseController
     {
-        public CatalogController(IHttpClientFactory factory) : base(factory) { }
+
+        private readonly CatalogDatabaseService _dbService;
+        public CatalogController(IHttpClientFactory factory, CatalogDatabaseService dbService) : base(factory)
+        {
+            _dbService = dbService;
+        }
 
         /// <summary>
         /// This is how you document code
