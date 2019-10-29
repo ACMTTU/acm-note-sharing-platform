@@ -80,10 +80,9 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         /// get a note object given the note id
         /// </summary>
         /// <param name="noteId">The id of the not we want</param>
-        /// <param name="userId">The id of the user trying to get the note</param>
         /// <returns>if note exists and user has permision to get it return Sucess else return failure.</returns>
-        [HttpGet("{id}")]
-        public async Task GetNote(string noteId, string userId)
+        [HttpGet("{note_id}")]
+        public async Task GetNote(string noteId)
         {
 
         }
