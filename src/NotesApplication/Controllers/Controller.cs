@@ -44,11 +44,6 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         [HttpDelete("{noteId}/users/${userId}")]
         public async Task DeleteNote(string noteId, string userId)
         {
-            using (CosmosClient dbClient = await this.GetDatatbaseClient())
-            {
-                var dbRef = await dbClient.CreateDatabaseIfNotExistsAsync("NotesApplication");
-                var containerRef = await dbRef.Database.CreateContainerIfNotExistsAsync("Notes", "/Name");
-            }
 
         }
 
@@ -63,7 +58,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         [HttpPut("{noteId}/users/{userId}")]
         public async Task EditNote(string noteId, string userId, Note update)
         {
-
+            await NotesContainer.ReplaceItemAsync<Note>(update, noteId);
         }
 
         /// <summary>
