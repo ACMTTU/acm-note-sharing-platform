@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using ACMTTU.NoteSharing.Platform.NotesApplication.Services;
 
 namespace ACMTTU.NoteSharing.Platform.NotesApplication
 {
@@ -29,7 +30,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
-
+            services.AddSingleton<DBService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(c =>
@@ -41,6 +42,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
