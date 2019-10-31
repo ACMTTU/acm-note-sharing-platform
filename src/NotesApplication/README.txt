@@ -17,3 +17,6 @@ schema:
 
     Azure Blob:
         - image
+
+
+        fdjslkafjdls
