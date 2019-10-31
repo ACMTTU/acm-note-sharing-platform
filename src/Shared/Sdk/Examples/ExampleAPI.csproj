@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Sdk.csproj" />
+    <ProjectReference Include="..\Sdk.csproj" />
   </ItemGroup>
 
 </Project>
