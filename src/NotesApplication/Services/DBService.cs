@@ -15,9 +15,9 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         {
             var client = await this.dbClient.CreateDatabaseIfNotExistsAsync("NoteDatabase");
 
-            var container = await client.Database.CreateContainerIfNotExistsAsync("NoteContainer", "/");
+            ContainerResponse containerResp = await client.Database.CreateContainerIfNotExistsAsync("NoteContainer", "/");
 
-
+            container = containerResp.Container;
         }
     }
 }
