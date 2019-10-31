@@ -7,15 +7,15 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
 {
     public class DBService : PlatformBaseService
     {
-        public Container newContainer;
+        public Container container;
         public DBService(IHttpClientFactory clientFactory) : base(clientFactory)
         {
         }
         public async override Task Setup()
         {
-            var client = await this.dbClient.CreateDatabaseIfNotExistsAsync("testName");
+            var client = await this.dbClient.CreateDatabaseIfNotExistsAsync("NoteDatabase");
 
-            var newContainer = await client.Database.CreateContainerIfNotExistsAsync("weewoo", "/testpath");
+            var container = await client.Database.CreateContainerIfNotExistsAsync("NoteContainer", "/");
 
 
         }

@@ -16,7 +16,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         private Container NotesContainer;
         public NotesController(IHttpClientFactory factory, DBService db) : base(factory)
         {
-            NotesContainer = db.newContainer;
+            NotesContainer = db.container;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         {
             Note oldNote = await GetNote(noteId, userId);
 
-            if (oldNote.id == userId) // verifies userId is allowed to modify noteId
+            if (oldNote.u == userId) // verifies userId is allowed to modify noteId
             {
                 await NotesContainer.ReplaceItemAsync<Note>(update, noteId);
                 return true;
