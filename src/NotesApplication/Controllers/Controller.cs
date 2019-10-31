@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using ACMTTU.NoteSharing.Shared.SDK.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using ACMTTU.NoteSharing.Platform.NotesApplication.Services;
 using NotesApplication;
@@ -11,40 +11,13 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
 {
     [Route("api/notes")]
     [ApiController]
+
     public class NotesController : PlatformBaseController
     {
         private Container NotesContainer;
         public NotesController(IHttpClientFactory factory, DBService db) : base(factory)
         {
             NotesContainer = db.container;
-        }
-
-        /// <summary>
-        /// This is how you document code
-        /// 
-        /// Visit the microservice's endpoint and append /swagger
-        /// to see your docs in action
-        /// </summary>
-        /// <param name="id">Some sort of Id</param>
-        /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpGet("{id}")]
-        public async Task<string> GetValues(string id)
-        {
-
-            return $"Id value from URL: {id}";
-        }
-
-        /// <summary>
-        /// After checking if a user has permissions to delete a note 
-        /// deletes the note and all meta data assosiated with note 
-        /// </summary>
-        /// <param name="noteId">The note we are trying to delete</param>
-        /// <param name="userId">The user trying to delete the note</param>
-        /// <returns>if note exists and user has permision to delete return Sucess else return failure</returns>
-        [HttpDelete("{noteId}/users/${userId}")]
-        public async Task<bool> DeleteNote(string noteId, string userId)
-        {
-
         }
 
         /// <summary>
@@ -60,7 +33,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         {
             Note oldNote = await GetNote(noteId, userId);
 
-            if (oldNote.u == userId) // verifies userId is allowed to modify noteId
+            if (oldNote.ownerId == userId) // verifies userId is allowed to modify noteId
             {
                 await NotesContainer.ReplaceItemAsync<Note>(update, noteId);
                 return true;
@@ -69,17 +42,6 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
             {
                 return false;
             }
-        }
-
-        /// <summary>
-        /// get all notes associated with user
-        /// </summary>
-        /// <param name="user_id"></param>
-        /// <returns>if user exists return Sucess else return failure.</returns>
-        [HttpGet("users/{user_id}")]
-        public async Task<Note> GetUsersNotes(string user_id)
-        {
-
         }
 
         /// <summary>
@@ -92,4 +54,5 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         {
         }
     }
+
 }

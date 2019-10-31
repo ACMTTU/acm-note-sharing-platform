@@ -14,10 +14,11 @@ namespace UserApplication.Models
         public string classification { get; set; }
         //What degree the user is pursuing (Ex: Computer Science)
         public string major { get; set; }
-​
+        
         //toString that returns the fields in a .json format
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
         }
     }
+}

@@ -13,7 +13,7 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
     {
         public StorageClientFactory(IHttpClientFactory factory) : base(factory)
         {
-            this.secretServiceUri = new Uri(this.secretServiceUri.AbsoluteUri + "Database");
+            this.secretServiceUri = new Uri(this.secretServiceUri.AbsoluteUri + "BlobStorage");
         }
         public override async Task<CloudBlobClient> GetClient(string connectionString)
         {
@@ -21,7 +21,7 @@ namespace ACMTTU.NoteSharing.Shared.SDK.Clients
             CloudStorageAccount storageAccount;
             if (!CloudStorageAccount.TryParse(storageConnectionString, out storageAccount))
             {
-                throw new Exception("Could not parse storage connection string");
+                throw new Exception($"Could not parse storage connection string: {storageConnectionString}");
             }
 
             return storageAccount.CreateCloudBlobClient();
