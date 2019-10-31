@@ -1,36 +1,21 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using ACMTTU.NoteSharing.Shared.SDK.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using NotesApplication;
 
-namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
-{
-    [Route("api/notes")]
+namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers {
+    [Route ("api/notes")]
     [ApiController]
-    public class NotesController : PlatformBaseController
-    {
-        public NotesController(IHttpClientFactory factory) : base(factory) { }
-
+    public class NotesController : PlatformBaseController {
         /// <summary>
-        /// This is how you document code
-        /// 
-        /// Visit the microservice's endpoint and append /swagger
-        /// to see your docs in action
+        /// Notes Controller, Handles all of the stuff for notes
         /// </summary>
-        /// <param name="id">Some sort of Id</param>
-        /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<string>> GetValues(string id)
-        {
-            using (CosmosClient dbClient = await this.GetDatatbaseClient())
-            {
-                await dbClient.CreateDatabaseIfNotExistsAsync("NotesApplication");
-            }
-
-            return $"Id value from URL: {id}";
+        /// <param name="clientFactory"> An Http Client Factory</param>
+        /// <returns></returns>
+        public NotesController (IHttpClientFactory clientFactory) : base (clientFactory) {
         }
 
         /// <summary>
@@ -86,8 +71,6 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         {
 
         }
-
-
     }
 
 }
