@@ -16,6 +16,11 @@ namespace NotesApplication
         internal string id { get; } //We should not allow updating of IDs because it could mess with the database
 
         /// <summary>
+        /// Unique ID of the note owner
+        /// </summary>
+        internal string ownerId { get; } //We should not allow updating of IDs because it could mess with the database
+
+        /// <summary>
         /// The name of the note. (Similar to a title)
         /// </summary>
         public string Name { get; set; }
