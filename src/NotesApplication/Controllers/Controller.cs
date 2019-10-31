@@ -28,7 +28,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         /// <param name="id">Some sort of Id</param>
         /// <returns>An array containing a value determined by the parameter</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<string>> GetValues(string id)
+        public async Task<string> GetValues(string id)
         {
 
             return $"Id value from URL: {id}";
@@ -42,7 +42,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         /// <param name="userId">The user trying to delete the note</param>
         /// <returns>if note exists and user has permision to delete return Sucess else return failure</returns>
         [HttpDelete("{noteId}/users/${userId}")]
-        public async Task DeleteNote(string noteId, string userId)
+        public async Task<bool> DeleteNote(string noteId, string userId)
         {
 
         }
@@ -56,9 +56,19 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         /// <param name="update">A partial object of the type Note, with the changes</param>
         /// <returns>if note exists and user has permision to edit return Sucess else return failure.</returns>
         [HttpPut("{noteId}/users/{userId}")]
-        public async Task EditNote(string noteId, string userId, Note update)
+        public async Task<bool> EditNote(string noteId, string userId, Note update)
         {
-            await NotesContainer.ReplaceItemAsync<Note>(update, noteId);
+            Note oldNote = await GetNote(noteId, userId);
+
+            if (oldNote.id == userId) // verifies userId is allowed to modify noteId
+            {
+                await NotesContainer.ReplaceItemAsync<Note>(update, noteId);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -67,7 +77,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         /// <param name="user_id"></param>
         /// <returns>if user exists return Sucess else return failure.</returns>
         [HttpGet("users/{user_id}")]
-        public async Task GetUsersNotes(string user_id)
+        public async Task<Note> GetUsersNotes(string user_id)
         {
 
         }
@@ -78,12 +88,8 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         /// <param name="noteId">The id of the not we want</param>
         /// <returns>if note exists and user has permision to get it return Sucess else return failure.</returns>
         [HttpGet("{noteId}/users/${userId}")]
-        public async Task GetNote(string noteId, string userId)
+        public async Task<Note> GetNote(string noteId, string userId)
         {
-
         }
-
-
     }
-
 }
