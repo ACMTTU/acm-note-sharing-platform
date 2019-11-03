@@ -13,7 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using CatalogApplication.Services;
+using ACMTTU.NoteSharing.Platform.CatalogApplication.Services;
+
 namespace ACMTTU.NoteSharing.Platform.CatalogApplication
 {
     public class Startup
@@ -43,7 +44,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication
 
             services.AddHttpClient();
 
-            services.AddSingleton<CatalogDatabaseService>();
+            services.AddSingleton<ConnectionService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
