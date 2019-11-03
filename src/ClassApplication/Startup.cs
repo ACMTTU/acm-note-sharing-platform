@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using ACMTTU.NoteSharing.Platform.ClassApplication.Services;
 
 namespace ACMTTU.NoteSharing.Platform.ClassApplication
 {
@@ -29,6 +30,8 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
+
+            services.AddSingleton<DatabaseService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
