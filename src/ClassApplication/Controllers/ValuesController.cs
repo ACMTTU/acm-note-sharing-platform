@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ACMTTU.NoteSharing.Shared.SDK.Controllers;
 using Microsoft.Azure.Cosmos;
+using ACMTTU.NoteSharing.Platform.ClassApplication.Services;
 
 namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 {
@@ -11,7 +12,12 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
     [ApiController]
     public class ClassController : PlatformBaseController
     {
-        public ClassController(IHttpClientFactory factory) : base(factory) { }
+
+        private Container classesContainer;
+        public ClassController(IHttpClientFactory factory, DatabaseService databaseService) : base(factory)
+        {
+            this.classesContainer = databaseService.classroomsContainer;
+        }
 
         /// <summary>
         /// This is how you document code
@@ -24,12 +30,8 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<string>> GetValues(string id)
         {
-            using (CosmosClient dbClient = await this.GetDatatbaseClient())
-            {
-                await dbClient.CreateDatabaseIfNotExistsAsync("ClassApplication");
-            }
-
-            return $"Id value from URL: {id}";
+            await this.classesContainer.CreateItemAsync<dynamic>(new Object() { });
+            return ("Created an object");
         }
     }
 }
