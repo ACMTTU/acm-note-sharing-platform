@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using ACMTTU.NoteSharing.Shared.SDK.Controllers;
 using Microsoft.Azure.Cosmos;
 using ACMTTU.NoteSharing.Platform.ClassApplication.Services;
+using ClassApplication.Models;
 
 namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 {
@@ -25,13 +26,40 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         /// Visit the microservice's endpoint and append /swagger
         /// to see your docs in action
         /// </summary>
-        /// <param name="id">Some sort of Id</param>
+        /// <param name="classroom">Has a ClassId, Name, and Description</param>
+        /// <returns>An array containing a value determined by the parameter</returns>
+        [HttpPost]
+        public async Task<ActionResult<string>> CreateClassroom(Classroom classroom)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// This is how you document code
+        /// 
+        /// Visit the microservice's endpoint and append /swagger
+        /// to see your docs in action
+        /// </summary>
+        /// <param name="id">classroom id</param>
         /// <returns>An array containing a value determined by the parameter</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<string>> GetValues(string id)
+        public async Task<ActionResult<string>> GetClassroom(string id)
         {
-            await this.classesContainer.CreateItemAsync<dynamic>(new Object() { });
-            return ("Created an object");
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// This is how you document code
+        /// 
+        /// Visit the microservice's endpoint and append /swagger
+        /// to see your docs in action
+        /// </summary>
+        /// <param name="id">classroom id</param>
+        /// <returns>An array containing a value determined by the parameter</returns>
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<string>> DeleteClassroom(string id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
