@@ -76,9 +76,9 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <param name=""></param>
         /// <returns></returns>
         [HttpPut("{noteId}/users/{userId}")]
-        public async Task<bool> UpdateTag(string noteId, string userId, Tag update)
+        public Task<bool> UpdateTag(string noteId, string userId, Tag update)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -87,9 +87,9 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <param name="noteId">The Note ID associated with the tag to be deleted</param>
         /// <returns>Returns a list of tags that have been deleted</returns>
         [HttpDelete("{noteId}")]
-        public async Task<List<Tag>> DeleteTags(string noteId)
+        public Task<List<Tag>> DeleteTags(string noteId)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -99,9 +99,9 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <param name="userId">The ID of the user who wants to delete the tag</param>
         /// <returns></returns>
         [HttpDelete("{noteId}/users/{userId}")]
-        public async Task<Tag> DeleteTag(string noteId, string userId)
+        public Task<Tag> DeleteTag(string noteId, string userId)
         {
-
+            throw new NotImplementedException();
         }
     }
 }
