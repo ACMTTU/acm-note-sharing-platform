@@ -50,12 +50,21 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name=""></param>
-        /// <returns></returns>
+        /// <param name="tag"></param>
+        /// <returns>A boolean indicating whether a tag is created or not</returns>
         [HttpPost]
-        public async Task<bool> NewTag(Tag tag)
+        public async Task<bool> CreateNewTag(Tag tag)
         {
-
+            try{
+                if(ModelState.IsValid){
+                    tag.id = System.Guid.NewGuid().ToString();
+                    await _dbService.tagContainer.CreateItemAsync(tag);
+                }
+                return true;
+            }
+            catch {
+                return false;
+            }
         }
 
         /// <summary>
@@ -76,7 +85,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <returns></returns>
         [HttpDelete("{noteId}")]
         public async Task<List<Tag>> DeleteTags(string noteId)
-        {
+        {   
 
         }
 
