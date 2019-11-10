@@ -40,14 +40,20 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Creates a new rating
         /// </summary>
-        /// <param name=""></param>
-        /// <returns></returns>
+        /// <param name="rating">The rating object with its associate class attributes</param>
+        /// <returns> Action result for creating a new rating
+        /// </returns>
         [HttpPost]
         public async Task<bool> NewRating(Rating rating)
         {
-
+            throw{
+                if (ModelState.IsValid)
+                {
+                    GetRating(rating.noteId)
+                }
+            }
         }
 
         /// <summary>
