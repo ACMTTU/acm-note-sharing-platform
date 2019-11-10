@@ -25,12 +25,18 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <summary>
         /// Gets the rating of a specific note.
         /// </summary>
-        /// <param name="noteID">The ID of the note the user wants the ratings for</param>
+        /// <param name="noteId">The ID of the note the user wants the ratings for</param>
         /// <returns>The rating of the note</returns>
         [HttpGet("{noteId}")]
-        public async Task<Rating> GetRating(string noteId)
+        public async Task<ActionResult> GetRating(string noteId)
         {
-
+            if (noteId == null)
+                return NotFound();
+            else
+            {
+                Rating rating = await _dbService.ratingContainer.ReadItemAsync<Rating>(noteId, new PartitionKey(noteId));
+                return Ok(rating);
+            }
         }
 
         /// <summary>
