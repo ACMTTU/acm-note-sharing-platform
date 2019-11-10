@@ -55,14 +55,17 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         [HttpPost]
         public async Task<bool> CreateNewTag(Tag tag)
         {
-            try{
-                if(ModelState.IsValid){
+            try
+            {
+                if (ModelState.IsValid)
+                {
                     tag.id = System.Guid.NewGuid().ToString();
                     await _dbService.tagContainer.CreateItemAsync(tag);
                 }
                 return true;
             }
-            catch {
+            catch
+            {
                 return false;
             }
         }
@@ -85,8 +88,8 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <returns>Returns a list of tags that have been deleted</returns>
         [HttpDelete("{noteId}")]
         public async Task<List<Tag>> DeleteTags(string noteId)
-        {   
-            
+        {
+
         }
 
         /// <summary>
