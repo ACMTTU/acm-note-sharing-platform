@@ -22,6 +22,10 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             _dbService = dbService;
         }
 
+        private async Task<List<Tag>> GetTags(string query)
+        {
+
+        }
 
 
         /// <summary>
