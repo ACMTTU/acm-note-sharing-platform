@@ -48,6 +48,32 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
+        /// Gets tags by noteId and userId
+        /// </summary>
+        /// <param name="noteId">The noteId to look for the tag</param>
+        /// <param name="userId">The userId to look for the tag</param>
+        /// <returns>A boolean indicating whether a tag is created or not</returns>
+        [HttpGet("{noteId}/users/{userId}")]
+        public async Task<List<Tag>> GetTag(string noteId, string userId)
+        {
+            QueryDefinition query = new QueryDefinition($"SELECT * FROM c WHERE c.noteId={noteId} AND c.userId={userId}");
+            FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(query);
+
+            List<Tag> tags = new List<Tag>();
+
+            while (iterator.HasMoreResults)
+            {
+                var resultSet = await iterator.ReadNextAsync();
+                foreach (Tag tag in resultSet)
+                {
+                    tags.Add(tag);
+                }
+            }
+
+            return tags;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="tag"></param>
