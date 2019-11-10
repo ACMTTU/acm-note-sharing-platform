@@ -24,7 +24,21 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
 
         private async Task<List<Tag>> GetTags(string query)
         {
+            QueryDefinition queryDef = new QueryDefinition(query);
+            FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(queryDef);
 
+            List<Tag> tags = new List<Tag>();
+
+            while (iterator.HasMoreResults)
+            {
+                var resultSet = await iterator.ReadNextAsync();
+                foreach (Tag tag in resultSet)
+                {
+                    tags.Add(tag);
+                }
+            }
+
+            return tags;
         }
 
 
@@ -36,21 +50,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         [HttpGet("{noteId}")]
         public async Task<List<Tag>> GetTagsByNote(string noteId)
         {
-            QueryDefinition query = new QueryDefinition($"SELECT * FROM c WHERE c.noteId={noteId}");
-            FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(query);
-
-            List<Tag> tags = new List<Tag>();
-
-            while (iterator.HasMoreResults)
-            {
-                var resultSet = await iterator.ReadNextAsync();
-                foreach (Tag tag in resultSet)
-                {
-                    tags.Add(tag);
-                }
-            }
-
-            return tags;
+            return await GetTags($"SELECT * FROM c WHERE c.noteId={noteId}");
         }
 
         /// <summary>
@@ -62,21 +62,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         [HttpGet("{noteId}/users/{userId}")]
         public async Task<List<Tag>> GetTagsByNoteAndUser(string noteId, string userId)
         {
-            QueryDefinition query = new QueryDefinition($"SELECT * FROM c WHERE c.noteId={noteId} AND c.userId={userId}");
-            FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(query);
-
-            List<Tag> tags = new List<Tag>();
-
-            while (iterator.HasMoreResults)
-            {
-                var resultSet = await iterator.ReadNextAsync();
-                foreach (Tag tag in resultSet)
-                {
-                    tags.Add(tag);
-                }
-            }
-
-            return tags;
+            return await GetTags($"SELECT * FROM c WHERE c.noteId={noteId} AND c.userId={userId}");
         }
 
         /// <summary>
