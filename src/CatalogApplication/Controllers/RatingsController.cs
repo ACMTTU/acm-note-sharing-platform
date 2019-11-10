@@ -23,10 +23,10 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Gets the rating of a specific note.
         /// </summary>
-        /// <param name=""></param>
-        /// <returns></returns>
+        /// <param name="noteID">The ID of the note the user wants the ratings for</param>
+        /// <returns>The rating of the note</returns>
         [HttpGet("{noteId}")]
         public async Task<Rating> GetRating(string noteId)
         {
