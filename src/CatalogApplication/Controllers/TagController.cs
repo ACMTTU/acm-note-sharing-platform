@@ -48,12 +48,11 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Create a new tag. Pass everything other than id.
         /// </summary>
-        /// <param name="tag"></param>
-        /// <returns>A boolean indicating whether a tag is created or not</returns>
+        /// <returns>OK if successful otherwise bad request</returns>
         [HttpPost]
-        public async Task<bool> CreateNewTag(Tag tag)
+        public async Task<IActionResult> CreateNewTag(Tag tag)
         {
             try
             {
@@ -62,11 +61,11 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
                     tag.id = System.Guid.NewGuid().ToString();
                     await _dbService.tagContainer.CreateItemAsync(tag);
                 }
-                return true;
+                return Ok();
             }
             catch
             {
-                return false;
+                return BadRequest();
             }
         }
 
@@ -78,7 +77,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <param name="name">The tag name to update</param>
         /// <returns></returns>
         [HttpPut("{noteId}/users/{userId}/names/{name}")]
-        public Task<bool> UpdateTag(string noteId, string userId, string name, Tag update)
+        public Task<IActionResult> UpdateTag(string noteId, string userId, string name, Tag update)
         {
             throw new NotImplementedException();
         }
@@ -90,19 +89,21 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <param name="noteId">The Note ID associated with the tag to be deleted</param>
         /// <returns>Returns a list of tags that have been deleted</returns>
         [HttpDelete("{noteId}")]
-        public Task<List<Tag>> DeleteTags(string noteId)
+        public Task<IActionResult> DeleteTags(string noteId)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// 
+        /// Deletes a specific single tag. Useful for when a user wants to delete their own
+        /// tag on a note.
         /// </summary>
         /// <param name="noteId">The Note ID associated with the tag to be deleted</param>
         /// <param name="userId">The ID of the user who wants to delete the tag</param>
+        /// <param name="name">The name of the tag to delete</param>
         /// <returns></returns>
-        [HttpDelete("{noteId}/users/{userId}")]
-        public Task<Tag> DeleteTag(string noteId, string userId)
+        [HttpDelete("{noteId}/users/{userId}/name/{name}")]
+        public Task<IActionResult> DeleteTag(string noteId, string userId, string name)
         {
             throw new NotImplementedException();
         }
