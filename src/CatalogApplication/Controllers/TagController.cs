@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
 {
-    [Route("api/catalog")]
+    [Route("api/catalog/tags")]
     [ApiController]
     public class CatalogController : ControllerBase
     {
@@ -23,15 +23,12 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
-        /// This is how you document code
-        /// 
-        /// Visit the microservice's endpoint and append /swagger
-        /// to see your docs in action
+        /// Retrieve a list of tags by noteId.
         /// </summary>
         /// <param name="noteId">The note ID</param>
         /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpGet("tags/note/{noteId}")]
-        public async Task<List<Tag>> GetValues(string noteId)
+        [HttpGet("{noteId}")]
+        public async Task<List<Tag>> GetTags(string noteId)
         {
             QueryDefinition query = new QueryDefinition($"SELECT * FROM c WHERE c.noteId={noteId}");
             FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(query);
@@ -48,6 +45,50 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             }
 
             return tags;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> NewTag(Tag tag)
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        [HttpPut("{noteId}/users/{userId}")]
+        public async Task<bool> UpdateTag(string noteId, string userId, Tag update)
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        [HttpDelete("{noteId}")]
+        public async Task<List<Tag>> DeleteTags(string noteId)
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        [HttpDelete("{noteId}/users/{userId}")]
+        public async Task<Tag> DeleteTag(string noteId, string userId)
+        {
+
         }
     }
 }
