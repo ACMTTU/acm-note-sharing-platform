@@ -22,13 +22,17 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             _dbService = dbService;
         }
 
+        public Task<Rating> GetRatingValue(string nodeId)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Gets the rating of a specific note.
         /// </summary>
         /// <param name="noteId">The ID of the note the user wants the ratings for</param>
         /// <returns>The rating of the note</returns>
         [HttpGet("{noteId}")]
-<<<<<<< HEAD
         public async Task<ActionResult> GetRating(string noteId)
         {
             if (noteId == null)
@@ -38,49 +42,36 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
                 Rating rating = await _dbService.ratingContainer.ReadItemAsync<Rating>(noteId, new PartitionKey(noteId));
                 return Ok(rating);
             }
-=======
-        public Task<Rating> GetRating(string noteId)
-        {
-            throw new NotImplementedException();
->>>>>>> TeamFox
         }
 
         /// <summary>
         /// Creates a new rating
         /// </summary>
-        /// <param name="rating">The rating object with its associate class attributes</param>
+        /// <param name="newRating">The rating object with its associate class attributes</param>
         /// <returns> Action result for creating a new rating
         /// </returns>
         [HttpPost]
-        public Task<bool> NewRating(Rating rating)
+        public Task<ActionResult> NewRating(Rating newRating)
         {
-<<<<<<< HEAD
-            throw{
-                if (ModelState.IsValid)
-                {
-                    GetRating(rating.noteId)
-                }
-            }
-=======
             throw new NotImplementedException();
->>>>>>> TeamFox
         }
 
         /// <summary>
-        /// 
+        /// Updates the rating on the basis of the noteID
         /// </summary>
-        /// <param name=""></param>
+        /// <param name="noteId">ID of the note whose ratings need to be updated.</param>
+        /// <param name="stars">A double value that indicates the new rating for the note. </param>
         /// <returns></returns>
         [HttpPut("{noteId}/rating/{stars}")]
-        public Task<bool> UpdateRating(string noteId, string stars, Rating update)
+        public Task<bool> UpdateRating(string noteId, double stars)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// 
+        /// Deletes the most recent rating created by the user
         /// </summary>
-        /// <param name=""></param>
+        /// <param name="noteId">The ID of note that needs its rating to be deleted.</param>
         /// <returns></returns>
         [HttpDelete("{noteId}")]
         public Task<Rating> DeleteRating(string noteId)

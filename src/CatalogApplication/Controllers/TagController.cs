@@ -48,10 +48,10 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Creates a new tag
         /// </summary>
         /// <param name="tag"></param>
-        /// <returns>A boolean indicating whether a tag is created or not</returns>
+        /// <returns>An ActionResult that indicates whether a tag is created or not</returns>
         [HttpPost]
         public async Task<bool> CreateNewTag(Tag tag)
         {
@@ -71,9 +71,11 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Updates the tag created by the user
         /// </summary>
-        /// <param name=""></param>
+        /// <param name="noteId">The ID of the note that needs its tags updated</param>
+        /// <param name="userId">The ID of the user requesting the update</param>
+        /// <param name="update">The body of the updated tag</param>
         /// <returns></returns>
         [HttpPut("{noteId}/users/{userId}")]
         public Task<bool> UpdateTag(string noteId, string userId, Tag update)
