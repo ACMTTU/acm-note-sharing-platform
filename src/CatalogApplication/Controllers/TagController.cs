@@ -22,16 +22,10 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             _dbService = dbService;
         }
 
-        /// <summary>
-        /// Retrieve a list of tags by noteId.
-        /// </summary>
-        /// <param name="noteId">The note ID</param>
-        /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpGet("{noteId}")]
-        public async Task<List<Tag>> GetTags(string noteId)
+        private async Task<List<Tag>> GetTags(string query)
         {
-            QueryDefinition query = new QueryDefinition($"SELECT * FROM c WHERE c.noteId={noteId}");
-            FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(query);
+            QueryDefinition queryDef = new QueryDefinition(query);
+            FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(queryDef);
 
             List<Tag> tags = new List<Tag>();
 
@@ -45,6 +39,30 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             }
 
             return tags;
+        }
+
+
+        /// <summary>
+        /// Retrieve a list of tags by noteId.
+        /// </summary>
+        /// <param name="noteId">The note ID</param>
+        /// <returns>An array containing a value determined by the parameter</returns>
+        [HttpGet("{noteId}")]
+        public async Task<List<Tag>> GetTagsByNote(string noteId)
+        {
+            return await GetTags($"SELECT * FROM c WHERE c.noteId={noteId}");
+        }
+
+        /// <summary>
+        /// Gets tags by noteId and userId
+        /// </summary>
+        /// <param name="noteId">The noteId to look for the tag</param>
+        /// <param name="userId">The userId to look for the tag</param>
+        /// <returns>A boolean indicating whether a tag is created or not</returns>
+        [HttpGet("{noteId}/users/{userId}")]
+        public async Task<List<Tag>> GetTagsByNoteAndUser(string noteId, string userId)
+        {
+            return await GetTags($"SELECT * FROM c WHERE c.noteId={noteId} AND c.userId={userId}");
         }
 
         /// <summary>
