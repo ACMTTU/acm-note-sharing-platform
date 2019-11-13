@@ -58,5 +58,40 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        ///This call is used to delete a classroom
+        ///by classID
+        ///</summary>
+        ///<param name= "classId">ID of the classroom </param>
+        [HttpDelete("{classId}")]
+        public async Task<ActionResult<string>> deleteClass(string classId)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///This call is used to update the name and/or description of a class
+        ///by classId
+        ///</summary>
+        ///<param name="classId">Id of the classroom</param>
+        ///<param name="className">Name of classroom to set</param>
+        ///<param name="classDescription">Description of classroom to set</param>
+        [HttpPut("{classId}")]
+        public async Task<ActionResult<string>> updateClass(string classId, string className, string classDescription)
+        {
+            throw new NotImplementedException();
+        }
+
+        ///<summary>
+        ///This call is used to query a list of notes in a class
+        ///bu classId
+        ///</summary>
+        ///<param name="classId">Id of the classroom</param>
+        ///<param name="noteName">Name of the note to search for</param>
+        [HttpQuery("{classId}")]
+        public async Task<ActionResult<string>> QueryNote(string classId, string noteName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
