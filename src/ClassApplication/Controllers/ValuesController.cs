@@ -21,10 +21,9 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         }
 
         /// <summary>
-        /// This is how you document code
         /// 
-        /// Visit the microservice's endpoint and append /swagger
-        /// to see your docs in action
+        /// Creates a classroom in the database from a given Classroom object
+        /// 
         /// </summary>
         /// <param name="classroom">Has a ClassId, Name, and Description</param>
         /// <returns>An array containing a value determined by the parameter</returns>
@@ -35,10 +34,9 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         }
 
         /// <summary>
-        /// This is how you document code
         /// 
-        /// Visit the microservice's endpoint and append /swagger
-        /// to see your docs in action
+        /// Returns data from a classroom from a given classroom ID
+        ///
         /// </summary>
         /// <param name="id">classroom id</param>
         /// <returns>An array containing a value determined by the parameter</returns>
@@ -49,44 +47,14 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         }
 
         /// <summary>
-        /// This is how you document code
         /// 
-        /// Visit the microservice's endpoint and append /swagger
-        /// to see your docs in action
+        /// Finds a classroom by the classrooms name
+        ///
         /// </summary>
-        /// <param name="id">classroom id</param>
+        /// <param name="className">classroom name</param>
         /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<string>> DeleteClassroom(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// This is how you document code
-        /// 
-        /// Visit the microservice's endpoint and append /swagger
-        /// to see your docs in action
-        /// </summary>
-        /// <param name="id">classroom id</param>
-        /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpPut("{id}")]
-        public async Task<ActionResult<string>> UpdateClassroom(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// This is how you document code
-        /// 
-        /// Visit the microservice's endpoint and append /swagger
-        /// to see your docs in action
-        /// </summary>
-        /// <param name="classID">classroom id</param>
-        ///<param name="userID">user id</param>
-        /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpPut("{classID}/Users/{userID}")]
-        public async Task<ActionResult<string>> AddUserToClass(string classID, string userID)
+        [HttpGet("{className}")]
+        public async Task<ActionResult<string>> QueryClassByName(string className)
         {
             throw new NotImplementedException();
         }
