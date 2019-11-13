@@ -88,7 +88,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///</summary>
         ///<param name="classId">Id of the classroom</param>
         ///<param name="noteName">Name of the note to search for</param>
-        [HttpQuery("{classId}")]
+        [HttpGet("{classId}")]
         public async Task<ActionResult<string>> QueryNote(string classId, string noteName)
         {
             throw new NotImplementedException();
