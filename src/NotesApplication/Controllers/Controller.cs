@@ -52,7 +52,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         /// <param name="userId">The id of the user submiting the request</param>
         /// <returns>if note exists and user has permision to get it return Sucess else return failure.</returns>
         [HttpGet("{noteId}/users/${userId}")]
-        public Task<Note> GetNote(string noteId, string userId)
+        public async Task<Note> GetNote(string noteId, string userId)
         {
             Note note;
             note = await NotesContainer.ReadItemAsync<Note>(noteId, partKey);
@@ -76,11 +76,23 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         [HttpDelete("{noteId}/users/{userId}")]
         public async Task<bool> DeleteNote(string noteId, string userId)
         {
+            if (await verifyPermission(noteId, userId) == true)
+            {
+                await NotesContainer.DeleteItemAsync<Note>(noteId, partKey);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> verifyPermission(string noteId, string userId)
+        {
             Note deleteNote = await GetNote(noteId, userId);
 
-            if (deleteNote.ownerId == userId) // verifies userId is allowed to delete note
+            if (deleteNote.ownerId == userId) // verifies userId matches note ID
             {
-                await NotesContainer.DeleteItemAsync<Note>(noteId, new PartitionKey(noteId));
                 return true;
             }
             else
