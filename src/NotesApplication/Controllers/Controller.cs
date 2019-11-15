@@ -74,16 +74,16 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         /// <param name="userId">The id of the user deleting the note</param>
         /// <returns>if note exists and user has permision to delete it return Sucess else return failure.</returns>
         [HttpDelete("{noteId}/users/{userId}")]
-        public async Task<bool> DeleteNote(string noteId, string userId)
+        public async Task<IActionResult> DeleteNote(string noteId, string userId)
         {
             if (await verifyPermission(noteId, userId) == true)
             {
                 await NotesContainer.DeleteItemAsync<Note>(noteId, partKey);
-                return true;
+                return Ok();
             }
             else
             {
-                return false;
+                return BadRequest();
             }
         }
 
