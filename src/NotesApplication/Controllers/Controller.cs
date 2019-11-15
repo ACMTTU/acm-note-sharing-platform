@@ -101,6 +101,12 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// Verify permision to manipulate note
+        /// </summary>
+        /// <param name="noteId">The id of the note we want to manipulate</param>
+        /// <param name="userId">The id of the user manipulating the note</param>
+        /// <returns>if note exists and user has permision to manipulate it return true else return false.</returns>        
         public async Task<bool> verifyPermission(string noteId, string userId)
         {
             Note deleteNote = await GetNote(noteId, userId);
