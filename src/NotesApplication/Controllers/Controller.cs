@@ -101,7 +101,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
             }
         }
 
-        public async Task<bool> verifyPermission(string noteId, string userId)
+        private async Task<bool> verifyPermission(string noteId, string userId)
         {
             Note deleteNote = await GetNote(noteId, userId);
 
