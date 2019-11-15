@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ACMTTU.NoteSharing.Shared.SDK.Controllers;
@@ -72,10 +72,43 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         /// <param name="userId">The id of the user submiting the request</param>
         /// <returns>if notes exist and user has permission to get it return Success else return failure.</returns>
         [HttpGet("users/${userId}")]
-        public async Task<Note[]> GetUserNotes(string userId)
+        public async Task<ActionResult<Note[]>> GetUserNotes(string userId)
         {
             throw new NotImplementedException();
+        }
 
+        /// <summary>
+        /// Delete note object after verifying permisions
+        /// </summary>
+        /// <param name="noteId">The id of the note we want to delete</param>
+        /// <param name="userId">The id of the user deleting the note</param>
+        /// <returns>if note exists and user has permision to delete it return Sucess else return failure.</returns>
+        [HttpDelete("{noteId}/users/{userId}")]
+        public async Task<IActionResult> DeleteNote(string noteId, string userId)
+        {
+            if (await verifyPermission(noteId, userId) == true)
+            {
+                await NotesContainer.DeleteItemAsync<Note>(noteId, partKey);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        public async Task<bool> verifyPermission(string noteId, string userId)
+        {
+            Note deleteNote = await GetNote(noteId, userId);
+
+            if (deleteNote.ownerId == userId) // verifies userId matches note ID
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
