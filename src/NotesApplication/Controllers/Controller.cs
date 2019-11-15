@@ -52,20 +52,30 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         /// <param name="userId">The id of the user submiting the request</param>
         /// <returns>if note exists and user has permision to get it return Sucess else return failure.</returns>
         [HttpGet("{noteId}/users/${userId}")]
-        public async Task<Note> GetNote(string noteId, string userId)
+        public async Task<ActionResult<Note>> GetNote(string noteId, string userId)
         {
             Note note;
             note = await NotesContainer.ReadItemAsync<Note>(noteId, partKey);
 
             if (note.ownerId == userId)
             {
-                return note;
+                return Ok(note);
             }
             else
             {
-                return null;
+                return BadRequest();
             }
         }
-    }
+        /// <summary>
+        /// get a all notes for a given user
+        /// </summary>
+        /// <param name="userId">The id of the user submiting the request</param>
+        /// <returns>if notes exist and user has permission to get it return Success else return failure.</returns>
+        [HttpGet("users/${userId}")]
+        public async Task<Note[]> GetUserNotes(string userId)
+        {
+            throw new NotImplementedException();
 
+        }
+    }
 }
