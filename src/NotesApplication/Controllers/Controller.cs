@@ -66,6 +66,15 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
                 return null;
             }
         }
+        /// <summary>
+        /// get a all notes for a given user
+        /// </summary>
+        /// <param name="userId">The id of the user submiting the request</param>
+        /// <returns>if notes exist and user has permission to get it return Success else return failure.</returns>
+        [HttpGet("users/${userId}")]
+        public async Task<Note[]> GetUserNotes(string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
-
 }
