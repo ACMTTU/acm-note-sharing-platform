@@ -1,10 +1,8 @@
 {
     "debug.node.autoAttach": "off",
-    
-    "editor.tabSize": 4,
-    "editor.insertSpaces": true,
-    "editor.trimAutoWhitespace": true,
-    "editor.formatOnSave": true,
-
-    "json.format.enable": true
-}
+    "json.format.enable": true,
+    "omnisharp.enableEditorConfigSupport": true,
+  
+    "editor.formatOnSave": true
+  }
+  

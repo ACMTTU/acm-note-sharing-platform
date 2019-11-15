@@ -14,7 +14,6 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         public async override Task Setup()
         {
             var client = await this.dbClient.CreateDatabaseIfNotExistsAsync("NoteDatabase");
-
             ContainerResponse containerResp = await client.Database.CreateContainerIfNotExistsAsync("NoteContainer", "/");
 
             container = containerResp.Container;
