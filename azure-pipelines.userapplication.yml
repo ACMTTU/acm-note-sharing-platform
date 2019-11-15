@@ -23,7 +23,7 @@ jobs:
       - task: DotNetCoreInstaller@0
         inputs:
           version: "2.1.802"
-      - script: dotnet test ./src/UserApplication/UserApplication.csproj
+      - script: dotnet build ./src/UserApplication/UserApplication.csproj && dotnet test ./src/UserApplication/UserApplication.csproj
 
   - job: PushAndDeployImage
     dependsOn:
