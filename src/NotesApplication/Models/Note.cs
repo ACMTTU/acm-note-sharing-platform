@@ -50,7 +50,7 @@ namespace NotesApplication
         /// <param name="notes">The files attached to the note.</param>
         /// <param name="createdAt">The time at which the note was created.</param>
         /// <param name="lastModified">The time at which the note was last modified.</param>
-        private Note(string id, string name, string[] notes, DateTime createdAt, DateTime lastModified)
+        public Note(string id, string name, string[] notes, DateTime createdAt, DateTime lastModified)
         {
             this.id = id;
             Name = name;
@@ -102,6 +102,7 @@ namespace NotesApplication
         /// <param name="id">The id of the note in the database.</param>
         public static Note Create(string id) //We need to figure out exactly *how* we are going to do this. This method may not be needed.
         {
+
             throw new System.NotImplementedException();
         }
 
