@@ -51,11 +51,19 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <returns> Action result for creating a new rating
         /// </returns>
         [HttpPost]
-        public Task<ActionResult> NewRating(Rating newRating)
+        public async Task<ActionResult> NewRating(Rating newRating)
         {
-            throw new NotImplementedException();
-        }
+            if (newRating.noteId == null)
+                return NotFound();
+            else
+            {
+                newRating.numRatings = 1;
+                Rating rating = await _dbService.ratingContainer.CreateItemAsync(newRating);
+                return Ok(rating);
 
+            }
+
+        }
         /// <summary>
         /// Updates the rating on the basis of the noteID
         /// </summary>
