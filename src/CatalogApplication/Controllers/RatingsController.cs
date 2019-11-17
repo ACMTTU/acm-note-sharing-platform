@@ -70,7 +70,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <param name="noteId">ID of the note whose ratings need to be updated.</param>
         /// <param name="userRating">A double value that indicates the new rating for the note. </param>
         /// <returns></returns>
-        [HttpPut("{noteId}/rating/{userRating}")]
+        [HttpPut("{noteId}/{userRating}")]
         public async Task<ActionResult> UpdateRating(string noteId, double userRating)
         {
             if (noteId == null || userRating <= 0)
@@ -80,6 +80,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
                 Rating rating = await _dbService.ratingContainer.ReadItemAsync<Rating>(noteId, new PartitionKey(noteId));
                 rating.numRatings = rating.numRatings + 1;
                 rating.rating = (rating.rating + userRating) / (rating.numRatings);
+                await _dbService.ratingContainer.ReplaceItemAsync<Rating>(rating, noteId);
                 return Ok(rating);
             }
         }
