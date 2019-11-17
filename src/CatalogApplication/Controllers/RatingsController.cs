@@ -74,7 +74,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <param name="noteId">The ID of note that needs its rating to be deleted.</param>
         /// <returns></returns>
         [HttpDelete("{noteId}")]
-        public Task<Rating> DeleteRating(string noteId)
+        public Task<IActionResult> DeleteRating(string noteId)
         {
             throw new NotImplementedException();
         }
