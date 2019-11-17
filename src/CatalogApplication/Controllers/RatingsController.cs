@@ -45,10 +45,10 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
-        /// Creates a new rating
+        /// Creates a new rating for the given note
         /// </summary>
         /// <param name="newRating">The rating object with its associate class attributes</param>
-        /// <returns> Action result for creating a new rating
+        /// <returns> Action Result for the async operation
         /// </returns>
         [HttpPost]
         public async Task<ActionResult> NewRating(Rating newRating)
