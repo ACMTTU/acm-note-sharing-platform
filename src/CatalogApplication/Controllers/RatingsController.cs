@@ -86,10 +86,10 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
-        /// Deletes the most recent rating created by the user
+        /// Delete a specific rating, useful for when a note gets deleted.
         /// </summary>
-        /// <param name="noteId">The ID of note that needs its rating to be deleted.</param>
-        /// <returns></returns>
+        /// <param name="noteId">White note's rating to delete</param>
+        /// <returns>OK on success, otherwise bad request</returns>
         [HttpDelete("{noteId}")]
         public Task<IActionResult> DeleteRating(string noteId)
         {

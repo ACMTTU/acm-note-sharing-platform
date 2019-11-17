@@ -26,6 +26,17 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         {
             QueryDefinition queryDef = new QueryDefinition(query);
             FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(queryDef);
+            
+        /// <summary>
+        /// Retrieve a list of tags by noteId.
+        /// </summary>
+        /// <param name="noteId">The note ID</param>
+        /// <returns>An array containing a value determined by the parameter</returns>
+        [HttpGet("{noteId}")]
+        public async Task<List<Tag>> GetTags(string noteId)
+        {
+            QueryDefinition query = new QueryDefinition($"SELECT * FROM c WHERE c.noteId={noteId}");
+            FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(query);
 
             List<Tag> tags = new List<Tag>();
 
@@ -40,7 +51,6 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
 
             return tags;
         }
-
 
         /// <summary>
         /// Retrieve a list of tags by noteId.
