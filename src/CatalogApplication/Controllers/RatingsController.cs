@@ -22,44 +22,65 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             _dbService = dbService;
         }
 
+        public Task<Rating> GetRatingValue(string nodeId)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
-        /// Get a single rating based off noteId.
+        /// Gets the rating of a specific note.
         /// </summary>
-        /// <param name="noteId">The note you want the rating of</param>
-        /// <returns>A single Rating object</returns>
+        /// <param name="noteId">The ID of the note the user wants the ratings for</param>
+        /// <returns>The rating of the note</returns>
         [HttpGet("{noteId}")]
-        public Task<Rating> GetRating(string noteId)
+        public async Task<ActionResult> GetRating(string noteId)
         {
-            throw new NotImplementedException();
+            if (noteId == null)
+                return NotFound();
+            else
+            {
+                Rating rating = await _dbService.ratingContainer.ReadItemAsync<Rating>(noteId, new PartitionKey(noteId));
+                return Ok(rating);
+            }
         }
 
         /// <summary>
-        /// Create a new rating, useful for when a new note is created.
+        /// Creates a new rating for the given note
         /// </summary>
-        /// <returns>OK on success, bad request otherwise</returns>
+        /// <param name="newRating">The rating object with its associate class attributes</param>
+        /// <returns> Action Result for the async operation
+        /// </returns>
         [HttpPost]
-        public Task<IActionResult> NewRating(Rating rating)
+        public async Task<ActionResult> CreateRating(Rating newRating)
         {
-            throw new NotImplementedException();
-        }
+            if (newRating.noteId == null && newRating.rating <= 0)
+                return BadRequest();
+            else
+            {
+                newRating.numRatings = 1;
+                Rating rating = await _dbService.ratingContainer.CreateItemAsync(newRating);
+                return Ok(rating);
 
+            }
+
+        }
         /// <summary>
-        /// Update a rating, should be called when a user rates a note.
+        /// Updates the rating on the basis of the noteID
         /// </summary>
-        /// <param name="noteId">Which note's rating to update</param>
-        /// <param name="stars">The rating that the user gave, should be 0-5 inclusive</param>
+        /// <param name="noteId">ID of the note whose ratings need to be updated.</param>
+        /// <param name="stars">A double value that indicates the new rating for the note. </param>
         /// <returns></returns>
         [HttpPut("{noteId}/rating/{stars}")]
-        public Task<IActionResult> UpdateRating(string noteId, string stars, Rating update)
+        public Task<bool> UpdateRating(string noteId, double stars)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Delete a specific rating, useful for when a note gets deleted.
+        /// Deletes the most recent rating created by the user
         /// </summary>
-        /// <param name="noteId">White note's rating to delete</param>
-        /// <returns>OK on success, otherwise bad request</returns>
+        /// <param name="noteId">The ID of note that needs its rating to be deleted.</param>
+        /// <returns></returns>
         [HttpDelete("{noteId}")]
         public Task<IActionResult> DeleteRating(string noteId)
         {
