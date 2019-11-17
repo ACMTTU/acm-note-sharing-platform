@@ -45,17 +45,25 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
-        /// Creates a new rating
+        /// Creates a new rating for the given note
         /// </summary>
         /// <param name="newRating">The rating object with its associate class attributes</param>
-        /// <returns> Action result for creating a new rating
+        /// <returns> Action Result for the async operation
         /// </returns>
         [HttpPost]
-        public Task<ActionResult> NewRating(Rating newRating)
+        public async Task<ActionResult> CreateRating(Rating newRating)
         {
-            throw new NotImplementedException();
-        }
+            if (newRating.noteId == null && newRating.rating <= 0)
+                return BadRequest();
+            else
+            {
+                newRating.numRatings = 1;
+                Rating rating = await _dbService.ratingContainer.CreateItemAsync(newRating);
+                return Ok(rating);
 
+            }
+
+        }
         /// <summary>
         /// Updates the rating on the basis of the noteID
         /// </summary>
