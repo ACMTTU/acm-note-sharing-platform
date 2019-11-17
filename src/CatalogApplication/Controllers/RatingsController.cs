@@ -53,7 +53,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateRating(Rating newRating)
         {
-            if (newRating.noteId == null && newRating.rating < 0)
+            if (newRating.noteId == null && newRating.rating <= 0)
                 return BadRequest();
             else
             {
