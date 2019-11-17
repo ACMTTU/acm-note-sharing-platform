@@ -53,7 +53,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateRating(Rating newRating)
         {
-            if (newRating.noteId == null && newRating.rating <= 0)
+            if (newRating.noteId == null || newRating.rating <= 0)
                 return BadRequest();
             else
             {
@@ -68,12 +68,21 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// Updates the rating on the basis of the noteID
         /// </summary>
         /// <param name="noteId">ID of the note whose ratings need to be updated.</param>
-        /// <param name="stars">A double value that indicates the new rating for the note. </param>
+        /// <param name="userRating">A double value that indicates the new rating for the note. </param>
         /// <returns></returns>
-        [HttpPut("{noteId}/rating/{stars}")]
-        public Task<bool> UpdateRating(string noteId, double stars)
+        [HttpPut("{noteId}/rating/{userRating}")]
+        public async Task<ActionResult> UpdateRating(string noteId, double userRating)
         {
-            throw new NotImplementedException();
+            if (noteId == null || userRating <= 0)
+                return BadRequest();
+            else
+            {
+                Rating rating = await _dbService.ratingContainer.ReadItemAsync<Rating>(noteId, new PartitionKey(noteId));
+                rating.numRatings = rating.numRatings + 1;
+                rating.rating = (rating.rating + userRating) / (rating.numRatings);
+                await _dbService.ratingContainer.ReplaceItemAsync<Rating>(rating, noteId);
+                return Ok(rating);
+            }
         }
 
         /// <summary>
