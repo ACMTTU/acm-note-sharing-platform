@@ -70,7 +70,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <param name="noteId">ID of the note whose ratings need to be updated.</param>
         /// <param name="userRating">A double value that indicates the new rating for the note. </param>
         /// <returns></returns>
-        [HttpPut("{noteId}/{userRating}")]
+        [HttpPut("{noteId}/rating/{userRating}")]
         public async Task<ActionResult> UpdateRating(string noteId, double userRating)
         {
             if (noteId == null || userRating <= 0)
