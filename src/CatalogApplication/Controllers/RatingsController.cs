@@ -22,11 +22,6 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             _dbService = dbService;
         }
 
-        public Task<Rating> GetRatingValue(string nodeId)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Gets the rating of a specific note.
         /// </summary>

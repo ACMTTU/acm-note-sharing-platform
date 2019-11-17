@@ -122,24 +122,38 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// </summary>
         /// <param name="noteId">The Note ID associated with the tag to be deleted</param>
         /// <returns>Returns a list of tags that have been deleted</returns>
-        [HttpDelete("{noteId}")]
+        [HttpDelete("notes/{noteId}")]
         public Task<IActionResult> DeleteTags(string noteId)
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>
         /// Deletes a specific single tag. Useful for when a user wants to delete their own
         /// tag on a note.
         /// </summary>
-        /// <param name="noteId">The Note ID associated with the tag to be deleted</param>
-        /// <param name="userId">The ID of the user who wants to delete the tag</param>
-        /// <param name="name">The name of the tag to delete</param>
+        /// <param name="id">The id associated with the tag to be deleted</param>
         /// <returns></returns>
-        [HttpDelete("{noteId}/users/{userId}/name/{name}")]
-        public Task<IActionResult> DeleteTag(string noteId, string userId, string name)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTag(string id)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _dbService.tagContainer.DeleteItemAsync<Tag>(id, new PartitionKey(id));
+                    return Ok();
+                }
+                catch
+                {
+                    return BadRequest();
+                }
+            }
+            return null;
         }
     }
 }
