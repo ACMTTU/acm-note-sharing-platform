@@ -86,7 +86,8 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
                 return BadRequest();
             }
         }
-
+        
+        /// <summary>
         /// Updates a tag based off of id. 
         /// </summary>
         /// <param name="id">The id to look for the specific tag</param>
