@@ -87,17 +87,34 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             }
         }
 
-        /// <summary>
-        /// Updates a tag based off noteId, userId, and name.
+
+        /// Updates a tag based off of id. 
         /// </summary>
-        /// <param name="noteId">The noteId to look for tags in</param>
-        /// <param name="userId">The userId the tag must have</param>
-        /// <param name="name">The tag name to update</param>
+        /// <param name="id">The id to look for the specific tag</param>
+        /// <param name="tag">the updated version of the tag</param>
         /// <returns></returns>
-        [HttpPut("{noteId}/users/{userId}/names/{name}")]
-        public Task<IActionResult> UpdateTag(string noteId, string userId, string name, Tag update)
+        [HttpPut("{id}/id")]
+        [ActionName("Edit")]
+        public async Task<ActionResult> UpdateTag(string id, Tag tag)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _dbService.tagContainer.UpsertItemAsync<Tag>(tag, new PartitionKey(id));
+                    return Ok();
+                }
+                catch
+                {
+                    return BadRequest();
+                }
+
+            }
+            return null;
         }
 
         /// <summary>
@@ -111,7 +128,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         {
             throw new NotImplementedException();
         }
-
+        
         /// <summary>
         /// Deletes a specific single tag. Useful for when a user wants to delete their own
         /// tag on a note.
