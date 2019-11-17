@@ -88,11 +88,12 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
-        /// Updates a tag based off noteId, userId, and name.
+        /// Updates the tag created by the user
         /// </summary>
-        /// <param name="noteId">The noteId to look for tags in</param>
-        /// <param name="userId">The userId the tag must have</param>
-        /// <param name="name">The tag name to update</param>
+        /// <param name="noteId">The ID of the note that needs its tags updated</param>
+        /// <param name="userId">The ID of the user requesting the update</param>
+        /// <param name="name"> The name of the new tag </param>
+        /// <param name="update">The body of the updated tag</param>
         /// <returns></returns>
         [HttpPut("{noteId}/users/{userId}/names/{name}")]
         public Task<IActionResult> UpdateTag(string noteId, string userId, string name, Tag update)
