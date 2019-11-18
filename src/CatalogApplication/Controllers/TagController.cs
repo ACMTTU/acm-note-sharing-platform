@@ -86,7 +86,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
                 return BadRequest();
             }
         }
-        
+
         /// <summary>
         /// Updates a tag based off of id. 
         /// </summary>
@@ -123,10 +123,24 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// </summary>
         /// <param name="noteId">The Note ID associated with the tag to be deleted</param>
         /// <returns>Returns a list of tags that have been deleted</returns>
-        [HttpDelete("notes/{noteId}")]
-        public Task<IActionResult> DeleteTags(string noteId)
+        [HttpDelete("{noteId}")]
+        public async Task<List<Tag>> DeleteTags(string noteId)
         {
-            throw new NotImplementedException();
+            QueryDefinition queryDef = new QueryDefinition($"SELECT * FROM c WHERE c.noteId={noteId}");
+            FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(queryDef);
+
+            List<Tag> deletedTags = new List<Tag>();
+
+            while (iterator.HasMoreResults)
+            {
+                var resultSet = await iterator.ReadNextAsync();
+                foreach (Tag tag in resultSet)
+                {
+                    await DeleteTag(tag.id);
+                    deletedTags.Add(tag);
+                }
+            }
+            return deletedTags;
         }
 
         /// <summary>
