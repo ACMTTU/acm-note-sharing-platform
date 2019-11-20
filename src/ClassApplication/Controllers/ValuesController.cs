@@ -40,7 +40,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         /// </summary>
         /// <param name="id">classroom id</param>
         /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpGet("{id}")]
+        [HttpGet("GetClassByID/{id}")]
         public async Task<ActionResult<string>> GetClassroom(string id)
         {
             throw new NotImplementedException();
@@ -53,7 +53,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         /// </summary>
         /// <param name="className">classroom name</param>
         /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpGet("{className}")]
+        [HttpGet("GetClassByName/{className}")]
         public async Task<ActionResult<string>> QueryClassByName(string className)
         {
             throw new NotImplementedException();
