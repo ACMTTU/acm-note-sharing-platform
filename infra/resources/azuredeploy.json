@@ -43,7 +43,7 @@
             "name": "[parameters('cluster_name')]",
             "location": "westus2",
             "properties": {
-                "kubernetesVersion": "1.14.5",
+                "kubernetesVersion": "1.14.8",
                 "dnsPrefix": "notes-app",
                 "agentPoolProfiles": [
                     {
@@ -53,7 +53,7 @@
                         "osDiskSizeGB": 100,
                         "maxPods": 110,
                         "type": "AvailabilitySet",
-                        "orchestratorVersion": "1.14.5",
+                        "orchestratorVersion": "1.14.8",
                         "enableNodePublicIP": false,
                         "osType": "Linux"
                     }
