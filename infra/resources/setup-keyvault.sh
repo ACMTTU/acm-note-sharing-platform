@@ -15,10 +15,10 @@ echo "Password: "
 read clientSecret
 
 # # Set up kubectl for AKS
-az aks get-credentials --resource-group acm-notes --name acm-notes-aks
+az aks get-credentials --resource-group notes-app --name notes-app-aks
 
 # Create a Secret in Kubernetes Cluster
-kubectl create secret generic acmkvcreds \
+kubectl create secret generic notesappkvcreds \
 --from-literal clientid=$appId \
 --from-literal clientsecret=$clientSecret \
 --namespace secrets \
@@ -28,8 +28,8 @@ kubectl create secret generic acmkvcreds \
 az role assignment create \
 --role Reader \
 --assignee $appId \
---scope /subscriptions/$subscriptionId/resourcegroups/acm-notes/providers/Microsoft.KeyVault/vaults/acm-notes-kv
+--scope /subscriptions/$subscriptionId/resourcegroups/notes-app/providers/Microsoft.KeyVault/vaults/notes-app-kv
 
-az keyvault set-policy -n acm-notes-kv --key-permissions get --spn $appId
-az keyvault set-policy -n acm-notes-kv --secret-permissions get --spn $appId
-az keyvault set-policy -n acm-notes-kv --certificate-permissions get --spn $appId
+az keyvault set-policy -n notes-app-kv --key-permissions get --spn $appId
+az keyvault set-policy -n notes-app-kv --secret-permissions get --spn $appId
+az keyvault set-policy -n notes-app-kv --certificate-permissions get --spn $appId

@@ -9,30 +9,30 @@
             "type": "string"
         },
         "docdb_name": {
-            "defaultValue": "acm-notes-docdb",
+            "defaultValue": "notes-app-docdb",
             "type": "string"
         },
         "eventhub_namespace_name": {
-            "defaultValue": "acm-notes-hub",
+            "defaultValue": "notes-app-hub",
             "type": "string"
         },
         "registry_name": {
-            "defaultValue": "acmnotesregistry",
+            "defaultValue": "notesappregistry",
             "type": "string"
         },
         "storage_account_name": {
-            "defaultValue": "acmnotesblob",
+            "defaultValue": "notesappblob",
             "type": "string"
         },
         "create_redis_instance": {
             "type": "bool"
         },
         "redis_cache_name": {
-            "defaultValue": "acm-notes-cache",
+            "defaultValue": "notes-app-cache",
             "type": "string"
         },
         "cluster_name": {
-            "defaultValue": "acm-notes-aks",
+            "defaultValue": "notes-app-aks",
             "type": "string"
         }
     },
@@ -43,8 +43,8 @@
             "name": "[parameters('cluster_name')]",
             "location": "westus2",
             "properties": {
-                "kubernetesVersion": "1.14.5",
-                "dnsPrefix": "acm-notes",
+                "kubernetesVersion": "1.14.8",
+                "dnsPrefix": "notes-app",
                 "agentPoolProfiles": [
                     {
                         "name": "agentpool",
@@ -53,7 +53,7 @@
                         "osDiskSizeGB": 100,
                         "maxPods": 110,
                         "type": "AvailabilitySet",
-                        "orchestratorVersion": "1.14.5",
+                        "orchestratorVersion": "1.14.8",
                         "enableNodePublicIP": false,
                         "osType": "Linux"
                     }
@@ -70,7 +70,7 @@
                         }
                     }
                 },
-                "nodeResourceGroup": "[concat('MC_acm-notes_', parameters('cluster_name'), '_westus2')]",
+                "nodeResourceGroup": "[concat('MC_notes-app_', parameters('cluster_name'), '_westus2')]",
                 "enableRBAC": true,
                 "networkProfile": {
                     "networkPlugin": "kubenet",
@@ -452,7 +452,7 @@
         },
         {
             "apiVersion": "2016-10-01",
-            "name": "acm-notes-kv",
+            "name": "notes-app-kv",
             "location": "westus2",
             "type": "Microsoft.KeyVault/vaults",
             "properties": {

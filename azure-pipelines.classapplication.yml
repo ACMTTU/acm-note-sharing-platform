@@ -11,8 +11,8 @@ resources:
   - repo: self
 
 variables:
-  kubernetesCluster: "acm-notes-aks"
-  azureResourceGroup: "acm-notes"
+  kubernetesCluster: "notes-app-aks"
+  azureResourceGroup: "notes-app"
 
 jobs:
   - job: UnitTest
