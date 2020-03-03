@@ -8,6 +8,7 @@ Adds a new user with a unique email and password. This password will be reset as
 Prerequisites:
 * Knowledge of what the resource group name is (typically, `notes-app`)
 * Knowledge of which group to add the new user to (Current: `ACM Notes Sharing Application Developers Spring 2020`)
+* Must have admin privileges to the Azure Subscription for ACM
 
 Settings:
 * You can find variables `resourceGroupName` and `groupName` which you can update

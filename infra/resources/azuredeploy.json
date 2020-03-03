@@ -3,9 +3,11 @@
     "contentVersion": "1.0.0.1",
     "parameters": {
         "service_account_client_id": {
+            "defaultValue": "Client ID/App ID goes here",
             "type": "string"
         },
         "service_account_client_secret": {
+            "defaultValue": "Client Secret/Password goes here",
             "type": "string"
         },
         "docdb_name": {
@@ -415,39 +417,65 @@
             }
         },
         {
-            "type": "Microsoft.DocumentDB/databaseAccounts/apis/databases",
-            "name": "[concat(parameters('docdb_name'), '/sql/', 'staging')]",
-            "apiVersion": "2016-03-31",
-            "dependsOn": [ "[resourceId('Microsoft.DocumentDB/databaseAccounts/', parameters('docdb_name'))]" ],
-            "properties":{
-                "resource":{
-                    "id": "staging"
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "name": "[concat('staging-', parameters('docdb_name'))]",
+            "apiVersion": "2015-04-08",
+            "location": "West US 2",
+            "tags": {
+                "defaultExperience": "Core (SQL)"
+            },
+            "kind": "GlobalDocumentDB",
+            "properties": {
+                "enableAutomaticFailover": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "databaseAccountOfferType": "Standard",
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxIntervalInSeconds": 5,
+                    "maxStalenessPrefix": 100
                 },
-                "options": { "throughput": 400 }
+                "locations": [
+                    {
+                        "locationName": "West US 2",
+                        "provisioningState": "Succeeded",
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
+                "capabilities": []
             }
         },
         {
-            "type": "Microsoft.DocumentDB/databaseAccounts/apis/databases",
-            "name": "[concat(parameters('docdb_name'), '/sql/', 'production')]",
-            "apiVersion": "2016-03-31",
-            "dependsOn": [ "[resourceId('Microsoft.DocumentDB/databaseAccounts/', parameters('docdb_name'))]" ],
-            "properties":{
-                "resource":{
-                    "id": "production"
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "name": "[concat('dev-', parameters('docdb_name'))]",
+            "apiVersion": "2015-04-08",
+            "location": "West US 2",
+            "tags": {
+                "defaultExperience": "Core (SQL)"
+            },
+            "kind": "GlobalDocumentDB",
+            "properties": {
+                "enableAutomaticFailover": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "databaseAccountOfferType": "Standard",
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxIntervalInSeconds": 5,
+                    "maxStalenessPrefix": 100
                 },
-                "options": { "throughput": 400 }
-            }
-        },
-        {
-            "type": "Microsoft.DocumentDB/databaseAccounts/apis/databases",
-            "name": "[concat(parameters('docdb_name'), '/sql/', 'development')]",
-            "apiVersion": "2016-03-31",
-            "dependsOn": [ "[resourceId('Microsoft.DocumentDB/databaseAccounts/', parameters('docdb_name'))]" ],
-            "properties":{
-                "resource":{
-                    "id": "development"
-                },
-                "options": { "throughput": 400 }
+                "locations": [
+                    {
+                        "locationName": "West US 2",
+                        "provisioningState": "Succeeded",
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
+                "capabilities": []
             }
         },
         {

@@ -1,18 +1,11 @@
+source ./constants.sh
+
 # Make sure to install jq for your OS before running this script
 
 # Installing the Key Vault FlexVolumes onto the cluster
 # You must be using a cluster of 3 or more nodes for this to work
 # Otherwise, your cluster will run out of memory and die
 kubectl apply -f https://raw.githubusercontent.com/Azure/kubernetes-keyvault-flexvol/master/deployment/kv-flexvol-installer.yaml
-
-echo "Subscription Id: "
-read subscriptionId
-
-echo "App ID: "
-read appId
-
-echo "Password: "
-read clientSecret
 
 # # Set up kubectl for AKS
 az aks get-credentials --resource-group notes-app --name notes-app-aks
