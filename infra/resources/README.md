@@ -10,8 +10,9 @@ Settings:
 * `resourceGroupName`: resource group name
 * `subscriptionId`: Subscription ID for ACM Notes Project
 * `vaultName`: Name of the Azure Key Vault created during deployment. Search the `azuredeploy.json` file and find `KeyVault`
-* `appId`: App ID you get from creating a Service Principal for RBAC, assigned to the KeyVault Service
-* `clientSecret`: Password you get from creating a Service Principal for RBAC, assigned to the KeyVault Service
+* `appId`: App ID you get from creating a Service Principal for RBAC
+* `clientSecret`: Password you get from creating a Service Principal for RBAC
+* `tenantID`: Tenant ID you get from creating a Service Principal for RBAC
 
 How to run scripts:
 1. Declare proper variabels in `constants.sh`
