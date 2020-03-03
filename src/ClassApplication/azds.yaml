@@ -11,7 +11,7 @@ install:
   set:
     replicaCount: 1
     image:
-      repository: classapplication
+      repository: notesappregistry.azurecr.io/classapplication
       tag: $(tag)
       pullPolicy: Never
     ingress:

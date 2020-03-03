@@ -41,7 +41,7 @@ jobs:
         inputs:
           helmVersionToInstall: "latest"
 
-      - script: docker login -u $(DOCKER_USER) -p $(DOCKER_PASS) acmnotesregistry.azurecr.io
+      - script: docker login -u $(DOCKER_USER) -p $(DOCKER_PASS) notesappregistry.azurecr.io
         displayName: "Login"
 
       - script: ./src/UserApplication/Scripts/docker-build-push.sh
