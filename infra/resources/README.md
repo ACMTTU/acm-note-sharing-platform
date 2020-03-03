@@ -14,10 +14,9 @@ Settings:
 * `clientSecret`: Password you get from creating a Service Principal for RBAC, assigned to the KeyVault Service
 
 How to run scripts:
-1. `./deploy-resources.sh`
-2. You will then be prompted for the `service_account_client_id`, which is the value of the `appId`
-3. You will then be prompted for the `service_account_client_secret`, which is the value of the `clientSecret`
-4. Wait for next prompt
-5. You will then be prompted for a Subscription ID and the client id and secret again.
+1. Declare proper variabels in `constants.sh`
+2. Search for `service_account_client_id` and `service_account_client_secret` and fill in default values
+3. `./deploy-resources.sh`
+
 
 
