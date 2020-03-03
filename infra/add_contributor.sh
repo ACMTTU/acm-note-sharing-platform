@@ -1,7 +1,7 @@
 az extension add --name azure-devops
 
-echo 'Resource Group Name: '
-read resourceGroupName
+resourceGroupName='notes-app'
+groupName='ACM Notes Sharing Application Developers Spring 2020'
 
 echo 'First Name: '
 read firstName
@@ -25,7 +25,8 @@ clear
 
 echo 'Creating account...'
 
-az ad user create --user-principal-name $userPrincipleName --display-name "${displayName}" --password $password --force-change-password-next-login  > /dev/null 2>&1
+objectId=$(az ad user create --user-principal-name $userPrincipleName --display-name "${displayName}" --password $password --force-change-password-next-login --query objectId -o tsv)
+az ad group member add --group "${groupName}" --member-id ${objectId}
 
 echo 'Adding account to development resource group...'
 
