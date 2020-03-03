@@ -3,11 +3,9 @@
     "contentVersion": "1.0.0.1",
     "parameters": {
         "service_account_client_id": {
-            "defaultValue": "Client ID/App ID goes here",
             "type": "string"
         },
         "service_account_client_secret": {
-            "defaultValue": "Client Secret/Password goes here",
             "type": "string"
         },
         "docdb_name": {

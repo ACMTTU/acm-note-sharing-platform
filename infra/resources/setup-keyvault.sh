@@ -7,9 +7,12 @@ source ./constants.sh
 # Otherwise, your cluster will run out of memory and die
 kubectl apply -f https://raw.githubusercontent.com/Azure/kubernetes-keyvault-flexvol/master/deployment/kv-flexvol-installer.yaml
 
-# # Set up kubectl for AKS
-az aks get-credentials --resource-group notes-app --name notes-app-aks
+echo 'Gettings credentials for AKS'
 
+# # Set up kubectl for AKS
+az aks get-credentials --resource-group ${resourceGroupName} --name notes-app-aks
+
+echo 'Creating secret for cluster'
 # Create a Secret in Kubernetes Cluster
 kubectl create secret generic notesappkvcreds \
 --from-literal clientid=$appId \
@@ -17,12 +20,13 @@ kubectl create secret generic notesappkvcreds \
 --namespace secrets \
 --type=azure/kv
 
+echo 'Giving SP a role assignment for everything'
 # Allow the Service Principal we made to talk to Key Vault
 az role assignment create \
---role Reader \
+--role Owner \
 --assignee $appId \
---scope /subscriptions/$subscriptionId/resourcegroups/notes-app/providers/Microsoft.KeyVault/vaults/notes-app-kv
+--resource-group ${resourceGroupName}
 
-az keyvault set-policy -n notes-app-kv --key-permissions get --spn $appId
-az keyvault set-policy -n notes-app-kv --secret-permissions get --spn $appId
-az keyvault set-policy -n notes-app-kv --certificate-permissions get --spn $appId
+az keyvault set-policy -n ${vaultName} --key-permissions get list decrypt unwrapKey verify create update --spn $appId > /dev/null 2>&1
+az keyvault set-policy -n ${vaultName} --secret-permissions get list set delete --spn $appId > /dev/null 2>&1
+az keyvault set-policy -n ${vaultName} --certificate-permissions get --spn $appId > /dev/null 2>&1

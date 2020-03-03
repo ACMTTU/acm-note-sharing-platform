@@ -1,11 +1,16 @@
 source ./constants.sh
 
+az login --service-principal --username $appId --password $clientSecret --tenant $tenantId
+
 # Database connection strings
 echo "Populating Key Vault with Database Secrets..."
 
-productionDocDBConnectionString=$(az cosmosdb list-connection-strings -n notes-app-docdb -g $resourceGroupName --subscription $subscriptionId --query "connectionStrings[?description=='Primary SQL Connection String'].connectionString | [0]" | tr -d \")
-stagingDocDBConnectionString=$(az cosmosdb list-connection-strings -n staging-notes-app-docdb -g $resourceGroupName --subscription $subscriptionId --query "connectionStrings[?description=='Primary SQL Connection String'].connectionString | [0]" | tr -d \")
-developmentDocDBConnectionString=$(az cosmosdb list-connection-strings -n dev-notes-app-docdb -g $resourceGroupName --subscription $subscriptionId --query "connectionStrings[?description=='Primary SQL Connection String'].connectionString | [0]" | tr -d \")
+productionDocDBConnectionString=$(az cosmosdb keys list -n notes-app-docdb -g notes-app --query primaryMasterKey)
+productionDocDBConnectionString=${productionDocDBConnectionString//\"}
+stagingDocDBConnectionString=$(az cosmosdb keys list -n staging-notes-app-docdb -g notes-app --query primaryMasterKey)
+stagingDocDBConnectionString=${stagingDocDBConnectionString//\"}
+developmentDocDBConnectionString=$(az cosmosdb keys list -n dev-notes-app-docdb -g notes-app --query primaryMasterKey)
+developmentDocDBConnectionString=${developmentDocDBConnectionString//\"}
 
 az keyvault secret set --vault-name $vaultName --name "database-prod" --value $productionDocDBConnectionString
 az keyvault secret set --vault-name $vaultName --name "database-staging" --value $stagingDocDBConnectionString
@@ -24,4 +29,6 @@ az keyvault secret set --vault-name $vaultName --name "blobstorage-prod" --value
 az keyvault secret set --vault-name $vaultName --name "blobstorage-staging" --value $stagingBlobStorageConnectionString
 az keyvault secret set --vault-name $vaultName --name "blobstorage-dev" --value $developmentBlobStorageConnectionString
 
-echo "Done with Storage secrets!"
+echo "Done with Storage secrets! Logging out of SP..."
+az logout
+az login
