@@ -4,7 +4,7 @@
 fullnameOverride: secretsservice
 replicaCount: 1
 image:
-  repository: acmnotesregistry.azurecr.io/secretsservice
+  repository: notesappregistry.azurecr.io/secretsservice
   tag: stable
   pullPolicy: IfNotPresent
 imagePullSecrets: []
