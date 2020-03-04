@@ -11,7 +11,7 @@ install:
   set:
     replicaCount: 1
     image:
-      repository: secretsservice
+      repository: notesappregistry.azurecr.io/secretsservice
       tag: $(tag)
       pullPolicy: Never
     ingress:

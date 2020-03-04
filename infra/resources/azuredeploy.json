@@ -9,30 +9,30 @@
             "type": "string"
         },
         "docdb_name": {
-            "defaultValue": "acm-notes-docdb",
+            "defaultValue": "notes-app-docdb",
             "type": "string"
         },
         "eventhub_namespace_name": {
-            "defaultValue": "acm-notes-hub",
+            "defaultValue": "notes-app-hub",
             "type": "string"
         },
         "registry_name": {
-            "defaultValue": "acmnotesregistry",
+            "defaultValue": "notesappregistry",
             "type": "string"
         },
         "storage_account_name": {
-            "defaultValue": "acmnotesblob",
+            "defaultValue": "notesappblob",
             "type": "string"
         },
         "create_redis_instance": {
             "type": "bool"
         },
         "redis_cache_name": {
-            "defaultValue": "acm-notes-cache",
+            "defaultValue": "notes-app-cache",
             "type": "string"
         },
         "cluster_name": {
-            "defaultValue": "acm-notes-aks",
+            "defaultValue": "notes-app-aks",
             "type": "string"
         }
     },
@@ -43,8 +43,8 @@
             "name": "[parameters('cluster_name')]",
             "location": "westus2",
             "properties": {
-                "kubernetesVersion": "1.14.5",
-                "dnsPrefix": "acm-notes",
+                "kubernetesVersion": "1.14.8",
+                "dnsPrefix": "notes-app",
                 "agentPoolProfiles": [
                     {
                         "name": "agentpool",
@@ -53,7 +53,7 @@
                         "osDiskSizeGB": 100,
                         "maxPods": 110,
                         "type": "AvailabilitySet",
-                        "orchestratorVersion": "1.14.5",
+                        "orchestratorVersion": "1.14.8",
                         "enableNodePublicIP": false,
                         "osType": "Linux"
                     }
@@ -70,7 +70,7 @@
                         }
                     }
                 },
-                "nodeResourceGroup": "[concat('MC_acm-notes_', parameters('cluster_name'), '_westus2')]",
+                "nodeResourceGroup": "[concat('MC_notes-app_', parameters('cluster_name'), '_westus2')]",
                 "enableRBAC": true,
                 "networkProfile": {
                     "networkPlugin": "kubenet",
@@ -415,44 +415,70 @@
             }
         },
         {
-            "type": "Microsoft.DocumentDB/databaseAccounts/apis/databases",
-            "name": "[concat(parameters('docdb_name'), '/sql/', 'staging')]",
-            "apiVersion": "2016-03-31",
-            "dependsOn": [ "[resourceId('Microsoft.DocumentDB/databaseAccounts/', parameters('docdb_name'))]" ],
-            "properties":{
-                "resource":{
-                    "id": "staging"
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "name": "[concat('staging-', parameters('docdb_name'))]",
+            "apiVersion": "2015-04-08",
+            "location": "West US 2",
+            "tags": {
+                "defaultExperience": "Core (SQL)"
+            },
+            "kind": "GlobalDocumentDB",
+            "properties": {
+                "enableAutomaticFailover": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "databaseAccountOfferType": "Standard",
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxIntervalInSeconds": 5,
+                    "maxStalenessPrefix": 100
                 },
-                "options": { "throughput": 400 }
+                "locations": [
+                    {
+                        "locationName": "West US 2",
+                        "provisioningState": "Succeeded",
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
+                "capabilities": []
             }
         },
         {
-            "type": "Microsoft.DocumentDB/databaseAccounts/apis/databases",
-            "name": "[concat(parameters('docdb_name'), '/sql/', 'production')]",
-            "apiVersion": "2016-03-31",
-            "dependsOn": [ "[resourceId('Microsoft.DocumentDB/databaseAccounts/', parameters('docdb_name'))]" ],
-            "properties":{
-                "resource":{
-                    "id": "production"
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "name": "[concat('dev-', parameters('docdb_name'))]",
+            "apiVersion": "2015-04-08",
+            "location": "West US 2",
+            "tags": {
+                "defaultExperience": "Core (SQL)"
+            },
+            "kind": "GlobalDocumentDB",
+            "properties": {
+                "enableAutomaticFailover": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "databaseAccountOfferType": "Standard",
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxIntervalInSeconds": 5,
+                    "maxStalenessPrefix": 100
                 },
-                "options": { "throughput": 400 }
-            }
-        },
-        {
-            "type": "Microsoft.DocumentDB/databaseAccounts/apis/databases",
-            "name": "[concat(parameters('docdb_name'), '/sql/', 'development')]",
-            "apiVersion": "2016-03-31",
-            "dependsOn": [ "[resourceId('Microsoft.DocumentDB/databaseAccounts/', parameters('docdb_name'))]" ],
-            "properties":{
-                "resource":{
-                    "id": "development"
-                },
-                "options": { "throughput": 400 }
+                "locations": [
+                    {
+                        "locationName": "West US 2",
+                        "provisioningState": "Succeeded",
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
+                "capabilities": []
             }
         },
         {
             "apiVersion": "2016-10-01",
-            "name": "acm-notes-kv",
+            "name": "notes-app-kv",
             "location": "westus2",
             "type": "Microsoft.KeyVault/vaults",
             "properties": {

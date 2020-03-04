@@ -16,6 +16,11 @@ namespace NotesApplication
         internal string id { get; } //We should not allow updating of IDs because it could mess with the database
 
         /// <summary>
+        /// Unique ID of the note owner
+        /// </summary>
+        internal string ownerId { get; } //We should not allow updating of IDs because it could mess with the database
+
+        /// <summary>
         /// The name of the note. (Similar to a title)
         /// </summary>
         public string Name { get; set; }
@@ -45,7 +50,7 @@ namespace NotesApplication
         /// <param name="notes">The files attached to the note.</param>
         /// <param name="createdAt">The time at which the note was created.</param>
         /// <param name="lastModified">The time at which the note was last modified.</param>
-        private Note(string id, string name, string[] notes, DateTime createdAt, DateTime lastModified)
+        public Note(string id, string name, string[] notes, DateTime createdAt, DateTime lastModified)
         {
             this.id = id;
             Name = name;
@@ -97,6 +102,7 @@ namespace NotesApplication
         /// <param name="id">The id of the note in the database.</param>
         public static Note Create(string id) //We need to figure out exactly *how* we are going to do this. This method may not be needed.
         {
+
             throw new System.NotImplementedException();
         }
 
