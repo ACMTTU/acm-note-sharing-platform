@@ -22,11 +22,6 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             _dbService = dbService;
         }
 
-        private async Task<List<Tag>> GetTags(string query)
-        {
-            QueryDefinition queryDef = new QueryDefinition(query);
-            FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(queryDef);
-            
         /// <summary>
         /// Retrieve a list of tags by noteId.
         /// </summary>
