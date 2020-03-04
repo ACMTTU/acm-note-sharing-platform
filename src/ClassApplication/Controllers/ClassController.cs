@@ -13,7 +13,6 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
     [ApiController]
     public class ClassController : PlatformBaseController
     {
-
         private Container classesContainer;
         public ClassController(IHttpClientFactory factory, DatabaseService databaseService) : base(factory)
         {
