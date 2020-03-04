@@ -39,7 +39,7 @@ jobs:
 
       - task: HelmInstaller@1
         inputs:
-          helmVersionToInstall: "latest"
+          helmVersionToInstall: "2.16.3"
 
       - script: docker login -u $(DOCKER_USER) -p $(DOCKER_PASS) notesappregistry.azurecr.io
         displayName: "Login"
