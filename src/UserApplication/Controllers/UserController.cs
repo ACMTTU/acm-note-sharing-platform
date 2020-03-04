@@ -62,43 +62,15 @@ namespace ACMTTU.NoteSharing.Platform.UserApplication.Controllers
         }
 
         /// <summary>
-        /// Updates a User's username
+        /// Updates a User by ID
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="update"></param>
         /// <returns></returns>
-        [HttpPut("{id}/{username}")]
-        public Task<ActionResult<string>> UpdateUserName(string id)
+        [HttpPut("{id}")]
+        public Task<ActionResult<string>> UpdateUser(string id, UserInfo update)
         {
-
             throw new NotImplementedException();
-
         }
-
-        /// <summary>
-        /// Updates a User's classification
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpPut("{id}/{classification}")]
-        public Task<ActionResult<string>> UpdateClass(string id)
-        {
-
-            throw new NotImplementedException();
-
-        }
-
-        /// <summary>
-        /// Updates a User's major
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpPut("{id}/{major}")]
-        public Task<ActionResult<string>> UpdateMajor(string id)
-        {
-
-            throw new NotImplementedException();
-
-        }
-
     }
 }
