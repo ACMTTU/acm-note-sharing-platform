@@ -4,7 +4,7 @@
 fullnameOverride: classapplication
 replicaCount: 1
 image:
-  repository: acmnotesregistry.azurecr.io/classapplication
+  repository: notesappregistry.azurecr.io/classapplication
   tag: stable
   pullPolicy: IfNotPresent
 imagePullSecrets: []

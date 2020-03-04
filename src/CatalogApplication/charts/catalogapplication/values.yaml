@@ -4,7 +4,7 @@
 fullnameOverride: catalogapplication
 replicaCount: 1
 image:
-  repository: acmnotesregistry.azurecr.io/catalogapplication
+  repository: notesappregistry.azurecr.io/catalogapplication
   tag: stable
   pullPolicy: IfNotPresent
 imagePullSecrets: []

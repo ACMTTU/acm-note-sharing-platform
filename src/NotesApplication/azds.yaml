@@ -11,7 +11,7 @@ install:
   set:
     replicaCount: 1
     image:
-      repository: notesapplication
+      repository: notesappregistry.azurecr.io/notesapplication
       tag: $(tag)
       pullPolicy: Never
     ingress:
