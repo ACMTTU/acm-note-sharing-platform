@@ -48,6 +48,29 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
+        /// Retrieve a list of tags by noteId.
+        /// </summary>
+        /// <param name="noteId">The note ID</param>
+        /// <returns>An array containing a value determined by the parameter</returns>
+        [HttpGet("{noteId}")]
+        public async Task<List<Tag>> GetTagsByNote(string noteId)
+        {
+            return await GetTags($"SELECT * FROM c WHERE c.noteId={noteId}");
+        }
+
+        /// <summary>
+        /// Gets tags by noteId and userId
+        /// </summary>
+        /// <param name="noteId">The noteId to look for the tag</param>
+        /// <param name="userId">The userId to look for the tag</param>
+        /// <returns>A boolean indicating whether a tag is created or not</returns>
+        [HttpGet("{noteId}/users/{userId}")]
+        public async Task<List<Tag>> GetTagsByNoteAndUser(string noteId, string userId)
+        {
+            return await GetTags($"SELECT * FROM c WHERE c.noteId={noteId} AND c.userId={userId}");
+        }
+
+        /// <summary>
         /// Create a new tag. Pass everything other than id.
         /// </summary>
         /// <returns>OK if successful otherwise bad request</returns>
@@ -70,11 +93,12 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
-        /// Updates a tag based off noteId, userId, and name.
+        /// Updates the tag created by the user
         /// </summary>
-        /// <param name="noteId">The noteId to look for tags in</param>
-        /// <param name="userId">The userId the tag must have</param>
-        /// <param name="name">The tag name to update</param>
+        /// <param name="noteId">The ID of the note that needs its tags updated</param>
+        /// <param name="userId">The ID of the user requesting the update</param>
+        /// <param name="name"> The name of the new tag </param>
+        /// <param name="update">The body of the updated tag</param>
         /// <returns></returns>
         [HttpPut("{noteId}/users/{userId}/names/{name}")]
         public Task<IActionResult> UpdateTag(string noteId, string userId, string name, Tag update)
