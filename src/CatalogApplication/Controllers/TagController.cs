@@ -48,17 +48,6 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
-        /// Retrieve a list of tags by noteId.
-        /// </summary>
-        /// <param name="noteId">The note ID</param>
-        /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpGet("{noteId}")]
-        public async Task<List<Tag>> GetTagsByNote(string noteId)
-        {
-            return await GetTags($"SELECT * FROM c WHERE c.noteId={noteId}");
-        }
-
-        /// <summary>
         /// Gets tags by noteId and userId
         /// </summary>
         /// <param name="noteId">The noteId to look for the tag</param>
