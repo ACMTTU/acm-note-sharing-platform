@@ -28,10 +28,6 @@ echo 'Creating account...'
 objectId=$(az ad user create --user-principal-name $userPrincipleName --display-name "${displayName}" --password $password --force-change-password-next-login --query objectId -o tsv)
 az ad group member add --group "${groupName}" --member-id ${objectId}
 
-echo 'Adding account to development resource group...'
-
-az role assignment create --role "Contributor" --assignee $userPrincipleName --resource-group $resourceGroupName > /dev/null 2>&1
-
 echo
 echo 'Username: '
 echo $userPrincipleName
