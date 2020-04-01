@@ -5,12 +5,15 @@ az login --service-principal --username $appId --password $clientSecret --tenant
 # Database connection strings
 echo "Populating Key Vault with Database Secrets..."
 
-productionDocDBConnectionString=$(az cosmosdb keys list -n notes-app-docdb -g notes-app --query primaryMasterKey)
-productionDocDBConnectionString=${productionDocDBConnectionString//\"}
-stagingDocDBConnectionString=$(az cosmosdb keys list -n staging-notes-app-docdb -g notes-app --query primaryMasterKey)
-stagingDocDBConnectionString=${stagingDocDBConnectionString//\"}
-developmentDocDBConnectionString=$(az cosmosdb keys list -n dev-notes-app-docdb -g notes-app --query primaryMasterKey)
-developmentDocDBConnectionString=${developmentDocDBConnectionString//\"}
+baseDbName=notes-app-docdb
+baseStorageName=notesappblob
+
+productionDocDBConnectionString=$(az cosmosdb keys list -n ${baseDbName} -g notes-app --query primaryMasterKey)
+productionDocDBConnectionString=AccountEndpoint=https://${baseDbName}.documents.azure.com:443/\;AccountKey=${productionDocDBConnectionString//\"}\;
+stagingDocDBConnectionString=$(az cosmosdb keys list -n staging-${baseDbName} -g notes-app --query primaryMasterKey)
+stagingDocDBConnectionString=AccountEndpoint=https://staging-${baseDbName}.documents.azure.com:443/\;AccountKey=${stagingDocDBConnectionString//\"}\;
+developmentDocDBConnectionString=$(az cosmosdb keys list -n dev-${baseDbName} -g notes-app --query primaryMasterKey)
+developmentDocDBConnectionString=AccountEndpoint=https://dev-${baseDbName}.documents.azure.com:443/\;AccountKey=${developmentDocDBConnectionString//\"}\;
 
 az keyvault secret set --vault-name $vaultName --name "database-prod" --value $productionDocDBConnectionString
 az keyvault secret set --vault-name $vaultName --name "database-staging" --value $stagingDocDBConnectionString
