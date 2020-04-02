@@ -13,10 +13,11 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
     [ApiController]
     public class ClassController : PlatformBaseController
     {
-        private Container classesContainer;
+        private PartitionKey _partKey = new PartitionKey("classes");
+        private Container _classesContainer;
         public ClassController(IHttpClientFactory factory, DatabaseService databaseService) : base(factory)
         {
-            this.classesContainer = databaseService.classroomsContainer;
+            this._classesContainer = databaseService.classroomsContainer;
         }
 
         /// <summary>
@@ -29,6 +30,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> CreateClassroom(Classroom classroom)
         {
+
             throw new NotImplementedException();
         }
 
@@ -67,7 +69,17 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpPut("{classId}/notes/{notesId}")]
         public async Task<ActionResult<string>> AddNoteToClass(string classId, string notesId)
         {
-            throw new NotImplementedException();
+
+            // get classroom
+            Classroom classroom;
+            classroom = await _classesContainer.ReadItemAsync<Classroom>(classId, _partKey);    // may need PartitionKey object as next argument
+
+            // add note to classroom's set of notes
+            classroom.AddNote(notesId);
+
+            // return okay
+            return this.Ok();
+
         }
 
         /// <summary>
@@ -115,6 +127,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpGet("{classId}")]
         public async Task<ActionResult<string>> QueryNote(string classId, string noteName)
         {
+            //FOR ME TO WORK ON
             throw new NotImplementedException();
         }
     }
