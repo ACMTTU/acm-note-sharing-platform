@@ -127,8 +127,16 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpGet("{classId}")]
         public async Task<ActionResult<string>> QueryNote(string classId, string noteName)
         {
-            //FOR ME TO WORK ON
-            throw new NotImplementedException();
+
+            // get classroom
+            Classroom classroom;
+            classroom = await _classesContainer.ReadItemAsync<Classroom>(classId, _partKey);    // may need PartitionKey object as next argument
+
+
+
+            // by default, assume that note is not found 
+            return NotFound();
+
         }
     }
 }
