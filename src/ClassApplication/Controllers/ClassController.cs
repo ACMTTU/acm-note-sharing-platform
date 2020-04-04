@@ -132,7 +132,17 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             Classroom classroom;
             classroom = await _classesContainer.ReadItemAsync<Classroom>(classId, _partKey);    // may need PartitionKey object as next argument
 
+            // create query with which to search the database
+            //      by putting the note name inside % %, we're looking for any strings that contain the given name
+            string loc = "Notes"; // ????
+            string query = "SELECT * FROM " + loc + " WHERE name LIKE %" + noteName + "%";
 
+            // create query request options, which will contain partition key
+            QueryRequestOptions qro = new QueryRequestOptions();
+            qro.PartitionKey = _partKey;
+
+            // create feed iterator into which to store the result of the query
+            FeedIterator<string> queryIterator = _classesContainer.GetItemQueryIterator<string>(query, null, qro);
 
             // by default, assume that note is not found 
             return NotFound();
