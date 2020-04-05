@@ -23,6 +23,7 @@ namespace ClassApplication.Models
         {
             /*
                 initalize instance...
+                asdfajsdf;jklasjdfkljasd
             */
         }
 
