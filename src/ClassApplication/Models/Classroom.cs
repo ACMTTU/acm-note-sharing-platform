@@ -16,10 +16,13 @@ namespace ClassApplication.Models
         /// Adds note to this classroom's collection of notes
         /// </summary>
         /// <param name="noteID">The id of the note object to be added </param>
-        public void AddNote(string noteID)
+        public bool AddNote(string noteID)
         {
 
             Notes.Add(noteID);
+
+            // return true if no error encountered
+            return true;
 
         }
 
