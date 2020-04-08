@@ -16,9 +16,9 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         //private Container NotesContainer;
         //private PartitionKey partKey = new PartitionKey("notes");
 
-        private DBService _db;
+        private IDBService _db;
 
-        public NotesController(IHttpClientFactory factory, DBService db) : base(factory)
+        public NotesController(IHttpClientFactory factory, IDBService db) : base(factory)
         {
             _db = db;
         }
@@ -32,7 +32,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         public async Task<ActionResult<string>> CreateNote(Note note)
         {
             // This copies the given note, (which callers will pass in with JSON in their request), to a new Note object. The new Note object has a valid, newly generated ID.
-            // The newly generated id is returned, allowing for callers to edit properties of the newly created note.
+            // The newly generated id is returned, allowing for callers to edit properties of the newly created note. 
             Note databased = await _db.CreateItem<Note>(new Note(Guid.NewGuid().ToString(), note.Name, note.Notes, note.CreatedAt, note.LastModified));
             return Ok(databased.id);
 

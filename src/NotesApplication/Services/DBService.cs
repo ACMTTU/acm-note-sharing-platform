@@ -10,14 +10,29 @@ using NotesApplication;
 
 namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
 {
-    public class DBService : PlatformBaseService
+
+    /// <summary>
+    /// An abstract class for database services
+    /// </summary>
+    public interface IDBService
+    {
+
+        Task<T> CreateItem<T>(T undatabasedObject);
+        Task<T> ReadItem<T>(string id);
+        Task<ItemResponse<T>> ReplaceItem<T>(T update, string id);
+        Task<ItemResponse<T>> DeleteItem<T>(string id);
+
+    }
+
+    /// <summary>
+    /// An implementation of IDBService to interface with Azure Cosmos DB
+    /// </summary>
+    public class CosmosDBService : PlatformBaseService, IDBService
     {
         private Container _container;
         private PartitionKey _partKey = new PartitionKey("notes");
 
-        public DBService(IHttpClientFactory clientFactory) : base(clientFactory)
-        {
-        }
+        public CosmosDBService(IHttpClientFactory clientFactory) : base(clientFactory) { }
 
         public async override Task Setup()
         {
@@ -36,8 +51,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         public async Task<T> CreateItem<T>(T undatabasedObject)
         {
 
-            T databasedObject = await _container.CreateItemAsync<T>(undatabasedObject);
-            return databasedObject;
+            return await _container.CreateItemAsync<T>(undatabasedObject);
 
         }
 
@@ -50,8 +64,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         public async Task<T> ReadItem<T>(string id)
         {
 
-            T item = await _container.ReadItemAsync<T>(id, _partKey);
-            return item;
+            return await _container.ReadItemAsync<T>(id, _partKey);
 
         }
 
@@ -62,10 +75,10 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         /// <param name="id">The id of the item to be updated</param>
         /// <typeparam name="T">The type of the item</typeparam>
         /// <returns></returns>
-        public async void ReplaceItem<T>(T update, string id)
+        public async Task<ItemResponse<T>> ReplaceItem<T>(T update, string id)
         {
 
-            await _container.ReplaceItemAsync<T>(update, id);
+            return await _container.ReplaceItemAsync<T>(update, id);
 
         }
 
@@ -75,10 +88,10 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         /// <param name="id">The id of the item to be deleted</param>
         /// <typeparam name="T">The type of the item</typeparam>
         /// <returns></returns>
-        public async void DeleteItem<T>(string id)
+        public async Task<ItemResponse<T>> DeleteItem<T>(string id)
         {
 
-            await _container.DeleteItemAsync<T>(id, _partKey);
+            return await _container.DeleteItemAsync<T>(id, _partKey);
 
         }
 
