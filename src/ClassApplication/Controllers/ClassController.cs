@@ -102,17 +102,24 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///<param name="classId">Id of the classroom</param>
         ///<param name="className">Name of classroom to set</param>
         ///<param name="classDescription">Description of classroom to set</param>
+        ///<param name="userId">Id of the user making update request</param>
         [HttpPut("{classId}")]
-        public async Task<ActionResult<string>> UpdateClass(string classId, string className, string classDescription)
+        public async Task<ActionResult<string>> UpdateClass(string classId, string className, string classDescription, string userId)
         {
             Classroom updatingClass;
             updatingClass = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
-            updatingClass.setName(className);
-            updatingClass.setDescription(classDescription);
 
-            await classesContainer.ReplaceItemAsync<Classroom>(updatingClass, classId);
+            if (updatingClass.ownerID == userId)
+            {
+                updatingClass.setName(className);
+                updatingClass.setDescription(classDescription);
+                await classesContainer.ReplaceItemAsync<Classroom>(updatingClass, classId);
 
-            return Ok();
+                return Ok();
+            }
+
+            else
+                return BadRequest();
         }
 
         ///<summary>
