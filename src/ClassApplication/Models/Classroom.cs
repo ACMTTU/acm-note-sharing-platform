@@ -12,6 +12,14 @@ namespace ClassApplication.Models
         public IEnumerable<string> Filters { get; set; }    //changed from Tag //id of other collection - Catalog
         public IEnumerable<string> Students { get; set; }  //id of other collection - Students
 
+        public void setName(string newName)
+        {
+            this.Name = newName;
+        }
 
+        public void setDescription(string newDescription)
+        {
+            this.Description = newDescription;
+        }
     }
 }
