@@ -13,10 +13,11 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
     [ApiController]
     public class ClassController : PlatformBaseController
     {
-        private Container classesContainer;
+        private PartitionKey _partKey = new PartitionKey("classes");
+        private Container _classesContainer;
         public ClassController(IHttpClientFactory factory, DatabaseService databaseService) : base(factory)
         {
-            this.classesContainer = databaseService.classroomsContainer;
+            this._classesContainer = databaseService.classroomsContainer;
         }
 
         /// <summary>
@@ -29,6 +30,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> CreateClassroom(Classroom classroom)
         {
+
             throw new NotImplementedException();
         }
 
@@ -37,12 +39,19 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         /// Returns data from a classroom from a given classroom ID
         ///
         /// </summary>
-        /// <param name="id">classroom id</param>
+        /// <param name="classId">classroom id</param>
         /// <returns>An array containing a value determined by the parameter</returns>
         [HttpGet("GetClassByID/{id}")]
-        public async Task<ActionResult<string>> GetClassroom(string id)
+        public async Task<Classroom> GetClassroom(string classId)
         {
-            throw new NotImplementedException();
+
+            // get classroom
+            Classroom classroom;
+            classroom = await _classesContainer.ReadItemAsync<Classroom>(classId, _partKey);
+
+            // are we supposed to return a Task<ActionResult<string>>? In NotesController, it returns Task<Note>
+            return classroom;
+
         }
 
         /// <summary>
@@ -67,7 +76,18 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpPut("{classId}/notes/{notesId}")]
         public async Task<ActionResult<string>> AddNoteToClass(string classId, string notesId)
         {
-            throw new NotImplementedException();
+
+            // get classroom
+            Classroom classroom;
+            classroom = await _classesContainer.ReadItemAsync<Classroom>(classId, _partKey);
+
+            // add note to classroom's set of notes
+            //      the boolean stores whether the function was successful, in case we implement error-checking
+            bool result = classroom.AddNote(notesId);
+
+            // return okay; we can use the boolean to return a different result if there's an error encountered
+            return Ok();
+
         }
 
         /// <summary>
@@ -115,7 +135,31 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpGet("{classId}")]
         public async Task<ActionResult<string>> QueryNote(string classId, string noteName)
         {
+
+            // NEED TO FIGURE OUT HOW TO QUERY NOSQL DATABASES
             throw new NotImplementedException();
+
+            // // get classroom
+            // Classroom classroom;
+            // classroom = await _classesContainer.ReadItemAsync<Classroom>(classId, _partKey);
+
+            // // create query with which to search the database
+            // //      by putting the note name inside % %, we're looking for any strings that contain the given name
+            // string loc = "Notes"; // ????
+            // string query = "SELECT * FROM " + loc + " WHERE name LIKE %" + noteName + "%";
+
+            // // create query request options, which will contain partition key
+            // QueryRequestOptions qro = new QueryRequestOptions();
+            // qro.PartitionKey = _partKey;
+
+            // // create feed iterator into which to store the result of the query
+            // FeedIterator<string> queryIterator = _classesContainer.GetItemQueryIterator<string>(query, null, qro);
+
+            // // how do we return the resultant?????
+
+            // // by default, assume that note is not found 
+            // return NotFound();
+
         }
     }
 }
