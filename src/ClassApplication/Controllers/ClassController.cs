@@ -105,7 +105,14 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpPut("{classId}")]
         public async Task<ActionResult<string>> UpdateClass(string classId, string className, string classDescription)
         {
-            throw new NotImplementedException();
+            Classroom updatingClass;
+            updatingClass = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
+            updatingClass.setName(className);
+            updatingClass.setDescription(classDescription);
+
+            await classesContainer.ReplaceItemAsync<Classroom>(updatingClass, classId);
+
+            return Ok();
         }
 
         ///<summary>
