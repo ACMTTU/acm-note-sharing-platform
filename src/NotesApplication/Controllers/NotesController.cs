@@ -13,14 +13,12 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
     [ApiController]
     public class NotesController : PlatformBaseController
     {
-        //private Container NotesContainer;
-        //private PartitionKey partKey = new PartitionKey("notes");
 
-        private IDBService _db;
+        private IDBService _dbService;
 
-        public NotesController(IHttpClientFactory factory, IDBService db) : base(factory)
+        public NotesController(IHttpClientFactory factory, IDBService dbService) : base(factory)
         {
-            _db = db;
+            _dbService = dbService;
         }
 
         /// <summary>
@@ -33,7 +31,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         {
             // This copies the given note, (which callers will pass in with JSON in their request), to a new Note object. The new Note object has a valid, newly generated ID.
             // The newly generated id is returned, allowing for callers to edit properties of the newly created note. 
-            Note databased = await _db.CreateItem<Note>(new Note(Guid.NewGuid().ToString(), note.Name, note.Notes, note.CreatedAt, note.LastModified));
+            Note databased = await _dbService.CreateItem<Note>(new Note(Guid.NewGuid().ToString(), note.Name, note.Notes, note.CreatedAt, note.LastModified));
             return Ok(databased.id);
 
         }
@@ -50,11 +48,11 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         public async Task<IActionResult> EditNote(string noteId, string userId, Note update)
         {
             Note oldNote;
-            oldNote = await _db.ReadItem<Note>(noteId);
+            oldNote = await _dbService.ReadItem<Note>(noteId);
 
             if (oldNote.ownerId == userId) // verifies userId is allowed to modify noteId
             {
-                await _db.ReplaceItem<Note>(update, noteId);
+                await _dbService.ReplaceItem<Note>(update, noteId);
                 return Ok();
             }
             else
@@ -73,7 +71,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         public async Task<Note> GetNote(string noteId, string userId)
         {
             Note note;
-            note = await _db.ReadItem<Note>(noteId);
+            note = await _dbService.ReadItem<Note>(noteId);
 
             if (note.ownerId == userId)
             {
@@ -96,7 +94,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         {
             if (await verifyPermission(noteId, userId) == true)
             {
-                await _db.DeleteItem<Note>(noteId);
+                await _dbService.DeleteItem<Note>(noteId);
                 return Ok();
             }
             else

@@ -74,7 +74,6 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         /// <param name="update">The new version of the item</param>
         /// <param name="id">The id of the item to be updated</param>
         /// <typeparam name="T">The type of the item</typeparam>
-        /// <returns></returns>
         public async Task<ItemResponse<T>> ReplaceItem<T>(T update, string id)
         {
 
@@ -87,7 +86,6 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         /// </summary>
         /// <param name="id">The id of the item to be deleted</param>
         /// <typeparam name="T">The type of the item</typeparam>
-        /// <returns></returns>
         public async Task<ItemResponse<T>> DeleteItem<T>(string id)
         {
 
