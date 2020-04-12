@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +14,8 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
     public class ClassController : PlatformBaseController
     {
         private Container classesContainer;
+        private PartitionKey partitionKey = new PartitionKey("classroom");
+
         public ClassController(IHttpClientFactory factory, DatabaseService databaseService) : base(factory)
         {
             this.classesContainer = databaseService.classroomsContainer;
