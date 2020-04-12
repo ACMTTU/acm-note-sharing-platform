@@ -30,7 +30,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
-            services.AddSingleton<CosmosDBService>();
+            services.AddSingleton<DBService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(c =>

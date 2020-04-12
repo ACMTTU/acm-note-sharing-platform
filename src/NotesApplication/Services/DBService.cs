@@ -27,12 +27,12 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
     /// <summary>
     /// An implementation of IDBService to interface with Azure Cosmos DB
     /// </summary>
-    public class CosmosDBService : PlatformBaseService, IDBService
+    public class DBService : PlatformBaseService, IDBService
     {
         private Container _container;
         private PartitionKey _partKey = new PartitionKey("notes");
 
-        public CosmosDBService(IHttpClientFactory clientFactory) : base(clientFactory) { }
+        public DBService(IHttpClientFactory clientFactory) : base(clientFactory) { }
 
         public async override Task Setup()
         {
