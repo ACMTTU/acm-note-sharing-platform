@@ -86,9 +86,16 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <param name="noteId">White note's rating to delete</param>
         /// <returns>OK on success, otherwise bad request</returns>
         [HttpDelete("{noteId}")]
-        public Task<IActionResult> DeleteRating(string noteId)
+        public async Task<ActionResult> DeleteRating(string noteId)
         {
-            throw new NotImplementedException();
+            if (noteId == null)
+                return BadRequest();
+            else
+            {
+                await _dbService.ratingContainer.DeleteItemAsync<Rating>(noteId, new PartitionKey(noteId));
+                return Ok();
+            }
+
         }
 
     }
