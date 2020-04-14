@@ -27,16 +27,15 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// </summary>
         /// <param name="noteId">The ID of the note the user wants the ratings for</param>
         /// <returns>The rating of the note</returns>
-        [HttpGet("{noteId}")]
-        public async Task<ActionResult> GetRating(string noteId)
+        [HttpGet]
+        [Route("get1")]
+        public async Task<Rating> GetRatingInfoByNote(string noteId)
         {
-            if (noteId == null)
-                return NotFound();
-            else
-            {
-                Rating rating = await _dbService.ratingContainer.ReadItemAsync<Rating>(noteId, new PartitionKey(noteId));
-                return Ok(rating);
-            }
+            Rating rating = new Rating();
+
+            rating = await _dbService.ratingContainer.ReadItemAsync<Rating>(noteId, new PartitionKey(noteId));
+
+            return rating;
         }
 
         /// <summary>
@@ -46,13 +45,13 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <returns> Action Result for the async operation
         /// </returns>
         [HttpPost]
-        public async Task<ActionResult> CreateRating(Rating newRating)
+        public async Task<IActionResult> CreateRating(Rating newRating)
         {
             if (newRating.noteId == null || newRating.rating <= 0)
                 return BadRequest();
             else
             {
-                newRating.numRatings = 1;
+                //newRating.numRatings = 1;
                 Rating rating = await _dbService.ratingContainer.CreateItemAsync(newRating);
                 return Ok(rating);
 
@@ -73,8 +72,8 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             else
             {
                 Rating rating = await _dbService.ratingContainer.ReadItemAsync<Rating>(noteId, new PartitionKey(noteId));
-                rating.numRatings = rating.numRatings + 1;
-                rating.rating = (rating.rating + userRating) / (rating.numRatings);
+                //rating.numRatings = rating.numRatings + 1;
+                // rating.rating = (rating.rating + userRating) / (rating.numRatings);
                 await _dbService.ratingContainer.ReplaceItemAsync<Rating>(rating, noteId);
                 return Ok(rating);
             }
