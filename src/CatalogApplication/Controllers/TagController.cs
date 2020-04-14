@@ -31,7 +31,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <returns>An array containing a value determined by the parameter</returns>
 
         [HttpGet]
-        [Route("noteId/{noteId}")]
+        [Route("get/noteId/{noteId}")]
         public async Task<List<Tag>> GetTags(string noteId)
         {
             QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.noteId ='" + noteId + "'");
@@ -128,7 +128,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <param name="noteId">The Note ID associated with the tag to be deleted</param>
         /// <returns>Returns a list of tags that have been deleted</returns>
         [HttpDelete]
-        [Route("noteId/{noteId}")]
+        [Route("delete/noteId/{noteId}")]
         public async Task<IActionResult> DeleteTags(string noteId)
         {
             //gets the list of tags after calling the GetTags function
@@ -153,7 +153,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <param name="noteId">The Note ID associated with the tag to be deleted</param>
         /// <param name="name">The name of the tag to delete</param>
         /// <returns></returns>
-        // [HttpDelete("{noteId}/users/{userId}/name/{name}")]
+
         [HttpDelete]
         [Route("noteId/{noteId}/name/{name}")]
         public async Task<IActionResult> DeleteTag(string noteId, string name)
