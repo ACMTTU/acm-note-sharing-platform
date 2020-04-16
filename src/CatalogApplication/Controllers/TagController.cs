@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -27,17 +29,20 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// </summary>
         /// <param name="noteId">The note ID</param>
         /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpGet("{noteId}")]
+
+        [HttpGet]
+        [Route("noteId/{noteId}")]
         public async Task<List<Tag>> GetTags(string noteId)
         {
-            QueryDefinition query = new QueryDefinition($"SELECT * FROM c WHERE c.noteId={noteId}");
+            QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.noteId ='" + noteId + "'");
+
             FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(query);
 
             List<Tag> tags = new List<Tag>();
 
             while (iterator.HasMoreResults)
             {
-                var resultSet = await iterator.ReadNextAsync();
+                FeedResponse<Tag> resultSet = await iterator.ReadNextAsync();
                 foreach (Tag tag in resultSet)
                 {
                     tags.Add(tag);
@@ -48,15 +53,30 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
         /// <summary>
-        /// Gets tags by noteId and userId
+        /// Retrieve a list of noteId by tag name.
         /// </summary>
-        /// <param name="noteId">The noteId to look for the tag</param>
-        /// <param name="userId">The userId to look for the tag</param>
-        /// <returns>A boolean indicating whether a tag is created or not</returns>
-        [HttpGet("{noteId}/users/{userId}")]
-        public async Task<List<Tag>> GetTagsByNoteAndUser(string noteId, string userId)
+        /// <param name="name">The tag name</param>
+        /// <returns>A list of noteId determined by the parameter passed</returns>
+        [HttpGet]
+        [Route("noteId/{name}")]
+        public async Task<List<string>> GetNotesByTagName(string name)
         {
-            return await GetTags($"SELECT * FROM c WHERE c.noteId={noteId} AND c.userId={userId}");
+
+            QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.name='" + name + "'");
+            FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(query);
+
+            List<string> tagName = new List<string>();
+
+            while (iterator.HasMoreResults)
+            {
+                FeedResponse<Tag> resultSet = await iterator.ReadNextAsync();
+                foreach (Tag tag in resultSet)
+                {
+                    tagName.Add(tag.noteId);
+                }
+            }
+
+            return tagName;
         }
 
         /// <summary>
@@ -64,35 +84,41 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// </summary>
         /// <returns>OK if successful otherwise bad request</returns>
         [HttpPost]
-        public async Task<IActionResult> CreateNewTag(Tag tag)
+        public async Task<IActionResult> CreateNewTag(TagDto tagDto)
         {
+            Tag tag = new Tag();
+
             try
             {
                 if (ModelState.IsValid)
                 {
-                    tag.id = System.Guid.NewGuid().ToString();
-                    await _dbService.tagContainer.CreateItemAsync(tag);
-                }
-                return Ok();
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
 
-        /// <summary>
-        /// Updates the tag created by the user
-        /// </summary>
-        /// <param name="noteId">The ID of the note that needs its tags updated</param>
-        /// <param name="userId">The ID of the user requesting the update</param>
-        /// <param name="name"> The name of the new tag </param>
-        /// <param name="update">The body of the updated tag</param>
-        /// <returns></returns>
-        [HttpPut("{noteId}/users/{userId}/names/{name}")]
-        public Task<IActionResult> UpdateTag(string noteId, string userId, string name, Tag update)
-        {
-            throw new NotImplementedException();
+                    tag.name = tagDto.name;
+                    tag.noteId = tagDto.noteId;
+                    tag.userId = tagDto.userId;
+                    tag.hidden = tagDto.hidden;
+                    tag.isSystem = false;
+
+                    //We need it to be known since ReadItemAsync only checks for id
+                    tag.id = tag.name + "." + tag.noteId + "." + tag.userId;
+
+                    //searches the database if the tagResponse is there
+                    ItemResponse<Tag> tagResponse = await _dbService.tagContainer.ReadItemAsync<Tag>(tag.id, new PartitionKey(tag.noteId));
+                    //if it finds it in the database
+                    return BadRequest("TAG ALREADY EXISTS");
+                }
+            }
+
+            //catch the exception of the tagResponse
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                await _dbService.tagContainer.CreateItemAsync(tag);
+                return Ok("TAG IS ADDED SUCCESSFULLY");
+            }
+
+            //If it didn't go through all the test cases
+            return BadRequest("Body is invalid");
+
         }
 
         /// <summary>
@@ -101,10 +127,23 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// </summary>
         /// <param name="noteId">The Note ID associated with the tag to be deleted</param>
         /// <returns>Returns a list of tags that have been deleted</returns>
-        [HttpDelete("{noteId}")]
-        public Task<IActionResult> DeleteTags(string noteId)
+        [HttpDelete]
+        [Route("noteId/{noteId}")]
+        public async Task<IActionResult> DeleteTags(string noteId)
         {
-            throw new NotImplementedException();
+            //gets the list of tags after calling the GetTags function
+            List<Tag> tags = GetTags(noteId).Result;
+
+            if (!tags.Any()) //Checks to see if tags list is either null or empty
+                return BadRequest("noteId does not exist");
+
+            foreach (Tag tag in tags) //deletes them 1 by 1
+            {
+                await _dbService.tagContainer.DeleteItemAsync<Tag>(tag.id, new PartitionKey(tag.noteId));
+            }
+
+            return Ok("Tags successfully deleted.");
+
         }
 
         /// <summary>
@@ -112,13 +151,30 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// tag on a note.
         /// </summary>
         /// <param name="noteId">The Note ID associated with the tag to be deleted</param>
-        /// <param name="userId">The ID of the user who wants to delete the tag</param>
         /// <param name="name">The name of the tag to delete</param>
         /// <returns></returns>
-        [HttpDelete("{noteId}/users/{userId}/name/{name}")]
-        public Task<IActionResult> DeleteTag(string noteId, string userId, string name)
+        // [HttpDelete("{noteId}/users/{userId}/name/{name}")]
+        [HttpDelete]
+        [Route("noteId/{noteId}/name/{name}")]
+        public async Task<IActionResult> DeleteTag(string noteId, string name)
         {
-            throw new NotImplementedException();
+            //gets the list of tags in the noteId
+            List<Tag> tags = GetTags(noteId).Result;
+
+            if (!tags.Any()) //Checks to see if tags list is either null or empty
+                return BadRequest("noteId does not exist");
+
+            //gets the specific tag with the given parameter
+            Tag foundTag = tags.Find(tag => tag.name == name);
+
+            if (foundTag != null)
+            {
+                await _dbService.tagContainer.DeleteItemAsync<Tag>(foundTag.id, new PartitionKey(foundTag.noteId));
+                return Ok("Tag successfully deleted.");
+            }
+            //If the given tag name is not within the given noteId
+            return BadRequest("There is no " + name + " tag associated with noteId");
+
         }
     }
 }

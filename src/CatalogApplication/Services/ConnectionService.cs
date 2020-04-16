@@ -27,6 +27,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Services
             // You can make multiple containers per database so have fun
             var tagContainerReference = await databaseReference.Database.CreateContainerIfNotExistsAsync("Tags", "/noteId");
             var ratingContainerReference = await databaseReference.Database.CreateContainerIfNotExistsAsync("Ratings", "/noteId");
+
             this.tagContainer = tagContainerReference.Container;
             this.ratingContainer = ratingContainerReference.Container;
         }
