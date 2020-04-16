@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -34,13 +34,9 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         [Route("get/noteId/{noteId}")]
         public async Task<List<Tag>> GetTags(string noteId)
         {
-<<<<<<< HEAD
-            QueryDefinition query = new QueryDefinition($"SELECT * FROM c WHERE c.noteId= '" + noteId + "'");
-=======
             string sqlQueryText = "SELECT * FROM c WHERE c.noteId = @noteId";
             QueryDefinition query = new QueryDefinition(sqlQueryText).WithParameter("@noteId", noteId);
 
->>>>>>> 25342bfbc39f627ea4dbdd817e1e8292b9276e8f
             FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(query);
 
             List<Tag> tags = new List<Tag>();
