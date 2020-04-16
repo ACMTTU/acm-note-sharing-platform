@@ -8,6 +8,7 @@ using ACMTTU.NoteSharing.Platform.CatalogApplication.Services;
 using CatalogApplication.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
 {
@@ -30,7 +31,8 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         [HttpGet("{noteId}")]
         public async Task<List<Rating>> GetRating(string noteId)
         {
-            QueryDefinition query = new QueryDefinition($"SELECT * FROM c WHERE c.noteId = '{noteId}'");
+            String sqlQueryText = "SELECT * FROM c WHERE c.noteId = @noteId";
+            QueryDefinition query = new QueryDefinition(sqlQueryText).WithParameter("@noteId", noteId);
             FeedIterator<Rating> iterator = _dbService.ratingContainer.GetItemQueryIterator<Rating>(query);
 
             List<Rating> ratings = new List<Rating>();
@@ -100,19 +102,18 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
                 return null;
             }
 
-            QueryDefinition query = new QueryDefinition($"SELECT * FROM c WHERE c.noteId= '{noteId}'");
-            FeedIterator<Rating> iterator = _dbService.ratingContainer.GetItemQueryIterator<Rating>(query);
-
+            List<Rating> ratings = GetRating(noteId).Result;
             List<Rating> deletedRatings = new List<Rating>();
 
-            while (iterator.HasMoreResults)
+            if (!ratings.Any())
             {
-                var result = await iterator.ReadNextAsync();
-                foreach (Rating rating in result)
-                {
-                    await _dbService.ratingContainer.DeleteItemAsync<Rating>(rating.noteId, new PartitionKey(rating.noteId));
-                    deletedRatings.Add(rating);
-                }
+                return null;
+            }
+
+            foreach (Rating rating in ratings)
+            {
+                await _dbService.ratingContainer.DeleteItemAsync<Rating>(rating.id, new PartitionKey(rating.noteId));
+                deletedRatings.Add(rating);
             }
             return deletedRatings;
         }
