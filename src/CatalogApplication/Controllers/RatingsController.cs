@@ -27,15 +27,23 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// </summary>
         /// <param name="noteId">The ID of the note the user wants the ratings for</param>
         /// <returns>The rating of the note</returns>
-        [HttpGet]
-        [Route("get1")]
-        public async Task<Rating> GetRatingInfoByNote(string noteId)
+        [HttpGet("{noteId}")]
+        public async Task<List<Rating>> GetRating(string noteId)
         {
-            Rating rating = new Rating();
+            QueryDefinition query = new QueryDefinition($"SELECT * FROM c WHERE c.noteId = '{noteId}'");
+            FeedIterator<Rating> iterator = _dbService.ratingContainer.GetItemQueryIterator<Rating>(query);
 
-            rating = await _dbService.ratingContainer.ReadItemAsync<Rating>(noteId, new PartitionKey(noteId));
+            List<Rating> ratings = new List<Rating>();
 
-            return rating;
+            while (iterator.HasMoreResults)
+            {
+                var resultSet = await iterator.ReadNextAsync();
+                foreach (Rating rating in resultSet)
+                {
+                    ratings.Add(rating);
+                }
+            }
+            return ratings;
         }
 
         /// <summary>
@@ -85,10 +93,32 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         /// <param name="noteId">White note's rating to delete</param>
         /// <returns>OK on success, otherwise bad request</returns>
         [HttpDelete("{noteId}")]
-        public Task<IActionResult> DeleteRating(string noteId)
+        public async Task<List<Rating>> DeleteRating(string noteId)
         {
-            throw new NotImplementedException();
-        }
+            if (noteId == null)
+            {
+                return null;
+            }
 
+            QueryDefinition query = new QueryDefinition($"SELECT * FROM c WHERE c.noteId= '{noteId}'");
+            FeedIterator<Rating> iterator = _dbService.ratingContainer.GetItemQueryIterator<Rating>(query);
+
+            List<Rating> deletedRatings = new List<Rating>();
+
+            while (iterator.HasMoreResults)
+            {
+                var result = await iterator.ReadNextAsync();
+                foreach (Rating rating in result)
+                {
+                    await _dbService.ratingContainer.DeleteItemAsync<Rating>(rating.noteId, new PartitionKey(rating.noteId));
+                    deletedRatings.Add(rating);
+                }
+            }
+            return deletedRatings;
+        }
     }
 }
+
+
+
+

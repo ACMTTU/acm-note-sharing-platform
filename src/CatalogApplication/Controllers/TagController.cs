@@ -34,8 +34,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         [Route("noteId/{noteId}")]
         public async Task<List<Tag>> GetTags(string noteId)
         {
-            QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.noteId ='" + noteId + "'");
-
+            QueryDefinition query = new QueryDefinition($"SELECT * FROM c WHERE c.noteId= '" + noteId + "'");
             FeedIterator<Tag> iterator = _dbService.tagContainer.GetItemQueryIterator<Tag>(query);
 
             List<Tag> tags = new List<Tag>();

@@ -13,7 +13,6 @@ namespace CatalogApplication.Models
         public string noteId { get; set; }
         // To check whether the tag is associated with a certain user
         public string userId { get; set; }
-
         // Whether the tag should be hidden from the user
         public bool hidden { get; set; }
         // Whether the tag was automatically added by the catalog system
