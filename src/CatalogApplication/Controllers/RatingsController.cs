@@ -105,11 +105,6 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             List<Rating> ratings = GetRating(noteId).Result;
             List<Rating> deletedRatings = new List<Rating>();
 
-            if (!ratings.Any())
-            {
-                return null;
-            }
-
             foreach (Rating rating in ratings)
             {
                 await _dbService.ratingContainer.DeleteItemAsync<Rating>(rating.id, new PartitionKey(rating.noteId));
