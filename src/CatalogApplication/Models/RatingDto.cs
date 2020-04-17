@@ -7,6 +7,6 @@ namespace CatalogApplication.Models
         // The note ID associated with this rating
         public string noteId { get; set; }
         // The running average rating for the note
-        public double rating { get; set; }
+        public int rating { get; set; }
     }
 }
