@@ -49,6 +49,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             return ratings;
         }
 
+
         /// <summary>
         /// Creates a new rating. Pass everything other than id
         /// </summary>
@@ -126,7 +127,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
 
             //catch the exception of the tagResponse
             catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-            {
+            { 
                 return BadRequest();
             }
 
