@@ -10,5 +10,3 @@ namespace CatalogApplication.Models
         public string userId { get; set; }
         // The int value of the rating
         public int rating { get; set; }
-    }
-}

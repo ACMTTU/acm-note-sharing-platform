@@ -1,4 +1,5 @@
 namespace CatalogApplication.Models
+<<<<<<< Updated upstream
 {
     public class RatingDto
     {
@@ -7,6 +8,7 @@ namespace CatalogApplication.Models
         // The note ID associated with this rating
         public string noteId { get; set; }
         // The running average rating for the note
+<<<<<<< Updated upstream
         public int rating { get; set; }
     }
 }
