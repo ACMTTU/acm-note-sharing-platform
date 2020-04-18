@@ -42,6 +42,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpGet("GetClassByID/{id}")]
         public async Task<ActionResult<string>> GetClassroom(string id)
         {
+            //to check if i am pushing it right
             throw new NotImplementedException();
         }
 
