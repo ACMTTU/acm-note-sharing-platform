@@ -6,6 +6,7 @@ using ACMTTU.NoteSharing.Shared.SDK.Controllers;
 using Microsoft.Azure.Cosmos;
 using ACMTTU.NoteSharing.Platform.ClassApplication.Services;
 using ClassApplication.Models;
+using System.Collections.Generic;
 
 namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 {
@@ -53,11 +54,29 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///
         /// </summary>
         /// <param name="className">classroom name</param>
-        /// <returns>An array containing a value determined by the parameter</returns>
+        /// <returns>A list containing a classIDs determined by the parameter</returns>
         [HttpGet("GetClassByName/{className}")]
-        public async Task<ActionResult<string>> QueryClassByName(string className)
+        public async Task<List<string>> QueryClassByName(string className)
         {
-            throw new NotImplementedException();
+            string sqlQueryStatement = "SELECT * FROM c WHERE c.Name = @className";
+            QueryDefinition query = new QueryDefinition(sqlQueryStatement).WithParameter("@className", className);
+            FeedIterator<Classroom> queryIterator = classesContainer.GetItemQueryIterator<Classroom>(query);
+
+            List<string> result = new List<string>();
+
+            while (queryIterator.HasMoreResults)
+            {
+                FeedResponse<Classroom> resultSet = await queryIterator.ReadNextAsync();
+
+                foreach (Classroom classroom in resultSet)
+                {
+                    result.Add(classroom.classID);
+                }
+
+            }
+
+            return result;
+
         }
 
         /// <summary>
