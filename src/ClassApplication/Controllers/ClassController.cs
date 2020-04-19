@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +35,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             throw new NotImplementedException();
         }
 
-        
+
 
         /// <summary>
         /// 
@@ -50,7 +50,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 
             // get classroom
             Classroom classroom;
-            classroom = await _classesContainer.ReadItemAsync<Classroom>(classId, _partKey);
+            classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
 
             // are we supposed to return a Task<ActionResult<string>>? In NotesController, it returns Task<Note>
             return classroom;
@@ -88,7 +88,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 
         }
 
-        
+
 
         /// <summary>
         /// This call is used to add a Note to the Classroom
@@ -102,7 +102,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 
             // get classroom
             Classroom classroom;
-            classroom = await _classesContainer.ReadItemAsync<Classroom>(classId, _partKey);
+            classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
 
             // add note to classroom's set of notes
             //      the boolean stores whether the function was successful, in case we implement error-checking
