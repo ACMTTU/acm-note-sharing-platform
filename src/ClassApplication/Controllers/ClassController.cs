@@ -106,7 +106,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 
             // add note to classroom's set of notes
             //      the boolean stores whether the function was successful, in case we implement error-checking
-            bool result = classroom.AddNote(notesId);
+            classroom.AddNote(notesId);
 
             // return okay; we can use the boolean to return a different result if there's an error encountered
             return Ok();
@@ -161,6 +161,37 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 
             else
                 return BadRequest();
+        }
+
+        public async Task<ActionResult<string>> RemoveStudent(string classId, string actorId, string removeId)
+        {
+
+            Classroom classroom;
+            classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
+
+            // if either the actor or the user to be removed are not part of this classroom,
+            //      this is a bad request
+            if (!classroom.ContainsStudent(actorId) || !classroom.ContainsStudent(removeId))
+                return BadRequest();
+
+            // if the user being removed is the Owner
+            if (classroom.StudentIsOwner(removeId))
+            {
+
+                // if the Owner is removing themselves, this is undefined behavior
+                if (removeId.Equals(actorId))
+                    throw new NotImplementedException();
+
+                // otherwise, a non-Owner cannot remove the Owner, so this is a bad request
+                else
+                    return BadRequest();
+
+            }
+
+            // at this point, this is a good request so perform the task
+            classroom.RemoveStudent(removeId);
+            return Ok();
+
         }
 
         ///<summary>
