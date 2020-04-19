@@ -5,7 +5,7 @@ namespace ClassApplication.Models
 {
     public class Classroom
     {
-        public int classID { get; set; }                    //From the user
+        public string classID { get; set; }                    //From the user
         public string ownerID { get; set; }
         public string Name { get; set; }                    //From the user
         public string Description { get; set; }             //From the user
