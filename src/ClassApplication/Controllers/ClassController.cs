@@ -21,15 +21,23 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 
         /// <summary>
         /// 
-        /// Creates a classroom in the database from a given Classroom object
+        /// Creates a classroom in the database
         /// 
         /// </summary>
-        /// <param name="classroom">Has a ClassId, Name, and Description</param>
-        /// <returns>An array containing a value determined by the parameter</returns>
+        /// <param name="ownerId">ID of the user creating the class</param>
+        /// <param name="ownerName">Public name of the user creating the class</param>
         [HttpPost]
-        public async Task<ActionResult<string>> CreateClassroom(Classroom classroom)
+        public async Task<ActionResult<string>> CreateClassroom(string ownerId, string ownerName)
         {
-            throw new NotImplementedException();
+            Classroom classroom;
+            classroom.classID = Guid.NewGuid();
+            classroom.Name = ownerName + "'s classroom";
+            classroom.Students.add(ownerId);
+            classroom.ownerID = ownerId;
+
+            await classesContainer.AddItemAsync<Classroom>(classroom, classroom.ClassID);
+
+            return Ok();
         }
 
         /// <summary>
