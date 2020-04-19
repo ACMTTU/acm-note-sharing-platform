@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +6,7 @@ using ACMTTU.NoteSharing.Shared.SDK.Controllers;
 using Microsoft.Azure.Cosmos;
 using ACMTTU.NoteSharing.Platform.ClassApplication.Services;
 using ClassApplication.Models;
+using System.Collections.Generic;
 
 namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 {
@@ -13,11 +14,12 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
     [ApiController]
     public class ClassController : PlatformBaseController
     {
-        private PartitionKey _partKey = new PartitionKey("classes");
-        private Container _classesContainer;
+        private Container classesContainer;
+        private PartitionKey partitionKey = new PartitionKey("classroom");
+
         public ClassController(IHttpClientFactory factory, DatabaseService databaseService) : base(factory)
         {
-            this._classesContainer = databaseService.classroomsContainer;
+            this.classesContainer = databaseService.classroomsContainer;
         }
 
         /// <summary>
@@ -30,9 +32,10 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> CreateClassroom(Classroom classroom)
         {
-
             throw new NotImplementedException();
         }
+
+        
 
         /// <summary>
         /// 
@@ -60,12 +63,32 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///
         /// </summary>
         /// <param name="className">classroom name</param>
-        /// <returns>An array containing a value determined by the parameter</returns>
+        /// <returns>A list containing a classIDs determined by the parameter</returns>
         [HttpGet("GetClassByName/{className}")]
-        public async Task<ActionResult<string>> QueryClassByName(string className)
+        public async Task<List<string>> QueryClassByName(string className)
         {
-            throw new NotImplementedException();
+            string sqlQueryStatement = "SELECT * FROM c WHERE c.Name = @className";
+            QueryDefinition query = new QueryDefinition(sqlQueryStatement).WithParameter("@className", className);
+            FeedIterator<Classroom> queryIterator = classesContainer.GetItemQueryIterator<Classroom>(query);
+
+            List<string> result = new List<string>();
+
+            while (queryIterator.HasMoreResults)
+            {
+                FeedResponse<Classroom> resultSet = await queryIterator.ReadNextAsync();
+
+                foreach (Classroom classroom in resultSet)
+                {
+                    result.Add(classroom.classID);
+                }
+
+            }
+
+            return result;
+
         }
+
+        
 
         /// <summary>
         /// This call is used to add a Note to the Classroom
@@ -120,10 +143,24 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///<param name="classId">Id of the classroom</param>
         ///<param name="className">Name of classroom to set</param>
         ///<param name="classDescription">Description of classroom to set</param>
+        ///<param name="userId">Id of the user making update request</param>
         [HttpPut("{classId}")]
-        public async Task<ActionResult<string>> UpdateClass(string classId, string className, string classDescription)
+        public async Task<ActionResult<string>> UpdateClass(string classId, string className, string classDescription, string userId)
         {
-            throw new NotImplementedException();
+            Classroom updatingClass;
+            updatingClass = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
+
+            if (updatingClass.ownerID == userId)
+            {
+                updatingClass.setName(className);
+                updatingClass.setDescription(classDescription);
+                await classesContainer.ReplaceItemAsync<Classroom>(updatingClass, classId);
+
+                return Ok();
+            }
+
+            else
+                return BadRequest();
         }
 
         ///<summary>
