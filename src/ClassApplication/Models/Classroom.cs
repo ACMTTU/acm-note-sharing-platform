@@ -17,18 +17,15 @@ namespace ClassApplication.Models
         {
             this.Name = newName;
         }
-      
+
         /// <summary>
         /// Adds note to this classroom's collection of notes
         /// </summary>
         /// <param name="noteID">The id of the note object to be added </param>
-        public bool AddNote(string noteID)
+        public void AddNote(string noteID)
         {
 
             Notes.Add(noteID);
-
-            // return true if no error encountered
-            return true;
 
         }
 
@@ -36,5 +33,20 @@ namespace ClassApplication.Models
         {
             this.Description = newDescription;
         }
+
+        /// <summary>
+        /// Removes user from the classroom
+        /// </summary>
+        /// <param name="removeId">User ID of the user being removed</param>
+        public void RemoveStudent(string removeId)
+        {
+
+            Students.Remove(removeId);
+
+        }
+
+        public bool ContainsStudent(string userId) { return Students.Contains(userId); }
+        public bool StudentIsOwner(string userId) { return ownerID.Equals(userId); }
+
     }
 }
