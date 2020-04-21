@@ -41,25 +41,13 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         /// <param name="id">classroom id</param>
         /// <returns>An array containing a value determined by the parameter</returns>
         [HttpGet("GetClassByID/{id}")]
-        /*
-                public async Task<ActionResult<string>> GetClassroom(string id)
-                {
-                    //to check if i am pushing it right
-                    //throw new NotImplementedException();
-         }
-         */
+
         public async Task<ActionResult<string>> GetClassroomByID(string id)
         {
 
-
-            string Text = " SELECT * FROM c WHERE c.noteId =@id";
-            QueryDefinition query = new QueryDefinition(Text).WithParameter("@Id", id);
-
-            FeedIterator<Classroom> iterator = classesContainer.ReadItemAsync<Classroom>(query);
+            FeedIterator<Classroom> iterator = classesContainer.ReadItemAsync<Classroom>(id);
 
             List<Classroom> classroomId = new List<Classroom>(classId);
-
-            //this is an example to add class
             classroomId.Add("CS 3364"); //example
             classroomId.Add(new (ClassController) { GetClassroom = "CS 3375" });
             var classId = id;
@@ -72,22 +60,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
                     classroomId.Add(classId);
                 }
             }
-            //Returns data from a classroom from a given classroom ID
             return classroomId;
-
-
-            if (classroomId == null)
-            {
-                Console.WriteLine("No any Classes. Click '+' and type new class Id to create one.")
-                // availableClassroom = classroomList;
-            }
-            else
-            {
-                Console.WriteLine("The total number of class room is of different class is: " + classroomId.count +
-                "Please select your intended class.");
-                //display the class room with respective classId
-                var classId = classroomId.classId;
-            }
         }
 
 
@@ -167,12 +140,6 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///</summary>
         ///<param name= "classId">ID of the classroom </param>
         [HttpDelete("{classId}")]
-
-        /*        public async Task<ActionResult<string>> DeleteClass(string classId)
-                {
-                    throw new NotImplementedException();
-                }
-        */
 
         public async Task<ActionResult<string> DeleteClass(string classId)
             {
