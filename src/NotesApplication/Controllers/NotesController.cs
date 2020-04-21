@@ -22,10 +22,27 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         }
 
         /// <summary>
-        /// Will create a new note with a generated Id
+        /// Creates new note with given name, contents, and date information
         /// </summary>
-        /// <param name="note">note metadata</param>
-        /// <returns></returns>
+        /// <param name="name">Name of the note</param>
+        /// <param name="notes">Contents of the note object</param>
+        /// <param name="createdAt">Date of creation</param>
+        /// <param name="lastModified">Date of last modification</param>
+        /// <returns>ID of new note</returns>
+        [HttpPut("create")]
+        public async Task<ActionResult<string>> CreateNote(string name, string[] notes, DateTime createdAt, DateTime lastModified)
+        {
+            // This creates a note given the usual constructor, with a newly generated ID.
+            Note databased = await _dbService.CreateItem<Note>(new Note(Guid.NewGuid().ToString(), name, notes, createdAt, lastModified));
+            return Ok(databased.id);
+
+        }
+
+        /// <summary>
+        /// Creates a new note given a JSON note object
+        /// </summary>
+        /// <param name="note">The raw note object, not part of the database</param>
+        /// <returns>ID of new note</returns>
         [HttpPut("create")]
         public async Task<ActionResult<string>> CreateNote(Note note)
         {
