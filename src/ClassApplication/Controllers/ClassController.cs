@@ -75,7 +75,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 
             List<string> classroomName = new List<string>();
 
-            //this is an example to add class
+
             classroomName.Add("Computer Architecture"); //example
             classroomName.Add(new (ClassController) { GetClassroom = "Software Engineering" });
             var classId = id;
@@ -145,19 +145,16 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             {
 
             //here, it gets the list of class id's in the classId
-                List<Classroom> id = GetClassroomByID(classId).Result;
+            List<Classroom> id = GetClassroomByID(classId).Result;
 
-                if(!id.Any())
-                return EmptyList("classId does not exist"); //here i am confused where to return if there is no class id
-
-        //find a specific class with the parameter classID
+            if(!id.Any())
+            return EmptyList("classId does not exist");
         Classroom getlass = id.Find(classroom => classroom.classId == classId);
 
-                if(getClass != null)
+            if(getClass != null)
                 {
-                    await classesContainer.DeleteItemAsync<Classroom>(getClass.id, new PartitionKey(getClass.classId));
-                    return Deleted("Class successfully deleted");
-
+                 await classesContainer.DeleteItemAsync<Classroom>(getClass.id, new PartitionKey(getClass.classId));
+                return Deleted("Class successfully deleted");
     }
 }
 
@@ -188,5 +185,24 @@ public async Task<ActionResult<string>> QueryNote(string classId, string noteNam
 {
     throw new NotImplementedException();
 }
-    }
+                }
+            }
+
+        /// <summary>
+        ///This call is used to add student in the classroom
+        ///by classId, addId
+        ///</summary>
+        ///<param name="classId">Id of the classroom</param>
+        ///<param name="addId">Id of the student that is going to be added</param>
+        [HttpGet("{classId}/{addId}")]
+public async Task<ActionResult<string>> AddStudent(string classId, string addId)
+{
+    Classroom classroom;
+    classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
+
+    //Since there is no validation for adding student,
+    // just added student with respect to addId
+    classroom.AddStudent(addId);
+    return Ok();
+
 }
