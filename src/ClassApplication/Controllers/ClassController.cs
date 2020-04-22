@@ -201,7 +201,7 @@ public async Task<ActionResult<string>> AddStudent(string classId, string addId)
     classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
 
     //Since there is no validation for adding student,
-    // just added student with respect to addId
+    // added student with respect to addId
     classroom.AddStudent(addId);
     return Ok();
 
