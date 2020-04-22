@@ -29,7 +29,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         /// <param name="createdAt">Date of creation</param>
         /// <param name="lastModified">Date of last modification</param>
         /// <returns>ID of new note</returns>
-        [HttpPut("create")]
+        [HttpPut("createfromscratch")]
         public async Task<ActionResult<string>> CreateNote(string name, string[] notes, DateTime createdAt, DateTime lastModified)
         {
             // This creates a note given the usual constructor, with a newly generated ID.
