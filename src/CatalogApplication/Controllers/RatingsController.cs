@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +10,6 @@ using ACMTTU.NoteSharing.Platform.CatalogApplication.Services;
 using CatalogApplication.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
 {
@@ -48,45 +49,89 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             return ratings;
         }
 
+
         /// <summary>
-        /// Creates a new rating for the given note
+        /// Creates a new rating. Pass everything other than id
         /// </summary>
-        /// <param name="newRating">The rating object with its associate class attributes</param>
+        /// <param name="ratingDto">The rating object with its associate class attributes</param>
         /// <returns> Action Result for the async operation
         /// </returns>
         [HttpPost]
-        public async Task<IActionResult> CreateRating(Rating newRating)
+        public async Task<IActionResult> CreateRating(RatingDto ratingDto)
         {
-            if (newRating.noteId == null || newRating.rating <= 0)
-                return BadRequest();
-            else
-            {
-                //newRating.numRatings = 1;
-                Rating rating = await _dbService.ratingContainer.CreateItemAsync(newRating);
-                return Ok(rating);
+            Rating rating = new Rating();
 
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    rating.noteId = ratingDto.noteId;
+                    rating.userId = ratingDto.userId;
+                    rating.rating = ratingDto.rating;
+
+                    //We need it to be known since ReadItemAsync only checks for id
+                    rating.id = rating.noteId + "." + rating.userId;
+
+                    //searches the database if the tagResponse is there
+                    ItemResponse<Rating> ratingResponse = await _dbService.ratingContainer.ReadItemAsync<Rating>(rating.id, new PartitionKey(rating.noteId));
+                    //if it finds it in the database
+                    //await _dbService.ratingContainer.ReplaceItemAsync<Rating>(rating, rating.id);
+                    Rating rating_update = await _dbService.ratingContainer.ReadItemAsync<Rating>(rating.id, new PartitionKey(rating.noteId));
+                    rating_update.rating = rating.rating;
+                    await _dbService.ratingContainer.ReplaceItemAsync<Rating>(rating_update, rating.noteId);
+                    return Ok("RATING IS REPLACED SUCCESSFULLY");
+                }
             }
 
+            //catch the exception of the tagResponse
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                await _dbService.ratingContainer.CreateItemAsync(rating);
+                return Ok("RATING IS ADDED SUCCESSFULLY");
+            }
+
+            //If it didn't go through all the test cases
+            return BadRequest("Body is invalid");
+
         }
+
         /// <summary>
         /// Updates the rating on the basis of the noteID
         /// </summary>
         /// <param name="noteId">ID of the note whose ratings need to be updated.</param>
-        /// <param name="userRating">A double value that indicates the new rating for the note. </param>
+        /// <param name="userID">ID of the user who wants to update the rating.</param>
+        /// <param name="userRating">An int value that indicates the new rating for the note. </param>
         /// <returns></returns>
         [HttpPut("{noteId}/rating/{userRating}")]
-        public async Task<ActionResult> UpdateRating(string noteId, double userRating)
+        public async Task<IActionResult> UpdateRating(string noteId, string userID, int userRating)
         {
-            if (noteId == null || userRating <= 0)
-                return BadRequest();
-            else
+            string id;
+            id=noteId + "." + userID;
+            
+            try
             {
-                Rating rating = await _dbService.ratingContainer.ReadItemAsync<Rating>(noteId, new PartitionKey(noteId));
-                //rating.numRatings = rating.numRatings + 1;
-                // rating.rating = (rating.rating + userRating) / (rating.numRatings);
-                await _dbService.ratingContainer.ReplaceItemAsync<Rating>(rating, noteId);
-                return Ok(rating);
+                if (id == null || userRating <= 0)
+                    return BadRequest();
+                else
+                {
+                    //searches the database if the tagResponse is there
+                    ItemResponse<Rating> ratingResponse = await _dbService.ratingContainer.ReadItemAsync<Rating>(id, new PartitionKey(noteId));
+                    //if it finds it in the database
+                    Rating rating_update = await _dbService.ratingContainer.ReadItemAsync<Rating>(id, new PartitionKey(noteId));
+                    rating_update.rating=userRating;
+                    //rating_update.rating = (rating_update.rating + userRating) / (rating_update.numRatings);
+                    await _dbService.ratingContainer.ReplaceItemAsync<Rating>(rating_update, noteId);
+                    return Ok("RATING IS REPLACED SUCCESSFULLY");
+                }
             }
+
+            //catch the exception of the tagResponse
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            { 
+                return BadRequest();
+            }
+
+
         }
 
         /// <summary>
@@ -105,6 +150,11 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
             List<Rating> ratings = GetRating(noteId).Result;
             List<Rating> deletedRatings = new List<Rating>();
 
+            if (!ratings.Any())
+            {
+                return null;
+            }
+
             foreach (Rating rating in ratings)
             {
                 await _dbService.ratingContainer.DeleteItemAsync<Rating>(rating.id, new PartitionKey(rating.noteId));
@@ -114,7 +164,3 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
     }
 }
-
-
-
-
