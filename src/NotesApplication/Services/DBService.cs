@@ -51,7 +51,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         public async Task<T> CreateItem<T>(T undatabasedObject)
         {
 
-            return await _container.CreateItemAsync<T>(undatabasedObject);
+            return await _container.CreateItemAsync<T>(undatabasedObject, _partKey);
 
         }
 
@@ -77,7 +77,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         public async Task<ItemResponse<T>> ReplaceItem<T>(T update, string id)
         {
 
-            return await _container.ReplaceItemAsync<T>(update, id);
+            return await _container.ReplaceItemAsync<T>(update, id, _partKey);
 
         }
 
