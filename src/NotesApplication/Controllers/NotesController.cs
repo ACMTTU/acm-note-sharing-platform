@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ACMTTU.NoteSharing.Shared.SDK.Controllers;
@@ -118,6 +119,35 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        /// <summary>
+        /// Returns list of note IDs queried by name
+        /// </summary>
+        /// <param name="noteName">Name of note to be queried</param>
+        /// <returns>List of note IDs</returns>
+        [HttpGet("GetNoteByName/{noteName}")]
+        public async Task<List<string>> QueryNoteByName(string noteName)
+        {
+
+            string sqlQueryStatement = "SELECT * FROM n WHERE n.Name = @noteName";
+            QueryDefinition query = new QueryDefinition(sqlQueryStatement).WithParameter("@noteName", noteName);
+            FeedIterator<Note> queryIterator = await _dbService.GetItemQueryIterator<Note>(query);
+            List<string> result = new List<string>();
+
+            while (queryIterator.HasMoreResults)
+            {
+                FeedResponse<Note> resultSet = await queryIterator.ReadNextAsync();
+
+                foreach (Note note in resultSet)
+                {
+                    result.Add(note.id);
+                }
+
+            }
+
+            return result;
+
         }
 
         /// <summary>

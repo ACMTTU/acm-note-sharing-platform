@@ -21,6 +21,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         Task<T> ReadItem<T>(string id);
         Task<ItemResponse<T>> ReplaceItem<T>(T update, string id);
         Task<ItemResponse<T>> DeleteItem<T>(string id);
+        Task<FeedIterator<T>> GetItemQueryIterator<T>(QueryDefinition query);
 
     }
 
@@ -90,6 +91,21 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         {
 
             return await _container.DeleteItemAsync<T>(id, _partKey);
+
+        }
+
+        /// <summary>
+        /// Returns iterator of items given a database query
+        /// </summary>
+        /// <param name="query">The query definition</param>
+        /// <typeparam name="T">The type of the item</typeparam>
+        /// <returns></returns>
+        public async Task<FeedIterator<T>> GetItemQueryIterator<T>(QueryDefinition query)
+        {
+
+            // create query request options with our partition key
+            QueryRequestOptions requestOptions = new QueryRequestOptions() { PartitionKey = _partKey };
+            return _container.GetItemQueryIterator<T>(query, null, requestOptions);
 
         }
 
