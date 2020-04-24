@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos;
 
-namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Services
+namespace ACMTTU.NoteSharing.Platform.UserApplication.Services
 {
     public class ConnectionService : PlatformBaseService
     {
@@ -24,7 +24,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Services
             var databaseReference = await this.dbClient.CreateDatabaseIfNotExistsAsync("UserApplication");
 
             // You can make multiple containers per database so have fun
-            var userContainerReference = await databaseReference.Database.CreateContainerIfNotExistsAsync("Users", "/userId");
+            var userContainerReference = await databaseReference.Database.CreateContainerIfNotExistsAsync("Users", "/id");
 
             this.userContainer = userContainerReference.Container;
         }

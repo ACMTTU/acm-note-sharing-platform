@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ACMTTU.NoteSharing.Shared.SDK.Controllers;
+using ACMTTU.NoteSharing.Platform.UserApplication.Services;
 using Microsoft.Azure.Cosmos;
 using UserApplication.Models;
 
@@ -10,39 +12,43 @@ namespace ACMTTU.NoteSharing.Platform.UserApplication.Controllers
 {
     [Route("api/users")]
     [ApiController]
-    public class UserController : PlatformBaseController
+    public class UserController : ControllerBase
     {
-        public UserController(IHttpClientFactory factory) : base(factory) { }
-
-        /// <summary>
-        /// This is how you document code
-        /// 
-        /// Visit the microservice's endpoint and append /swagger
-        /// to see your docs in action
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<string>> GetValues(string id)
+        private readonly ConnectionService _dbService;
+        public UserController(IHttpClientFactory factory, ConnectionService dbService)
         {
-            using (CosmosClient dbClient = await this.GetDatatbaseClient())
-            {
-                await dbClient.CreateDatabaseIfNotExistsAsync("UserApplication");
-            }
-
-            return $"Id value from URL: {id}";
+            _dbService = dbService;
         }
 
         /// <summary>
-        /// Create new user
+        /// Create a new user info. Pass everything
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        [HttpPost()]
-        public Task<ActionResult<string>> CreateNewUser(UserInfo user)
+        /// <returns>OK if successful otherwise bad request</returns>
+        [HttpPost]
+        public async Task<IActionResult> CreateNewTag(UserInfo user)
         {
+            try
+            {
+                if (ModelState.IsValid)
+                {
 
-            throw new NotImplementedException();
+                    //searches the database if user already exists
+                    await _dbService.userContainer.ReadItemAsync<UserInfo>(user.id, new PartitionKey(user.id));
+                    //if it finds it in the database
+                    return BadRequest("USER ALREADY EXISTS");
+                }
+            }
+
+            //catch the exception of the readitemasync
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                await _dbService.userContainer.CreateItemAsync(user);
+                return Ok("USER IS ADDED SUCCESSFULLY");
+            }
+
+            //If it didn't go through all the test cases
+            return BadRequest("Body is invalid");
+
 
         }
 
@@ -51,26 +57,38 @@ namespace ACMTTU.NoteSharing.Platform.UserApplication.Controllers
         /// This should only delete user information.
         /// This shouldn't delete any notes or comments.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="userId">The ID of the User that is going to be deleted</param>
         /// <returns></returns>
-        [HttpDelete("{id}")]
-        public Task<ActionResult<string>> DeleteUser(string id)
+        [HttpDelete]
+        [Route("delete/userId/{userId}")]
+        public async Task<IActionResult> DeleteUser(string userId)
         {
 
-            throw new NotImplementedException();
+            try
+            {
+                await _dbService.userContainer.DeleteItemAsync<UserInfo>(userId, new PartitionKey(userId));
+                return Ok("User successfully deleted.");
+
+            }
+            catch
+            {
+                return BadRequest("userId does not exist.");
+            }
 
         }
-
-        /// <summary>
-        /// Updates a User by ID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="update"></param>
-        /// <returns></returns>
-        [HttpPut("{id}")]
-        public Task<ActionResult<string>> UpdateUser(string id, UserInfo update)
-        {
-            throw new NotImplementedException();
-        }
+        /*
+                /// <summary>
+                /// Updates a User by ID
+                /// </summary>
+                /// <param name="id"></param>
+                /// <param name="update"></param>
+                /// <returns></returns>
+                [HttpPut]
+                [Route("put/{update}")]
+                public Task<ActionResult<string>> UpdateUser(string id, UserInfo update)
+                {
+                    throw new NotImplementedException();
+                }
+                */
     }
 }

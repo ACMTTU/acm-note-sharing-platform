@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using ACMTTU.NoteSharing.Platform.UserApplication.Services;
 
 namespace ACMTTU.NoteSharing.Platform.UserApplication
 {
@@ -28,8 +29,6 @@ namespace ACMTTU.NoteSharing.Platform.UserApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpClient();
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // Register the Swagger generator, defining 1 or more Swagger documents
@@ -42,6 +41,10 @@ namespace ACMTTU.NoteSharing.Platform.UserApplication
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddHttpClient();
+
+            services.AddSingleton<ConnectionService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +56,7 @@ namespace ACMTTU.NoteSharing.Platform.UserApplication
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "User Application V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog Application V1");
             });
 
             if (env.IsDevelopment())
