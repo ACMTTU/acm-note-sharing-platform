@@ -25,7 +25,7 @@ namespace ACMTTU.NoteSharing.Platform.UserApplication.Controllers
         /// </summary>
         /// <returns>OK if successful otherwise bad request</returns>
         [HttpPost]
-        public async Task<IActionResult> CreateNewTag(UserInfo user)
+        public async Task<IActionResult> CreateNewUser(UserInfo user)
         {
             try
             {
