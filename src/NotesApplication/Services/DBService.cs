@@ -31,7 +31,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
     public class DBService : PlatformBaseService, IDBService
     {
         private Container _container;
-        private PartitionKey _partKey = new PartitionKey("notes");
+        private PartitionKey _partKey = new PartitionKey("/notes");
 
         public DBService(IHttpClientFactory clientFactory) : base(clientFactory) { }
 
