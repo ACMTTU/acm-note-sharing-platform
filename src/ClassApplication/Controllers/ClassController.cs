@@ -44,7 +44,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         /// </summary>
         /// <param name="classId">classroom id</param>
         /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpGet("GetClassByID/{id}")]
+        [HttpGet("GetClassByID/{classId}")]
         public async Task<Classroom> GetClassroom(string classId)
         {
 
@@ -96,7 +96,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         /// </summary>
         /// <param name="classId">Id of the classroom</param>
         /// <param name="notesId">Id of the note being added</param>
-        [HttpPut("{classId}/notes/{notesId}")]
+        [HttpPut("AddNoteToClass/{classId}/notes/{notesId}")]
         public async Task<ActionResult<string>> AddNoteToClass(string classId, string notesId)
         {
 
@@ -119,7 +119,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         /// </summary>
         /// <param name="classId">Id of the classroom</param>
         /// <param name="notesId">Id of the note being added</param>
-        [HttpDelete("{classId}/notes/{notesId}")]
+        [HttpDelete("RemoveNoteFromClass/{classId}/notes/{notesId}")]
         public async Task<ActionResult<string>> RemoveNoteFromClass(string classId, string notesId)
         {
             throw new NotImplementedException();
@@ -130,7 +130,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///by classID
         ///</summary>
         ///<param name= "classId">ID of the classroom </param>
-        [HttpDelete("{classId}")]
+        [HttpDelete("DeleteClass/{classId}")]
         public async Task<ActionResult<string>> DeleteClass(string classId)
         {
             throw new NotImplementedException();
@@ -144,7 +144,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///<param name="className">Name of classroom to set</param>
         ///<param name="classDescription">Description of classroom to set</param>
         ///<param name="userId">Id of the user making update request</param>
-        [HttpPut("{classId}")]
+        [HttpPut("UpdateClass/{classId}/{userId}/{className}/{classDescription}")]
         public async Task<ActionResult<string>> UpdateClass(string classId, string className, string classDescription, string userId)
         {
             Classroom updatingClass;
@@ -163,6 +163,14 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
                 return BadRequest();
         }
 
+        /// <summary>
+        ///This call is used to update the name and/or description of a class
+        ///by classId
+        ///</summary>
+        ///<param name="classId">Id of the classroom</param>
+        ///<param actor="actorId">Id of user invoking</param>
+        ///<param remove="removeId">Id of the user getting removed</param> 
+        [HttpDelete("RemoveStudent/{classId}/{userId}/{className}/{classDescription}")]
         public async Task<ActionResult<string>> RemoveStudent(string classId, string actorId, string removeId)
         {
 
@@ -200,7 +208,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///</summary>
         ///<param name="classId">Id of the classroom</param>
         ///<param name="noteName">Name of the note to search for</param>
-        [HttpGet("{classId}")]
+        [HttpGet("QueryNote/{classId}")]
         public async Task<ActionResult<string>> QueryNote(string classId, string noteName)
         {
 
