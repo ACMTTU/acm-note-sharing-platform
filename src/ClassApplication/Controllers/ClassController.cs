@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 {
-    [Route("api/class")]
+    [Route("api/classroom")]
     [ApiController]
     public class ClassController : PlatformBaseController
     {
@@ -29,7 +29,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         /// </summary>
         /// <param name="classroom">Has a ClassId, Name, and Description</param>
         /// <returns>An array containing a value determined by the parameter</returns>
-        [HttpPost]
+        [HttpPost("CreateClass")]
         public async Task<ActionResult<string>> CreateClassroom(Classroom classroom)
         {
             throw new NotImplementedException();
@@ -50,7 +50,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 
             // get classroom
             Classroom classroom;
-            classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
+            classroom = await classesContainer.ReadItemAsync<Classroom>(classId, new PartitionKey(classId));
 
             // are we supposed to return a Task<ActionResult<string>>? In NotesController, it returns Task<Note>
             return classroom;
