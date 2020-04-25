@@ -15,9 +15,9 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
     public class NotesController : PlatformBaseController
     {
 
-        private IDBService _dbService;
+        private DBService _dbService;
 
-        public NotesController(IHttpClientFactory factory, IDBService dbService) : base(factory)
+        public NotesController(IHttpClientFactory factory, DBService dbService) : base(factory)
         {
             _dbService = dbService;
         }
@@ -34,7 +34,9 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         public async Task<ActionResult<string>> CreateNote(string name, string[] notes, DateTime createdAt, DateTime lastModified)
         {
             // This creates a note given the usual constructor, with a newly generated ID.
-            Note databased = await _dbService.CreateItem<Note>(new Note(Guid.NewGuid().ToString(), name, notes, createdAt, lastModified));
+            String id = Guid.NewGuid().ToString();
+
+            Note databased = await _dbService.CreateItem<Note>(new Note(id, name, notes, createdAt, lastModified));
             return Ok(databased.id);
 
         }
@@ -49,7 +51,9 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         {
             // This copies the given note, (which callers will pass in with JSON in their request), to a new Note object. The new Note object has a valid, newly generated ID.
             // The newly generated id is returned, allowing for callers to edit properties of the newly created note. 
-            Note databased = await _dbService.CreateItem<Note>(new Note(Guid.NewGuid().ToString(), note.Name, note.Notes, note.CreatedAt, note.LastModified));
+
+            String id = Guid.NewGuid().ToString();
+            Note databased = await _dbService.CreateItem<Note>(new Note(id, note.Name, note.Notes, note.CreatedAt, note.LastModified));
             return Ok(databased.id);
 
         }
