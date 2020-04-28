@@ -76,19 +76,25 @@ namespace ACMTTU.NoteSharing.Platform.UserApplication.Controllers
             }
 
         }
-        /*
-                /// <summary>
-                /// Updates a User by ID
-                /// </summary>
-                /// <param name="id"></param>
-                /// <param name="update"></param>
-                /// <returns></returns>
-                [HttpPut]
-                [Route("put/{update}")]
-                public Task<ActionResult<string>> UpdateUser(string id, UserInfo update)
-                {
-                    throw new NotImplementedException();
-                }
-                */
+
+        /// <summary>
+        /// Updates an existing user. Pass everything
+        /// </summary>
+
+        /// <returns>OK if successful. Otherwise, bad request</returns>
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(UserInfo user)
+        {
+            try
+            {
+                await _dbService.userContainer.ReplaceItemAsync<UserInfo>(user, user.id, new PartitionKey(user.id));
+                return Ok("User has been successfully updated.");
+            }
+            catch
+            {
+                return BadRequest("userId does not exist");
+            }
+        }
+
     }
 }
