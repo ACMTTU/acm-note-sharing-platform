@@ -35,7 +35,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             classroom.Students.add(ownerId);
             classroom.ownerID = ownerId;
 
-            await classesContainer.AddItemAsync<Classroom>(classroom, classroom.ClassID);
+            await classesContainer.CreateItemAsync<Classroom>(classroom, classroom.ClassID);
 
             return Ok();
         }
