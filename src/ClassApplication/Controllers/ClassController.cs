@@ -26,6 +26,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         /// </summary>
         /// <param name="ownerId">ID of the user creating the class</param>
         /// <param name="ownerName">Public name of the user creating the class</param>
+        /// <param name="description">String to set the new classroom description to (Optional)</param>
         [HttpPost]
         public async Task<ActionResult<string>> CreateClassroom(string ownerId, string ownerName, string description = "")
         {
