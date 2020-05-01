@@ -53,6 +53,21 @@ namespace ACMTTU.NoteSharing.Platform.UserApplication.Controllers
         }
 
         /// <summary>
+        /// Get user
+        /// This is used to get the user information
+        /// </summary>
+        /// <param name="userId">The ID of the User that is going to be returned</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("get/userId/{userId}")]
+        public async Task<UserInfo> GetUser(string userId)
+        {
+            ItemResponse<UserInfo> response = await _dbService.userContainer.ReadItemAsync<UserInfo>(userId, new PartitionKey(userId));
+            return response.Resource;
+        }
+
+
+        /// <summary>
         /// Delete user
         /// This should only delete user information.
         /// This shouldn't delete any notes or comments.
