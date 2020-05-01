@@ -79,7 +79,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 
                 foreach (Classroom classroom in resultSet)
                 {
-                    result.Add(classroom.classID);
+                    result.Add(classroom.id);
                 }
 
             }
