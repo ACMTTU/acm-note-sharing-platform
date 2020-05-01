@@ -1,4 +1,3 @@
-  
 namespace CatalogApplication.Models
 {
     public class RatingDto

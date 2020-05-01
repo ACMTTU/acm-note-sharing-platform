@@ -50,7 +50,7 @@ namespace ACMTTU.NoteSharing.Platform.CatalogApplication.Controllers
         }
 
 
-                /// <summary>
+        /// <summary>
         /// Creates a new rating. Pass everything other than id
         /// </summary>
         /// <param name="ratingDto">The rating object with its associate class attributes</param>
