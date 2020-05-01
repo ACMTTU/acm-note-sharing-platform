@@ -5,7 +5,7 @@ namespace ClassApplication.Models
 {
     public class Classroom
     {
-        public int classID { get; set; }                    //From the user
+        public string classID { get; set; }                    //From the user
         public string Name { get; set; }                    //From the user
         public string Description { get; set; }             //From the user
         public IEnumerable<string> Notes { get; set; }        //id of other collection - Notes

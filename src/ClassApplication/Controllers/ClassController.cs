@@ -27,15 +27,16 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         /// <param name="ownerId">ID of the user creating the class</param>
         /// <param name="ownerName">Public name of the user creating the class</param>
         [HttpPost]
-        public async Task<ActionResult<string>> CreateClassroom(string ownerId, string ownerName)
+        public async Task<ActionResult<string>> CreateClassroom(string ownerId, string ownerName, string description = "")
         {
             Classroom classroom;
             classroom.classID = Guid.NewGuid();
             classroom.Name = ownerName + "'s classroom";
             classroom.Students.add(ownerId);
             classroom.ownerID = ownerId;
+            classroom.Description = description;
 
-            await classesContainer.CreateItemAsync<Classroom>(classroom, classroom.ClassID);
+            await classesContainer.CreateItemAsync<Classroom>(classroom, classroom.classID);
 
             return Ok();
         }
