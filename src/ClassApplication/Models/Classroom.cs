@@ -1,4 +1,9 @@
-public class Classroom
+using System;
+using System.Collections.Generic;
+
+namespace ClassApplication.Models
+{
+    public class Classroom
     {
         public string classID { get; set; }                    //From the user
         public string ownerID { get; set; }
