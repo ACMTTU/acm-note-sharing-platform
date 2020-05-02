@@ -6,6 +6,7 @@ using ACMTTU.NoteSharing.Shared.SDK.Controllers;
 using Microsoft.Azure.Cosmos;
 using ACMTTU.NoteSharing.Platform.ClassApplication.Services;
 using ClassApplication.Models;
+using System.Collections.Generic;
 
 namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 {
@@ -14,6 +15,8 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
     public class ClassController : PlatformBaseController
     {
         private Container classesContainer;
+        private PartitionKey partitionKey = new PartitionKey("classroom");
+
         public ClassController(IHttpClientFactory factory, DatabaseService databaseService) : base(factory)
         {
             this.classesContainer = databaseService.classroomsContainer;
@@ -42,17 +45,26 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             return Ok();
         }
 
+
+
         /// <summary>
         /// 
         /// Returns data from a classroom from a given classroom ID
         ///
         /// </summary>
-        /// <param name="id">classroom id</param>
+        /// <param name="classId">classroom id</param>
         /// <returns>An array containing a value determined by the parameter</returns>
         [HttpGet("GetClassByID/{id}")]
-        public async Task<ActionResult<string>> GetClassroom(string id)
+        public async Task<Classroom> GetClassroom(string classId)
         {
-            throw new NotImplementedException();
+
+            // get classroom
+            Classroom classroom;
+            classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
+
+            // are we supposed to return a Task<ActionResult<string>>? In NotesController, it returns Task<Note>
+            return classroom;
+
         }
 
         /// <summary>
@@ -61,12 +73,32 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///
         /// </summary>
         /// <param name="className">classroom name</param>
-        /// <returns>An array containing a value determined by the parameter</returns>
+        /// <returns>A list containing a classIDs determined by the parameter</returns>
         [HttpGet("GetClassByName/{className}")]
-        public async Task<ActionResult<string>> QueryClassByName(string className)
+        public async Task<List<string>> QueryClassByName(string className)
         {
-            throw new NotImplementedException();
+            string sqlQueryStatement = "SELECT * FROM c WHERE c.Name = @className";
+            QueryDefinition query = new QueryDefinition(sqlQueryStatement).WithParameter("@className", className);
+            FeedIterator<Classroom> queryIterator = classesContainer.GetItemQueryIterator<Classroom>(query);
+
+            List<string> result = new List<string>();
+
+            while (queryIterator.HasMoreResults)
+            {
+                FeedResponse<Classroom> resultSet = await queryIterator.ReadNextAsync();
+
+                foreach (Classroom classroom in resultSet)
+                {
+                    result.Add(classroom.classID);
+                }
+
+            }
+
+            return result;
+
         }
+
+
 
         /// <summary>
         /// This call is used to add a Note to the Classroom
@@ -77,7 +109,18 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpPut("{classId}/notes/{notesId}")]
         public async Task<ActionResult<string>> AddNoteToClass(string classId, string notesId)
         {
-            throw new NotImplementedException();
+
+            // get classroom
+            Classroom classroom;
+            classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
+
+            // add note to classroom's set of notes
+            //      the boolean stores whether the function was successful, in case we implement error-checking
+            classroom.AddNote(notesId);
+
+            // return okay; we can use the boolean to return a different result if there's an error encountered
+            return Ok();
+
         }
 
         /// <summary>
@@ -110,10 +153,55 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///<param name="classId">Id of the classroom</param>
         ///<param name="className">Name of classroom to set</param>
         ///<param name="classDescription">Description of classroom to set</param>
+        ///<param name="userId">Id of the user making update request</param>
         [HttpPut("{classId}")]
-        public async Task<ActionResult<string>> UpdateClass(string classId, string className, string classDescription)
+        public async Task<ActionResult<string>> UpdateClass(string classId, string className, string classDescription, string userId)
         {
-            throw new NotImplementedException();
+            Classroom updatingClass;
+            updatingClass = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
+
+            if (updatingClass.ownerID == userId)
+            {
+                updatingClass.setName(className);
+                updatingClass.setDescription(classDescription);
+                await classesContainer.ReplaceItemAsync<Classroom>(updatingClass, classId);
+
+                return Ok();
+            }
+
+            else
+                return BadRequest();
+        }
+
+        public async Task<ActionResult<string>> RemoveStudent(string classId, string actorId, string removeId)
+        {
+
+            Classroom classroom;
+            classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
+
+            // if either the actor or the user to be removed are not part of this classroom,
+            //      this is a bad request
+            if (!classroom.ContainsStudent(actorId) || !classroom.ContainsStudent(removeId))
+                return BadRequest();
+
+            // if the user being removed is the Owner
+            if (classroom.StudentIsOwner(removeId))
+            {
+
+                // if the Owner is removing themselves, this is undefined behavior
+                if (removeId.Equals(actorId))
+                    throw new NotImplementedException();
+
+                // otherwise, a non-Owner cannot remove the Owner, so this is a bad request
+                else
+                    return BadRequest();
+
+            }
+
+            // at this point, this is a good request so perform the task
+            classroom.RemoveStudent(removeId);
+            return Ok();
+
         }
 
         ///<summary>
@@ -125,7 +213,31 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpGet("{classId}")]
         public async Task<ActionResult<string>> QueryNote(string classId, string noteName)
         {
+
+            // NEED TO FIGURE OUT HOW TO QUERY NOSQL DATABASES
             throw new NotImplementedException();
+
+            // // get classroom
+            // Classroom classroom;
+            // classroom = await _classesContainer.ReadItemAsync<Classroom>(classId, _partKey);
+
+            // // create query with which to search the database
+            // //      by putting the note name inside % %, we're looking for any strings that contain the given name
+            // string loc = "Notes"; // ????
+            // string query = "SELECT * FROM " + loc + " WHERE name LIKE %" + noteName + "%";
+
+            // // create query request options, which will contain partition key
+            // QueryRequestOptions qro = new QueryRequestOptions();
+            // qro.PartitionKey = _partKey;
+
+            // // create feed iterator into which to store the result of the query
+            // FeedIterator<string> queryIterator = _classesContainer.GetItemQueryIterator<string>(query, null, qro);
+
+            // // how do we return the resultant?????
+
+            // // by default, assume that note is not found 
+            // return NotFound();
+
         }
     }
 }
