@@ -17,9 +17,15 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         private Container classesContainer;
         private PartitionKey partitionKey = new PartitionKey("classroom");
 
-        public ClassController(IHttpClientFactory factory, DatabaseService databaseService) : base(factory)
+        public ClassController(IHttpClientFactory factory, DBService databaseService) : base(factory)
         {
-            this.classesContainer = databaseService.classroomsContainer;
+
+            // IF YOU'RE READING THIS: the _controller field should be PRIVATE,
+            //      but this programmer didn't have the clearance to abstract
+            //      the database functions in this controller.
+            //      please make this field PRIVATE upon abstracting the database
+            //      service from this class.
+            this.classesContainer = databaseService._container;
         }
 
         /// <summary>

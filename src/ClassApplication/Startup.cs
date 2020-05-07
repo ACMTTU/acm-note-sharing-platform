@@ -31,7 +31,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication
         {
             services.AddHttpClient();
 
-            services.AddSingleton<DatabaseService>();
+            services.AddSingleton<DBService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

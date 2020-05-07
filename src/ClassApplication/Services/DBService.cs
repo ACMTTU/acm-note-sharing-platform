@@ -30,7 +30,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Services
     /// </summary>
     public class DBService : PlatformBaseService, IDBService
     {
-        private Container _container;
+        public Container _container;
 
         public DBService(IHttpClientFactory clientFactory) : base(clientFactory) { }
 
