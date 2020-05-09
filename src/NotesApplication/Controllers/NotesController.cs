@@ -6,7 +6,7 @@ using ACMTTU.NoteSharing.Shared.SDK.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using ACMTTU.NoteSharing.Platform.NotesApplication.Services;
-using NotesApplication;
+using NotesApplication.Models;
 
 namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
 {

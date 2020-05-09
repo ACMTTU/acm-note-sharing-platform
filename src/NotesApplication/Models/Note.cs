@@ -1,5 +1,5 @@
 using System;
-namespace NotesApplication
+namespace NotesApplication.Models
 {
     ///<summary>
     /// Represents a note in the database.
