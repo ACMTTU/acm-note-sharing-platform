@@ -117,6 +117,8 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             //      the boolean stores whether the function was successful, in case we implement error-checking
             classroom.AddNote(notesId);
 
+            await classesContainer.ReplaceItemAsync<Classroom>(classroom, classId);
+
             // return okay; we can use the boolean to return a different result if there's an error encountered
             return Ok();
 
@@ -135,6 +137,8 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
 
             classroom.RemoveNote(notesId);
+
+            await classesContainer.ReplaceItemAsync<Classroom>(classroom, classId);
 
             return Ok();
         }
@@ -246,6 +250,9 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             //Since there is no validation for adding student,
             // added student with respect to addId
             classroom.AddStudent(addId);
+
+            await classesContainer.ReplaceItemAsync<Classroom>(classroom, classId);
+
             return Ok();
         }
 
