@@ -2,11 +2,6 @@ using ACMTTU.NoteSharing.Shared.SDK.Services;
 using Microsoft.Azure.Cosmos;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using ACMTTU.NoteSharing.Shared.SDK.Controllers;
-using ACMTTU.NoteSharing.Platform.ClassApplication.Services;
-using ClassApplication;
 
 namespace ACMTTU.NoteSharing.Platform.ClassApplication.Services
 {
