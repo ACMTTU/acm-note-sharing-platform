@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ACMTTU.NoteSharing.Shared.SDK.Controllers;
@@ -14,24 +15,45 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
     public class NotesController : PlatformBaseController
     {
 
-        private IDBService _dbService;
+        private DBService _dbService;
 
-        public NotesController(IHttpClientFactory factory, IDBService dbService) : base(factory)
+        public NotesController(IHttpClientFactory factory, DBService dbService) : base(factory)
         {
             _dbService = dbService;
         }
 
         /// <summary>
-        /// Will create a new note with a generated Id
+        /// Creates new note with given name, contents, and date information
         /// </summary>
-        /// <param name="note">note metadata</param>
-        /// <returns></returns>
+        /// <param name="name">Name of the note</param>
+        /// <param name="notes">Contents of the note object</param>
+        /// <param name="createdAt">Date of creation</param>
+        /// <param name="lastModified">Date of last modification</param>
+        /// <returns>ID of new note</returns>
+        [HttpPut("createfromscratch")]
+        public async Task<ActionResult<string>> CreateNote(string name, string[] notes, DateTime createdAt, DateTime lastModified)
+        {
+            // This creates a note given the usual constructor, with a newly generated ID.
+            String id = Guid.NewGuid().ToString();
+
+            Note databased = await _dbService.CreateItem<Note>(new Note(id, name, notes, createdAt, lastModified));
+            return Ok(databased.id);
+
+        }
+
+        /// <summary>
+        /// Creates a new note given a JSON note object
+        /// </summary>
+        /// <param name="note">The raw note object, not part of the database</param>
+        /// <returns>ID of new note</returns>
         [HttpPut("create")]
         public async Task<ActionResult<string>> CreateNote(Note note)
         {
             // This copies the given note, (which callers will pass in with JSON in their request), to a new Note object. The new Note object has a valid, newly generated ID.
             // The newly generated id is returned, allowing for callers to edit properties of the newly created note. 
-            Note databased = await _dbService.CreateItem<Note>(new Note(Guid.NewGuid().ToString(), note.Name, note.Notes, note.CreatedAt, note.LastModified));
+
+            String id = Guid.NewGuid().ToString();
+            Note databased = await _dbService.CreateItem<Note>(new Note(id, note.Name, note.Notes, note.CreatedAt, note.LastModified));
             return Ok(databased.id);
 
         }
@@ -101,6 +123,35 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        /// <summary>
+        /// Returns list of note IDs queried by name
+        /// </summary>
+        /// <param name="noteName">Name of note to be queried</param>
+        /// <returns>List of note IDs</returns>
+        [HttpGet("GetNoteByName/{noteName}")]
+        public async Task<List<string>> QueryNoteByName(string noteName)
+        {
+
+            string sqlQueryStatement = "SELECT * FROM n WHERE n.Name = @noteName";
+            QueryDefinition query = new QueryDefinition(sqlQueryStatement).WithParameter("@noteName", noteName);
+            FeedIterator<Note> queryIterator = await _dbService.GetItemQueryIterator<Note>(query);
+            List<string> result = new List<string>();
+
+            while (queryIterator.HasMoreResults)
+            {
+                FeedResponse<Note> resultSet = await queryIterator.ReadNextAsync();
+
+                foreach (Note note in resultSet)
+                {
+                    result.Add(note.id);
+                }
+
+            }
+
+            return result;
+
         }
 
         /// <summary>

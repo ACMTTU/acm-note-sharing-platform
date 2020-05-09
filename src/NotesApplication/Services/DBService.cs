@@ -21,6 +21,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         Task<T> ReadItem<T>(string id);
         Task<ItemResponse<T>> ReplaceItem<T>(T update, string id);
         Task<ItemResponse<T>> DeleteItem<T>(string id);
+        Task<FeedIterator<T>> GetItemQueryIterator<T>(QueryDefinition query);
 
     }
 
@@ -30,16 +31,16 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
     public class DBService : PlatformBaseService, IDBService
     {
         private Container _container;
-        private PartitionKey _partKey = new PartitionKey("notes");
 
         public DBService(IHttpClientFactory clientFactory) : base(clientFactory) { }
 
         public async override Task Setup()
         {
             var client = await this.dbClient.CreateDatabaseIfNotExistsAsync("NoteDatabase");
-            ContainerResponse containerResp = await client.Database.CreateContainerIfNotExistsAsync("NoteContainer", "/");
 
-            _container = containerResp.Container;
+            ContainerResponse containerResp = await client.Database.CreateContainerIfNotExistsAsync("NoteContainer", "/notes");
+
+            this._container = containerResp.Container;
         }
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         public async Task<T> ReadItem<T>(string id)
         {
 
-            return await _container.ReadItemAsync<T>(id, _partKey);
+            return await _container.ReadItemAsync<T>(id, new PartitionKey(id));
 
         }
 
@@ -77,7 +78,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         public async Task<ItemResponse<T>> ReplaceItem<T>(T update, string id)
         {
 
-            return await _container.ReplaceItemAsync<T>(update, id);
+            return await _container.ReplaceItemAsync<T>(update, id, new PartitionKey(id));
 
         }
 
@@ -89,7 +90,21 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         public async Task<ItemResponse<T>> DeleteItem<T>(string id)
         {
 
-            return await _container.DeleteItemAsync<T>(id, _partKey);
+            return await _container.DeleteItemAsync<T>(id, new PartitionKey(id));
+
+        }
+
+        /// <summary>
+        /// Returns iterator of items given a database query
+        /// </summary>
+        /// <param name="query">The query definition</param>
+        /// <returns></returns>
+        public async Task<FeedIterator<T>> GetItemQueryIterator<T>(QueryDefinition query)
+        {
+
+            // create query request options with our partition key
+            QueryRequestOptions requestOptions = new QueryRequestOptions() { PartitionKey = new PartitionKey("/notes") };
+            return _container.GetItemQueryIterator<T>(query, null, requestOptions);
 
         }
 
