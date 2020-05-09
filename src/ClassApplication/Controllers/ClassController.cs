@@ -66,35 +66,6 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             return classroom;
         }
 
-        public async Task<ActionResult<string>> GetClassroomByName(string className)
-        {
-
-
-            string Text = " SELECT * FROM c WHERE c.name= @name =@className";
-            QueryDefinition query = new QueryDefinition(Text).WithParameter("@className", className);
-
-            FeedIterator<Classroom> iterator = classesContainer.ReadItemAsync<Classroom>(query);
-
-            List<string> classroomName = new List<string>();
-
-
-            classroomName.Add("Computer Architecture"); //example
-            classroomName.Add(new (ClassController) { GetClassroom = "Software Engineering" });
-            var classId = id;
-
-            while (iterator.HasMoreResults)
-            {
-                FeedResponse<Classroom> result = await iterator.ReadNextAsync();
-                foreach (Classroom className in result)
-                {
-                    classroomName.Add(className);
-                }
-            }
-            //Returns data from a classroom from a given classroom ID
-            return classroomName;
-
-        }
-
         /// <summary>
         /// 
         /// Finds a classroom by the classrooms name
