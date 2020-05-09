@@ -60,14 +60,10 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpGet("GetClassByID/{classId}")]
         public async Task<Classroom> GetClassroom(string classId)
         {
-
-            // get classroom
             Classroom classroom;
             classroom = await classesContainer.ReadItemAsync<Classroom>(classId, new PartitionKey(classId));
 
-            // are we supposed to return a Task<ActionResult<string>>? In NotesController, it returns Task<Note>
             return classroom;
-
         }
 
         public async Task<ActionResult<string>> GetClassroomByName(string className)
