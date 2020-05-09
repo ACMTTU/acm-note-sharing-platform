@@ -143,22 +143,25 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///This call is used to delete a classroom
         ///by classID
         ///</summary>
-        ///<param name= "classId">ID of the classroom </param>
-        [HttpDelete("DeleteClass/{classId}")]
-        public async Task<ActionResult<string>> DeleteClass(string classId)
+        ///<param name="classId">ID of the classroom </param>
+        ///<param name="userId">id of the user making the request</param> 
+        [HttpDelete("DeleteClassroom/{classId}")]
+        public async Task<ActionResult<string>> DeleteClassroom(string classId, string userId)
         {
-            //here, it gets the list of class id's in the classId
-            List<Classroom> id = GetClassroomByID(classId).Result;
 
-            if (!id.Any())
-                return EmptyList("classId does not exist");
+            Classroom classToBeDeleted = await GetClassroom(classId);
 
-            Classroom getlass = id.Find(classroom => classroom.classId == classId);
+            //Only the owner has permission to delete the classroom
+            if (classToBeDeleted.ownerID == userId)
+            {
+                await classesContainer.DeleteItemAsync<Classroom>(classId, partitionKey);
+                return Ok();
+            }
 
-            if (getClass != null)
-                await classesContainer.DeleteItemAsync<Classroom>(getClass.id, new PartitionKey(getClass.classId));
-
-            return Deleted("Class successfully deleted");
+            else
+            {
+                return BadRequest();
+            }
 
         }
 
