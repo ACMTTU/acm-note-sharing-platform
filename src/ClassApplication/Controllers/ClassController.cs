@@ -131,7 +131,12 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         [HttpDelete("RemoveNoteFromClass/{classId}/notes/{notesId}")]
         public async Task<ActionResult<string>> RemoveNoteFromClass(string classId, string notesId)
         {
-            throw new NotImplementedException();
+            Classroom classroom;
+            classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
+
+            classroom.RemoveNote(notesId);
+
+            return Ok();
         }
 
         /// <summary>
