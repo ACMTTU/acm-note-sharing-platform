@@ -51,6 +51,15 @@ namespace ClassApplication.Models
         }
 
         /// <summary>
+        ///     Removes note from the class collection of notes
+        /// </summary>
+        /// <param name="noteID">id of the note object being removed</param>
+        public void RemoveNote(string noteID)
+        {
+            Notes.Remove(noteID);
+        }
+
+        /// <summary>
         ///     Changes the description of the classroom
         /// </summary>
         /// <param name="newDescription"></param>
