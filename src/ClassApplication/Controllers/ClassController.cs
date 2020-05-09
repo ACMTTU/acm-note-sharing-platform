@@ -197,8 +197,8 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///by classId
         ///</summary>
         ///<param name="classId">Id of the classroom</param>
-        ///<param actor="actorId">Id of user invoking</param>
-        ///<param remove="removeId">Id of the user getting removed</param> 
+        ///<param name="actorId">Id of user invoking</param>
+        ///<param name="removeId">Id of the user getting removed</param> 
         [HttpDelete("RemoveStudent/{classId}/{userId}/{className}/{classDescription}")]
         public async Task<ActionResult<string>> RemoveStudent(string classId, string actorId, string removeId)
         {
