@@ -60,6 +60,15 @@ namespace ClassApplication.Models
         }
 
         /// <summary>
+        ///     Add user to classroom
+        /// </summary>
+        /// <param name="addId"></param>
+        public void AddStudent(String addId)
+        {
+            Students.Add(addId);
+        }
+
+        /// <summary>
         /// Removes user from the classroom
         /// </summary>
         /// <param name="removeId">User ID of the user being removed</param>
