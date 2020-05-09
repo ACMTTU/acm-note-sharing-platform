@@ -73,7 +73,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         /// </summary>
         /// <param name="className">classroom name</param>
         /// <returns>A list containing a classIDs determined by the parameter</returns>
-        [HttpGet("GetClassByName/{className}")]
+        [HttpGet("QueryClassByName/{className}")]
         public async Task<List<string>> QueryClassByName(string className)
         {
             string sqlQueryStatement = "SELECT * FROM c WHERE c.Name = @className";
