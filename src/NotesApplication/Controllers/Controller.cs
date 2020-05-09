@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ACMTTU.NoteSharing.Shared.SDK.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using ACMTTU.NoteSharing.Platform.NotesApplication.Services;
-using NotesApplication;
+using NotesApplication.Models;
 
 namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
 {
@@ -13,11 +13,11 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
     [ApiController]
     public class NotesController : PlatformBaseController
     {
-        private Container NotesContainer;
-        private PartitionKey partKey = new PartitionKey("notes");
+        private Container _notesContainer;
+        private PartitionKey _partKey = new PartitionKey("notes");
         public NotesController(IHttpClientFactory factory, DBService db) : base(factory)
         {
-            this.NotesContainer = db.container;
+            this._notesContainer = db.container;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         {
             // This copies the given note, (which callers will pass in with JSON in their request), to a new Note object. The new Note object has a valid, newly generated ID.
             // The newly generated id is returned, allowing for callers to edit properties of the newly created note.
-            Note n = await this.NotesContainer.CreateItemAsync(new Note(Guid.NewGuid().ToString(), note.Name, note.Notes, note.CreatedAt, note.LastModified));
+            Note n = await this._notesContainer.CreateItemAsync(new Note(Guid.NewGuid().ToString(), note.Name, note.Notes, note.CreatedAt, note.LastModified));
             return this.Ok(n.id);
         }
 
@@ -46,11 +46,11 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         public async Task<IActionResult> EditNote(string noteId, string userId, Note update)
         {
             Note oldNote;
-            oldNote = await NotesContainer.ReadItemAsync<Note>(noteId, partKey);
+            oldNote = await _notesContainer.ReadItemAsync<Note>(noteId, _partKey);
 
             if (oldNote.ownerId == userId) // verifies userId is allowed to modify noteId
             {
-                await NotesContainer.ReplaceItemAsync<Note>(update, noteId);
+                await _notesContainer.ReplaceItemAsync<Note>(update, noteId);
                 return Ok();
             }
             else
@@ -69,7 +69,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         public async Task<Note> GetNote(string noteId, string userId)
         {
             Note note;
-            note = await NotesContainer.ReadItemAsync<Note>(noteId, partKey);
+            note = await _notesContainer.ReadItemAsync<Note>(noteId, _partKey);
 
             if (note.ownerId == userId)
             {
@@ -92,7 +92,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Controllers
         {
             if (await verifyPermission(noteId, userId) == true)
             {
-                await NotesContainer.DeleteItemAsync<Note>(noteId, partKey);
+                await _notesContainer.DeleteItemAsync<Note>(noteId, _partKey);
                 return Ok();
             }
             else
