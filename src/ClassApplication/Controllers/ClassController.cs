@@ -34,19 +34,16 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         /// 
         /// </summary>
         /// <param name="ownerId">ID of the user creating the class</param>
-        /// <param name="ownerName">Public name of the user creating the class</param>
+        /// <param name="classroomName">Name of the classroom being created</param>
         /// <param name="description">String to set the new classroom description to (Optional)</param>
-        [HttpPost]
-        public async Task<ActionResult<string>> CreateClassroom(string ownerId, string ownerName, string description = "")
+        [HttpPost("CreateClass")]
+        public async Task<ActionResult<string>> CreateClassroom(string ownerId, string classroomName, string description = "")
         {
-            Classroom classroom;
-            classroom.classID = Guid.NewGuid();
-            classroom.Name = ownerName + "'s classroom";
-            classroom.Students.add(ownerId);
-            classroom.ownerID = ownerId;
-            classroom.Description = description;
+            string classId = Guid.NewGuid().ToString();
+            Classroom classroom = new Classroom(classId, ownerId, classroomName, description);
+            classroom.AddStudent(ownerId);
 
-            await classesContainer.CreateItemAsync<Classroom>(classroom, classroom.classID);
+            await classesContainer.CreateItemAsync<Classroom>(classroom, new PartitionKey(classId));
 
             return Ok();
         }
@@ -72,7 +69,7 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             return classroom;
 
         }
-      
+
         public async Task<ActionResult<string>> GetClassroomByName(string className)
         {
 
@@ -181,16 +178,16 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             //here, it gets the list of class id's in the classId
             List<Classroom> id = GetClassroomByID(classId).Result;
 
-            if(!id.Any())
-              return EmptyList("classId does not exist");
-        
+            if (!id.Any())
+                return EmptyList("classId does not exist");
+
             Classroom getlass = id.Find(classroom => classroom.classId == classId);
 
-            if(getClass != null)
-                 await classesContainer.DeleteItemAsync<Classroom>(getClass.id, new PartitionKey(getClass.classId));
-            
-          return Deleted("Class successfully deleted");
-                
+            if (getClass != null)
+                await classesContainer.DeleteItemAsync<Classroom>(getClass.id, new PartitionKey(getClass.classId));
+
+            return Deleted("Class successfully deleted");
+
         }
 
         /// <summary>
@@ -294,24 +291,24 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             // return NotFound();
 
         }
-        
-        /// <summary>
-      ///This call is used to add student in the classroom
-      ///by classId, addId
-      ///</summary>
-      ///<param name="classId">Id of the classroom</param>
-      ///<param name="addId">Id of the student that is going to be added</param>
-      [HttpGet("{classId}/{addId}")]
-      public async Task<ActionResult<string>> AddStudent(string classId, string addId)
-      {
-          Classroom classroom;
-          classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
 
-          //Since there is no validation for adding student,
-          // added student with respect to addId
-          classroom.AddStudent(addId);
-          return Ok();
-      }
-        
+        /// <summary>
+        ///This call is used to add student in the classroom
+        ///by classId, addId
+        ///</summary>
+        ///<param name="classId">Id of the classroom</param>
+        ///<param name="addId">Id of the student that is going to be added</param>
+        [HttpGet("{classId}/{addId}")]
+        public async Task<ActionResult<string>> AddStudent(string classId, string addId)
+        {
+            Classroom classroom;
+            classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
+
+            //Since there is no validation for adding student,
+            // added student with respect to addId
+            classroom.AddStudent(addId);
+            return Ok();
+        }
+
     }
 }
