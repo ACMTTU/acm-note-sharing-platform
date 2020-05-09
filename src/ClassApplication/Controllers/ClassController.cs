@@ -231,42 +231,6 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
 
         }
 
-        ///<summary>
-        ///This call is used to query a list of notes in a class
-        ///by classId
-        ///</summary>
-        ///<param name="classId">Id of the classroom</param>
-        ///<param name="noteName">Name of the note to search for</param>
-        [HttpGet("QueryNote/{classId}")]
-        public async Task<ActionResult<string>> QueryNote(string classId, string noteName)
-        {
-
-            // NEED TO FIGURE OUT HOW TO QUERY NOSQL DATABASES
-            throw new NotImplementedException();
-
-            // // get classroom
-            // Classroom classroom;
-            // classroom = await _classesContainer.ReadItemAsync<Classroom>(classId, _partKey);
-
-            // // create query with which to search the database
-            // //      by putting the note name inside % %, we're looking for any strings that contain the given name
-            // string loc = "Notes"; // ????
-            // string query = "SELECT * FROM " + loc + " WHERE name LIKE %" + noteName + "%";
-
-            // // create query request options, which will contain partition key
-            // QueryRequestOptions qro = new QueryRequestOptions();
-            // qro.PartitionKey = _partKey;
-
-            // // create feed iterator into which to store the result of the query
-            // FeedIterator<string> queryIterator = _classesContainer.GetItemQueryIterator<string>(query, null, qro);
-
-            // // how do we return the resultant?????
-
-            // // by default, assume that note is not found 
-            // return NotFound();
-
-        }
-
         /// <summary>
         ///This call is used to add student in the classroom
         ///by classId, addId
