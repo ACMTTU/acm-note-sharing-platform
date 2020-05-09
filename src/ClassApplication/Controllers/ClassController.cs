@@ -72,6 +72,35 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             return classroom;
 
         }
+      
+        public async Task<ActionResult<string>> GetClassroomByName(string className)
+        {
+
+
+            string Text = " SELECT * FROM c WHERE c.name= @name =@className";
+            QueryDefinition query = new QueryDefinition(Text).WithParameter("@className", className);
+
+            FeedIterator<Classroom> iterator = classesContainer.ReadItemAsync<Classroom>(query);
+
+            List<string> classroomName = new List<string>();
+
+
+            classroomName.Add("Computer Architecture"); //example
+            classroomName.Add(new (ClassController) { GetClassroom = "Software Engineering" });
+            var classId = id;
+
+            while (iterator.HasMoreResults)
+            {
+                FeedResponse<Classroom> result = await iterator.ReadNextAsync();
+                foreach (Classroom className in result)
+                {
+                    classroomName.Add(className);
+                }
+            }
+            //Returns data from a classroom from a given classroom ID
+            return classroomName;
+
+        }
 
         /// <summary>
         /// 
@@ -147,9 +176,21 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
         ///</summary>
         ///<param name= "classId">ID of the classroom </param>
         [HttpDelete("{classId}")]
-        public async Task<ActionResult<string>> DeleteClass(string classId)
+        public async Task<ActionResult<string> DeleteClass(string classId)
         {
-            throw new NotImplementedException();
+            //here, it gets the list of class id's in the classId
+            List<Classroom> id = GetClassroomByID(classId).Result;
+
+            if(!id.Any())
+              return EmptyList("classId does not exist");
+        
+            Classroom getlass = id.Find(classroom => classroom.classId == classId);
+
+            if(getClass != null)
+                 await classesContainer.DeleteItemAsync<Classroom>(getClass.id, new PartitionKey(getClass.classId));
+            
+          return Deleted("Class successfully deleted");
+                
         }
 
         /// <summary>
@@ -245,5 +286,24 @@ namespace ACMTTU.NoteSharing.Platform.ClassApplication.Controllers
             // return NotFound();
 
         }
+        
+        /// <summary>
+      ///This call is used to add student in the classroom
+      ///by classId, addId
+      ///</summary>
+      ///<param name="classId">Id of the classroom</param>
+      ///<param name="addId">Id of the student that is going to be added</param>
+      [HttpGet("{classId}/{addId}")]
+      public async Task<ActionResult<string>> AddStudent(string classId, string addId)
+      {
+          Classroom classroom;
+          classroom = await classesContainer.ReadItemAsync<Classroom>(classId, partitionKey);
+
+          //Since there is no validation for adding student,
+          // added student with respect to addId
+          classroom.AddStudent(addId);
+          return Ok();
+      }
+        
     }
 }
