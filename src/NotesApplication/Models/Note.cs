@@ -1,5 +1,5 @@
 using System;
-namespace NotesApplication
+namespace NotesApplication.Models
 {
     ///<summary>
     /// Represents a note in the database.
@@ -13,12 +13,12 @@ namespace NotesApplication
         /// <summary>
         /// Unique ID of the note
         /// </summary>
-        internal string id { get; } //We should not allow updating of IDs because it could mess with the database
+        public string id { get; } //We should not allow updating of IDs because it could mess with the database
 
         /// <summary>
         /// Unique ID of the note owner
         /// </summary>
-        internal string ownerId { get; } //We should not allow updating of IDs because it could mess with the database
+        public string ownerId { get; } //We should not allow updating of IDs because it could mess with the database
 
         /// <summary>
         /// The name of the note. (Similar to a title)

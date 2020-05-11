@@ -2,13 +2,8 @@ using ACMTTU.NoteSharing.Shared.SDK.Services;
 using Microsoft.Azure.Cosmos;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using ACMTTU.NoteSharing.Shared.SDK.Controllers;
-using ACMTTU.NoteSharing.Platform.NotesApplication.Services;
-using NotesApplication;
 
-namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
+namespace ACMTTU.NoteSharing.Platform.ClassApplication.Services
 {
 
     /// <summary>
@@ -30,15 +25,15 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
     /// </summary>
     public class DBService : PlatformBaseService, IDBService
     {
-        private Container _container;
+        public Container _container;
 
         public DBService(IHttpClientFactory clientFactory) : base(clientFactory) { }
 
         public async override Task Setup()
         {
-            var client = await this.dbClient.CreateDatabaseIfNotExistsAsync("NoteDatabase");
+            var client = await this.dbClient.CreateDatabaseIfNotExistsAsync("Classroom");
 
-            ContainerResponse containerResp = await client.Database.CreateContainerIfNotExistsAsync("NoteContainer", "/notes");
+            ContainerResponse containerResp = await client.Database.CreateContainerIfNotExistsAsync("Classrooms", "/classroom");
 
             this._container = containerResp.Container;
         }
@@ -103,7 +98,7 @@ namespace ACMTTU.NoteSharing.Platform.NotesApplication.Services
         {
 
             // create query request options with our partition key
-            QueryRequestOptions requestOptions = new QueryRequestOptions() { PartitionKey = new PartitionKey("/notes") };
+            QueryRequestOptions requestOptions = new QueryRequestOptions() { PartitionKey = new PartitionKey("/classroom") };
             return _container.GetItemQueryIterator<T>(query, null, requestOptions);
 
         }
